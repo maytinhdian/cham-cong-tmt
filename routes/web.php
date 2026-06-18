@@ -52,6 +52,7 @@ use App\Http\Livewire\Pages\Account\Security;
 use App\Http\Livewire\Pages\Account\Settings;
 use App\Http\Livewire\Pages\Charts;
 use App\Http\Livewire\Pages\Attendance;
+use App\Http\Livewire\Pages\AttendanceSettings;
 use App\Http\Livewire\Pages\Employees\NewEmployee;
 use App\Http\Livewire\Pages\Employees\Index as EmployeeIndex;
 use App\Http\Livewire\Pages\Departments\Index as DepartmentIndex;
@@ -136,6 +137,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 	Route::get('pages/charts', Charts::class)->name('charts');
 	Route::get('pages/attendance', Attendance::class)->name('attendance');
+	Route::get('pages/attendance-settings', AttendanceSettings::class)->name('attendance-settings');
 	Route::get('pages/employees', EmployeeIndex::class)->name('employee-management');
 	Route::get('pages/employees/new', NewEmployee::class)->name('employee-new');
 	Route::get('pages/departments', DepartmentIndex::class)->name('department-management');
