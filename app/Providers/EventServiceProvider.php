@@ -6,6 +6,7 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
+use Modules\Core\Subscribers\ActivityEventSubscriber;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -18,6 +19,15 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
+    ];
+
+    /**
+     * The event subscribers registered for reusable Core module workflows.
+     *
+     * @var array
+     */
+    protected $subscribe = [
+        ActivityEventSubscriber::class,
     ];
 
     /**

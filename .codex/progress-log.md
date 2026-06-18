@@ -19,6 +19,19 @@ The agreed flow should stay in this order unless the user explicitly changes it:
 6. Reports
    Late/early reports, missing log reports, OT reports, monthly attendance summaries.
 
+## Timesheet Detailed Flow
+
+After attendance processing has produced `daily_attendance_results`, continue in this order:
+
+1. Daily timesheet review
+   Show processed daily attendance by employee/date, including clock-in, clock-out, work minutes, late minutes, early-leave minutes, overtime minutes, missing logs, and status.
+2. Timesheet adjustment
+   Allow authorized users to correct daily attendance results, record adjustment reason, and preserve audit history of old/new values.
+3. Monthly timesheet
+   Aggregate daily results by employee/month, department, and status for payroll-ready review.
+4. Timesheet closing
+   Lock approved monthly timesheets by period/department so later changes require unlock or adjustment workflow.
+
 ## Flow Correction
 
 On 2026-06-19, we noticed the work drifted too quickly into scheduling/holiday backend before finishing device logs and attendance processing.
@@ -62,6 +75,10 @@ Recommended next feature after this note:
   - `attendance_device_user_maps` table.
   - `Modules/Device` mapping model, DTO, service, and save action.
   - Real mapping page with create, edit, delete, filters, and apply-to-raw-logs action.
+- Added reusable Core module foundation:
+  - `activity_logs` table.
+  - `Modules/Core` DTO, model, event, service, and subscriber for shared activity/audit logging.
+  - Registered Core activity subscriber in Laravel's event provider.
 
 ## Documentation Rule For Code Changes
 

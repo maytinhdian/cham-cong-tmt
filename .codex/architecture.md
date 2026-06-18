@@ -7,6 +7,7 @@ The backend should be organized by business modules under `Modules/`.
 Current module list:
 
 - `Modules/User`
+- `Modules/Core`
 - `Modules/Org`
 - `Modules/Shift`
 - `Modules/Schedule`
@@ -21,6 +22,7 @@ Current module list:
 ## Module Responsibilities
 
 - `Modules/User`: employee profile, user account mapping
+- `Modules/Core`: reusable audit logging, shared events, subscribers, contracts, enums, and helpers
 - `Modules/Org`: departments, positions, organization chart
 - `Modules/Shift`: shift definitions and shift assignments
 - `Modules/Schedule`: working calendars, holidays, weekend rules
@@ -69,4 +71,3 @@ Create core tables before complex business logic:
 6. Calculate late arrival and early leave.
 7. Calculate overtime.
 8. Generate daily timesheet rows.
-
