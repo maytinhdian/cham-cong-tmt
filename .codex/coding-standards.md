@@ -8,6 +8,20 @@
 - Keep Laravel app classes under `app/`.
 - Prefer typed properties and return types where practical.
 - Avoid putting business logic in Blade files.
+- Every new or edited function/method must have a short PHPDoc block that explains its purpose in business terms.
+- Keep PHPDoc concise: describe why the method exists, important side effects, and returned result when useful.
+- Do not add noisy comments that merely repeat the method name or each line of code.
+
+Example:
+
+```php
+/**
+ * Assign or replace an employee's planned shift for one work date.
+ */
+public function assign(EmployeeScheduleData $data): EmployeeSchedule
+{
+}
+```
 
 ## Laravel
 
@@ -47,4 +61,3 @@ composer dump-autoload
 ```
 
 Use `composer dump-autoload` after changing `composer.json` autoload rules or adding many new PSR-4 classes.
-

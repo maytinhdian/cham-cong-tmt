@@ -8,11 +8,12 @@ The project is moving toward a modular backend under `Modules/` while keeping th
 
 ## Current Priorities
 
-1. Keep the UI consistent with the existing Material Dashboard template.
-2. Organize backend code by business modules.
-3. Start backend work from database, models, and core CRUD before complex attendance calculations.
-4. Keep business logic out of Blade views.
-5. Prefer small, reversible changes.
+1. Read `.codex/progress-log.md` before continuing HR or attendance work.
+2. Keep the UI consistent with the existing Material Dashboard template.
+3. Organize backend code by business modules.
+4. Start backend work from database, models, and core CRUD before complex attendance calculations.
+5. Keep business logic out of Blade views.
+6. Prefer small, reversible changes.
 
 ## Technology Stack
 
@@ -43,4 +44,3 @@ Run this after changing Composer autoload:
 ```bash
 composer dump-autoload
 ```
-

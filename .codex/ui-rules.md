@@ -4,6 +4,92 @@
 
 Use the existing Material Dashboard 2 Pro / Bootstrap visual language.
 
+## Design Tokens
+
+Use these values as the default UI contract unless an existing template component already defines a stronger local style.
+
+### Colors
+
+- Primary action: `bg-gradient-dark` for main save/create buttons.
+- Secondary action: `btn-outline-secondary` or `bg-gradient-light`.
+- Positive state: `bg-gradient-success`.
+- Informational state: `bg-gradient-info`.
+- Warning state: `bg-gradient-warning`.
+- Error/destructive state: `text-danger`, `bg-gradient-danger`, or `btn-outline-danger`.
+- Neutral text: `text-secondary`, `text-muted`, `text-dark`.
+- Page background: prefer `bg-gray-100` or `bg-gray-200` only when the surrounding layout already uses it.
+- Do not introduce random brand colors per page. Reuse template gradients first.
+
+### Border Radius
+
+- Cards: use template `card` defaults; when explicit radius is needed use `border-radius-lg` or `border-radius-xl`.
+- Buttons: keep default Material Dashboard button radius.
+- Badges: use template `badge` / `badge-sm`; do not make custom pill shapes unless matching existing badge styles.
+- Form inputs: use Bootstrap/Material Dashboard default `form-control`; do not add heavy custom borders.
+- Legacy device-style layouts are allowed only when the user explicitly asks for that look.
+
+### Shadows
+
+- Main cards: rely on `card` default shadow.
+- Highlighted floating cards or hero stat cards: use `shadow`, `shadow-dark`, `shadow-primary`, or existing template shadow utilities.
+- Avoid stacking multiple shadows on the same element.
+- Do not use harsh custom box-shadow values unless matching a referenced template page.
+
+### Spacing
+
+- Page wrapper: `container-fluid py-4`.
+- Main card header: `card-header pb-0` or `card-header pb-0 p-3`.
+- Main card body: `card-body`, `card-body p-3`, or `card-body pt-0`.
+- Grid spacing: prefer Bootstrap rows/columns with `mt-3`, `mt-4`, `mb-0`, `gap-2`, `gap-3`.
+- Avoid one-off inline spacing unless necessary for an existing template pattern.
+
+### Buttons
+
+- Primary create/save/update: `btn bg-gradient-dark mb-0`.
+- Important positive action: `btn bg-gradient-primary mb-0` only when it must stand out from regular save.
+- Cancel/back: `btn btn-outline-secondary mb-0` or `btn bg-gradient-light mb-0`.
+- Destructive inline action: `btn btn-link text-danger font-weight-bold text-xs mb-0 p-0`.
+- Table inline actions: use text/link-style buttons to keep table compact.
+- Icon-only add buttons should use Material icons, usually `add`, inside the existing button class.
+
+### Forms
+
+- Labels: `form-label`.
+- Inputs: `form-control`.
+- Selects: `form-control` unless the template page already uses Choices.js.
+- Validation text: `text-danger text-xs mt-1 mb-0`.
+- Required marker: `<span class="text-danger">*</span>`.
+- Keep forms in cards and group fields with rows/columns.
+
+### Tables
+
+- Use compact Material Dashboard tables.
+- Header cells should use `text-uppercase text-secondary text-xxs font-weight-bolder opacity-7`.
+- Row avatar initials should use `avatar avatar-sm bg-gradient-*`.
+- Status values should use badges, not raw colored text.
+- Last column is usually actions; keep actions centered when there are multiple buttons.
+
+### Icons
+
+- Prefer Material icons with `material-icons` or `material-icons-round`.
+- Use Nucleo icons only where the existing sidebar/template section already uses them.
+- Do not mix unrelated icon styles in the same component area.
+
+### Vietnamese UI Text
+
+- Keep labels short and clear.
+- Avoid mojibake. Save edited Blade/PHP/Markdown files as UTF-8.
+- Prefer consistent terms:
+  - `Nhân viên`
+  - `Phòng ban`
+  - `Chức vụ`
+  - `Ca làm`
+  - `Lịch làm việc`
+  - `Thiết bị chấm công`
+  - `Log chấm công`
+  - `Bảng công`
+  - `Chốt công`
+
 Prefer:
 
 - `card`
@@ -61,4 +147,3 @@ Its submenu items include:
 - `Khóa công`
 
 `Khai báo ca làm việc` should use a table on the left and an edit form on the right.
-
