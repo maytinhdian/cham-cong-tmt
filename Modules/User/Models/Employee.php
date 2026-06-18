@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\User as Account;
+use Modules\Attendance\Models\DailyAttendanceResult;
 use Modules\Attendance\Models\RawAttendanceLog;
 use Modules\Device\Models\AttendanceDeviceUserMap;
 use Modules\Org\Models\Department;
@@ -40,21 +41,33 @@ class Employee extends Model
         'hire_date' => 'date',
     ];
 
+    /**
+     * Link this employee profile to the Laravel login account.
+     */
     public function account(): BelongsTo
     {
         return $this->belongsTo(Account::class, 'user_id');
     }
 
+    /**
+     * Link this employee to the current department assignment.
+     */
     public function department(): BelongsTo
     {
         return $this->belongsTo(Department::class);
     }
 
+    /**
+     * Link this employee to the current position assignment.
+     */
     public function position(): BelongsTo
     {
         return $this->belongsTo(Position::class);
     }
 
+    /**
+     * List planned schedules that can be matched with raw attendance logs.
+     */
     public function schedules(): HasMany
     {
         return $this->hasMany(EmployeeSchedule::class);
@@ -74,5 +87,13 @@ class Employee extends Model
     public function attendanceDeviceUserMaps(): HasMany
     {
         return $this->hasMany(AttendanceDeviceUserMap::class);
+    }
+
+    /**
+     * List processed daily attendance results for this employee.
+     */
+    public function dailyAttendanceResults(): HasMany
+    {
+        return $this->hasMany(DailyAttendanceResult::class);
     }
 }
