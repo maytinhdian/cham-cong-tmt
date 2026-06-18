@@ -5,10 +5,12 @@ namespace Modules\User\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\User as Account;
 use Modules\Org\Models\Department;
 use Modules\Org\Models\Position;
+use Modules\Schedule\Models\EmployeeSchedule;
 
 class Employee extends Model
 {
@@ -49,5 +51,10 @@ class Employee extends Model
     public function position(): BelongsTo
     {
         return $this->belongsTo(Position::class);
+    }
+
+    public function schedules(): HasMany
+    {
+        return $this->hasMany(EmployeeSchedule::class);
     }
 }

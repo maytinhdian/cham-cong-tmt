@@ -41,6 +41,7 @@ use App\Http\Livewire\Pages\Employees\CompanyChart as EmployeeCompanyChart;
 use App\Http\Livewire\Pages\Employees\Position as EmployeePosition;
 use App\Http\Livewire\Pages\Attendance\Settings as AttendanceSettings;
 use App\Http\Livewire\Pages\Attendance\Devices as AttendanceDevices;
+use App\Http\Livewire\Pages\Attendance\Schedule as AttendanceSchedule;
 use App\Http\Livewire\Pages\Attendance\ShiftDefinition as AttendanceShiftDefinition;
 use App\Http\Livewire\Pages\Attendance\WeekendDefinition as AttendanceWeekendDefinition;
 use App\Http\Livewire\Pages\Attendance\SymbolStatistics as AttendanceSymbolStatistics;
@@ -156,6 +157,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('pages/employees/positions', EmployeePosition::class)->name('employee-position');
     Route::get('pages/employees/{employee}', EmployeeDetail::class)->name('employee-detail');
     Route::get('pages/attendance/settings', AttendanceSettings::class)->name('attendance-settings');
+    Route::get('pages/attendance/schedules', AttendanceSchedule::class)->name('attendance-schedules');
     Route::get('pages/attendance/shift-definition', AttendanceShiftDefinition::class)->name('attendance-shift-definition');
     Route::get('pages/attendance/weekend-definition', AttendanceWeekendDefinition::class)->name('attendance-weekend-definition');
     Route::get('pages/attendance/symbol-statistics', AttendanceSymbolStatistics::class)->name('attendance-symbol-statistics');

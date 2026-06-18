@@ -18,6 +18,13 @@ class Detail extends Component
     {
         return view('livewire.pages.employees.detail', [
             'employee' => $this->employee,
+            'upcomingSchedules' => $this->employee
+                ->schedules()
+                ->with('shift')
+                ->whereDate('work_date', '>=', now()->toDateString())
+                ->orderBy('work_date')
+                ->limit(5)
+                ->get(),
         ]);
     }
 }

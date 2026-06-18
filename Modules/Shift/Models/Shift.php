@@ -4,7 +4,9 @@ namespace Modules\Shift\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Modules\Schedule\Models\EmployeeSchedule;
 
 class Shift extends Model
 {
@@ -36,4 +38,9 @@ class Shift extends Model
         'requires_clock_in' => 'boolean',
         'requires_clock_out' => 'boolean',
     ];
+
+    public function schedules(): HasMany
+    {
+        return $this->hasMany(EmployeeSchedule::class);
+    }
 }

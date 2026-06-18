@@ -151,11 +151,20 @@
                             <i class="material-icons opacity-10">schedule</i>
                         </div>
                         <div>
-                            <p class="text-sm mb-0 text-secondary">Chấm công tháng này</p>
-                            <h5 class="mb-0">Chưa nối dữ liệu</h5>
+                            <p class="text-sm mb-0 text-secondary">Lịch làm việc sắp tới</p>
+                            <h5 class="mb-0">{{ $upcomingSchedules->count() }} dòng lịch</h5>
                         </div>
                     </div>
-                    <p class="text-xs text-secondary mt-3 mb-0">Sẽ lấy từ module Attendance khi có bảng log và bảng công.</p>
+                    <div class="mt-3">
+                        @forelse ($upcomingSchedules as $schedule)
+                            <div class="d-flex justify-content-between align-items-center border-radius-lg p-2 {{ $loop->first ? 'bg-gray-100' : '' }}">
+                                <span class="text-sm">{{ $schedule->work_date->format('d/m') }}</span>
+                                <span class="badge bg-gradient-primary">{{ $schedule->shift?->code ?? strtoupper($schedule->schedule_type) }}</span>
+                            </div>
+                        @empty
+                            <p class="text-xs text-secondary mb-0">Chưa có lịch làm việc sắp tới.</p>
+                        @endforelse
+                    </div>
                 </div>
             </div>
         </div>

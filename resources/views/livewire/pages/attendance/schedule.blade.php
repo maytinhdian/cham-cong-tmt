@@ -1,0 +1,243 @@
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="card mb-4">
+                <div class="card-header pb-0">
+                    <div class="d-flex flex-column flex-lg-row align-items-lg-center justify-content-between">
+                        <div>
+                            <h5 class="mb-1">Lịch làm việc nhân viên</h5>
+                            <p class="text-sm mb-0">Phân ca theo ngày, xem lịch theo phòng ban và chuẩn bị dữ liệu cho chấm công.</p>
+                        </div>
+                        <div class="mt-3 mt-lg-0">
+                            <a href="{{ route('attendance-shift-definition') }}" class="btn btn-outline-secondary mb-0">Khai báo ca</a>
+                            <a href="{{ route('employee-list') }}" class="btn bg-gradient-dark mb-0 ms-2">Danh sách nhân viên</a>
+                        </div>
+                    </div>
+
+                    @if (session('success'))
+                        <div class="alert alert-success text-white mt-3 mb-0" role="alert">
+                            {{ session('success') }}
+                        </div>
+                    @endif
+                </div>
+
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-xl-4">
+                            <div class="card h-100">
+                                <div class="card-header pb-0 p-3">
+                                    <h6 class="mb-1">Phân ca nhanh</h6>
+                                    <p class="text-sm mb-0">Một nhân viên chỉ có một lịch chính trên mỗi ngày.</p>
+                                </div>
+                                <div class="card-body p-3">
+                                    <form wire:submit.prevent="assignSchedule">
+                                        <div class="form-group">
+                                            <label class="form-label">Nhân viên</label>
+                                            <select class="form-control" wire:model="employeeId">
+                                                <option value="">Chọn nhân viên</option>
+                                                @foreach ($employees as $employee)
+                                                    <option value="{{ $employee->id }}">
+                                                        {{ $employee->employee_code }} - {{ $employee->full_name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            @error('employeeId') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
+                                        </div>
+
+                                        <div class="form-group mt-3">
+                                            <label class="form-label">Ngày làm việc</label>
+                                            <input type="date" class="form-control" wire:model="workDate">
+                                            @error('workDate') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
+                                        </div>
+
+                                        <div class="form-group mt-3">
+                                            <label class="form-label">Ca làm</label>
+                                            <select class="form-control" wire:model="shiftId">
+                                                <option value="">Không gán ca</option>
+                                                @foreach ($shifts as $shift)
+                                                    <option value="{{ $shift->id }}">
+                                                        {{ $shift->name }} ({{ substr($shift->start_time, 0, 5) }} - {{ substr($shift->end_time, 0, 5) }})
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            @error('shiftId') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
+                                        </div>
+
+                                        <div class="row mt-3">
+                                            <div class="col-6">
+                                                <label class="form-label">Loại lịch</label>
+                                                <select class="form-control" wire:model="scheduleType">
+                                                    <option value="work">Đi làm</option>
+                                                    <option value="off">Nghỉ</option>
+                                                    <option value="holiday">Nghỉ lễ</option>
+                                                    <option value="training">Đào tạo</option>
+                                                </select>
+                                                @error('scheduleType') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
+                                            </div>
+                                            <div class="col-6">
+                                                <label class="form-label">Trạng thái</label>
+                                                <select class="form-control" wire:model="status">
+                                                    <option value="planned">Dự kiến</option>
+                                                    <option value="approved">Đã duyệt</option>
+                                                    <option value="locked">Đã khóa</option>
+                                                </select>
+                                                @error('status') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group mt-3">
+                                            <label class="form-label">Ghi chú</label>
+                                            <textarea class="form-control" rows="3" wire:model="note" placeholder="Ví dụ: phân ca theo kế hoạch tuần"></textarea>
+                                            @error('note') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
+                                        </div>
+
+                                        <button class="btn bg-gradient-dark w-100 mt-4 mb-0" type="submit">Lưu lịch làm việc</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-8 mt-4 mt-xl-0">
+                            <div class="card h-100">
+                                <div class="card-header pb-0 p-3">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label class="form-label">Phòng ban</label>
+                                            <select class="form-control" wire:model.live="departmentFilter">
+                                                <option value="">Tất cả</option>
+                                                @foreach ($departments as $department)
+                                                    <option value="{{ $department->id }}">{{ $department->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4 mt-3 mt-md-0">
+                                            <label class="form-label">Từ ngày</label>
+                                            <input type="date" class="form-control" wire:model.live="dateFrom">
+                                        </div>
+                                        <div class="col-md-4 mt-3 mt-md-0">
+                                            <label class="form-label">Đến ngày</label>
+                                            <input type="date" class="form-control" wire:model.live="dateTo">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body p-3">
+                                    <div class="table-responsive">
+                                        <table class="table align-items-center mb-0">
+                                            <thead>
+                                                <tr>
+                                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nhân viên</th>
+                                                    @foreach ($scheduleDays as $day)
+                                                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                            {{ $day->format('d/m') }}
+                                                        </th>
+                                                    @endforeach
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @forelse ($employees as $employee)
+                                                    <tr>
+                                                        <td>
+                                                            <div class="d-flex px-2 py-1">
+                                                                <div class="avatar avatar-sm bg-gradient-dark me-3">
+                                                                    <span class="text-white text-xs font-weight-bold">{{ mb_substr($employee->full_name, 0, 1) }}</span>
+                                                                </div>
+                                                                <div>
+                                                                    <h6 class="mb-0 text-sm">{{ $employee->full_name }}</h6>
+                                                                    <p class="text-xs text-secondary mb-0">{{ $employee->department?->name ?? 'Chưa gán phòng ban' }}</p>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        @foreach ($scheduleDays as $day)
+                                                            @php
+                                                                $schedule = $schedules->first(fn ($item) => $item->employee_id === $employee->id && $item->work_date->isSameDay($day));
+                                                            @endphp
+                                                            <td class="text-center">
+                                                                @if ($schedule)
+                                                                    <span class="badge bg-gradient-primary">
+                                                                        {{ $schedule->shift?->code ?? strtoupper($schedule->schedule_type) }}
+                                                                    </span>
+                                                                @else
+                                                                    <span class="text-xs text-secondary">-</span>
+                                                                @endif
+                                                            </td>
+                                                        @endforeach
+                                                    </tr>
+                                                @empty
+                                                    <tr>
+                                                        <td colspan="{{ count($scheduleDays) + 1 }}" class="text-center py-4">
+                                                            <p class="text-sm text-secondary mb-0">Không có nhân viên phù hợp.</p>
+                                                        </td>
+                                                    </tr>
+                                                @endforelse
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <p class="text-xs text-secondary mt-3 mb-0">Bảng lịch đang giới hạn tối đa 14 ngày để giữ giao diện gọn.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header pb-0 p-3">
+                                    <h6 class="mb-1">Danh sách lịch đã khai báo</h6>
+                                    <p class="text-sm mb-0">Các dòng lịch trong khoảng ngày đang lọc.</p>
+                                </div>
+                                <div class="card-body p-3">
+                                    <div class="table-responsive">
+                                        <table class="table align-items-center mb-0">
+                                            <thead>
+                                                <tr>
+                                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Ngày</th>
+                                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Nhân viên</th>
+                                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Ca</th>
+                                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Loại</th>
+                                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Trạng thái</th>
+                                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Thao tác</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @forelse ($schedules as $schedule)
+                                                    <tr>
+                                                        <td><p class="text-sm mb-0">{{ $schedule->work_date->format('d/m/Y') }}</p></td>
+                                                        <td>
+                                                            <p class="text-sm font-weight-bold mb-0">{{ $schedule->employee->full_name }}</p>
+                                                            <p class="text-xs text-secondary mb-0">{{ $schedule->employee->employee_code }} - {{ $schedule->employee->department?->name ?? 'Chưa gán' }}</p>
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-sm mb-0">{{ $schedule->shift?->name ?? 'Không gán ca' }}</p>
+                                                        </td>
+                                                        <td><span class="badge bg-gradient-info">{{ $schedule->schedule_type }}</span></td>
+                                                        <td><span class="badge bg-gradient-secondary">{{ $schedule->status }}</span></td>
+                                                        <td class="text-center">
+                                                            <button
+                                                                class="btn btn-link text-danger text-xs font-weight-bold mb-0 p-0"
+                                                                type="button"
+                                                                wire:click="deleteSchedule({{ $schedule->id }})"
+                                                                wire:confirm="Xóa dòng lịch này?"
+                                                            >
+                                                                Xóa
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                @empty
+                                                    <tr>
+                                                        <td colspan="6" class="text-center py-4">
+                                                            <p class="text-sm text-secondary mb-0">Chưa có lịch làm việc trong khoảng ngày này.</p>
+                                                        </td>
+                                                    </tr>
+                                                @endforelse
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -171,12 +171,12 @@
             </li>
             <li class="nav-item">
                 <a data-bs-toggle="collapse" href="#attendanceExamples"
-                    class="nav-link text-white {{ in_array(Route::currentRouteName(), ['attendance-settings', 'attendance-shift-definition', 'attendance-weekend-definition', 'attendance-symbol-statistics']) ? 'active' : '' }}"
+                    class="nav-link text-white {{ in_array(Route::currentRouteName(), ['attendance-settings', 'attendance-schedules', 'attendance-shift-definition', 'attendance-weekend-definition', 'attendance-symbol-statistics']) ? 'active' : '' }}"
                     aria-controls="attendanceExamples" role="button" aria-expanded="false">
                     <i class="ni ni-settings-gear-65 opacity-10"></i>
                     <span class="nav-link-text ms-2 ps-1">Cài đặt chấm công</span>
                 </a>
-                <div class="collapse {{ in_array(Route::currentRouteName(), ['attendance-settings', 'attendance-shift-definition', 'attendance-weekend-definition', 'attendance-symbol-statistics']) ? 'show' : '' }}"
+                <div class="collapse {{ in_array(Route::currentRouteName(), ['attendance-settings', 'attendance-schedules', 'attendance-shift-definition', 'attendance-weekend-definition', 'attendance-symbol-statistics']) ? 'show' : '' }}"
                     id="attendanceExamples">
                     <ul class="nav">
                         <li class="nav-item {{ Route::currentRouteName() == 'attendance-settings' ? 'active' : '' }}">
@@ -191,6 +191,13 @@
                                 href="{{ route('attendance-shift-definition') }}">
                                 <span class="sidenav-mini-icon"> KC </span>
                                 <span class="sidenav-normal ms-2 ps-1"> Khai báo ca làm việc </span>
+                            </a>
+                        </li>
+                        <li class="nav-item {{ Route::currentRouteName() == 'attendance-schedules' ? 'active' : '' }}">
+                            <a class="nav-link text-white {{ Route::currentRouteName() == 'attendance-schedules' ? 'active' : '' }}"
+                                href="{{ route('attendance-schedules') }}">
+                                <span class="sidenav-mini-icon"> LV </span>
+                                <span class="sidenav-normal ms-2 ps-1"> Lịch làm việc </span>
                             </a>
                         </li>
                         <li class="nav-item {{ Route::currentRouteName() == 'attendance-weekend-definition' ? 'active' : '' }}">
