@@ -355,6 +355,13 @@
                                 <span class="sidenav-normal  ms-2  ps-1"> Chấm công </span>
                             </a>
                         </li>
+                        <li class="nav-item {{ Route::currentRouteName() == 'employee-new' ? 'active' : '' }}">
+                            <a class="nav-link text-white  {{ Route::currentRouteName() == 'employee-new' ? 'active' : '' }} "
+                                href="{{ route('employee-new') }}">
+                                <span class="sidenav-mini-icon"> E </span>
+                                <span class="sidenav-normal  ms-2  ps-1"> Thêm nhân viên </span>
+                            </a>
+                        </li>
                         <li class="nav-item  {{ Route::currentRouteName() == 'charts' ? 'active' : '' }}">
                             <a class="nav-link text-white {{ Route::currentRouteName() == 'charts' ? 'active' : '' }}"
                                 href="{{ route('charts') }}">
