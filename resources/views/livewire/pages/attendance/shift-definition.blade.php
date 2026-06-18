@@ -1,50 +1,8 @@
 <style>
-    .shift-definition-page .shift-shell {
-        background: #f8f9fa;
-    }
-
-    .shift-definition-page .shift-card {
-        border: 1px solid rgba(0, 0, 0, 0.06);
-        box-shadow: 0 10px 30px rgba(18, 38, 63, 0.08);
-    }
-
-    .shift-definition-page .shift-table-wrap {
-        border: 1px solid #dee2e6;
-        border-radius: 12px;
-        overflow: hidden;
-        background: #fff;
-    }
-
-    .shift-definition-page .shift-table {
-        margin-bottom: 0;
-        min-width: 980px;
-    }
-
-    .shift-definition-page .shift-table thead th {
-        background: #f6f7fb;
-        color: #344767;
-        font-size: 12px;
-        font-weight: 700;
-        white-space: nowrap;
-        padding: 0.7rem 0.75rem;
-        border-bottom: 1px solid #dee2e6;
-    }
-
-    .shift-definition-page .shift-table tbody td {
-        font-size: 13px;
-        white-space: nowrap;
-        padding: 0.65rem 0.75rem;
-        vertical-align: middle;
-    }
-
-    .shift-definition-page .shift-table tbody tr.is-active {
-        background: #dceafe;
-    }
-
     .shift-definition-page .form-control,
     .shift-definition-page .form-select {
         border: 1px solid #cbd5e1 !important;
-        border-radius: 10px !important;
+        border-radius: 8px !important;
         background-color: #fff !important;
         box-shadow: none !important;
     }
@@ -56,9 +14,9 @@
     }
 
     .shift-definition-page .mini-label {
+        color: #64748b;
         font-size: 12px;
         font-weight: 600;
-        color: #64748b;
         margin-bottom: 0.35rem;
     }
 
@@ -66,112 +24,175 @@
         margin-bottom: 0.95rem;
     }
 
+    .shift-definition-page .color-chip {
+        width: 36px;
+        height: 36px;
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+        background: #3b82f6;
+        flex: 0 0 auto;
+    }
+
     .shift-definition-page .form-check-input:checked {
         background-color: #5e72e4;
         border-color: #5e72e4;
-    }
-
-    .shift-definition-page .color-chip {
-        width: 38px;
-        height: 38px;
-        border-radius: 10px;
-        border: 1px solid #d1d5db;
-        background: #3b82f6;
     }
 </style>
 
 <div class="container-fluid py-4 shift-definition-page">
     <div class="row">
         <div class="col-12">
-            <div class="card shift-card">
+            <div class="card mb-4">
                 <div class="card-header p-3 pb-0">
                     <div class="d-flex flex-column flex-lg-row align-items-lg-center justify-content-between gap-3">
                         <div>
-                            <h6 class="mb-1">Shift Timetable Maintenance</h6>
+                            <h6 class="mb-1">Khai báo ca làm việc</h6>
                             <p class="text-sm mb-0">
-                                Quản lý ca làm việc, khung giờ chấm công và quy tắc tính công.
+                                Quản lý ca làm việc, khung giờ chấm công và quy tắc tính công theo từng ca.
                             </p>
                         </div>
-                        <div class="d-flex gap-2">
-                            <a href="{{ route('attendance-settings') }}" class="btn btn-outline-secondary mb-0">
-                                Cài đặt tính công
-                            </a>
-                            <button type="button" class="btn bg-gradient-dark mb-0">
-                                Post
-                            </button>
-                        </div>
+                        <button type="button"
+                            class="btn btn-icon btn-2 btn-primary mb-0 d-flex align-items-center justify-content-center"
+                            title="Thêm ca làm việc">
+                            <span class="btn-inner--icon">
+                                <i class="material-icons">add</i>
+                            </span>
+                        </button>
                     </div>
                 </div>
 
-                <div class="card-body p-3 pt-0 shift-shell">
-                    <hr class="horizontal dark mt-0 mb-3">
+                <div class="card-body p-3 pt-0">
+                    <hr class="horizontal dark mt-0 mb-4">
 
-                    <div class="row g-3">
+                    <div class="row">
                         <div class="col-lg-8">
-                            <div class="shift-table-wrap">
+                            <div class="card">
                                 <div class="table-responsive">
-                                    <table class="table align-items-center shift-table">
+                                    <table class="table align-items-center mb-0">
                                         <thead>
                                             <tr>
-                                                <th style="width: 160px;">Tên ca</th>
-                                                <th style="width: 110px;">Mã ca</th>
-                                                <th style="width: 100px;">Giờ vào ca</th>
-                                                <th style="width: 100px;">Giờ ra ca</th>
-                                                <th style="width: 140px;">Cho phép chấm vào từ</th>
-                                                <th style="width: 140px;">Cho phép chấm vào đến</th>
-                                                <th style="width: 140px;">Cho phép chấm ra từ</th>
-                                                <th style="width: 140px;">Cho phép chấm ra đến</th>
-                                                <th style="width: 120px;">Màu hiển thị</th>
-                                                <th style="width: 110px;">Trạng thái</th>
+                                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Ca làm việc</th>
+                                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Giờ ca</th>
+                                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Chấm vào</th>
+                                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Chấm ra</th>
+                                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Công chuẩn</th>
+                                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Trạng thái</th>
+                                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Thao tác</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr class="is-active">
-                                                <td>Ca ngày 12 tiếng</td>
-                                                <td>DAY_12H</td>
-                                                <td>07:00</td>
-                                                <td>19:00</td>
-                                                <td>06:30</td>
-                                                <td>07:30</td>
-                                                <td>18:30</td>
-                                                <td>19:30</td>
+                                            <tr>
                                                 <td>
-                                                    <span class="badge bg-primary">#3b82f6</span>
+                                                    <div class="d-flex px-2 py-1">
+                                                        <div>
+                                                            <span class="avatar avatar-sm bg-gradient-primary border-radius-lg me-3">
+                                                                <i class="material-icons text-white text-sm">wb_sunny</i>
+                                                            </span>
+                                                        </div>
+                                                        <div class="d-flex flex-column justify-content-center">
+                                                            <h6 class="mb-0 text-xs">Ca ngày 12 tiếng</h6>
+                                                            <p class="text-xs text-secondary mb-0">DAY_12H</p>
+                                                        </div>
+                                                    </div>
                                                 </td>
                                                 <td>
-                                                    <span class="badge bg-success">Đang dùng</span>
+                                                    <p class="text-xs font-weight-bold mb-0">07:00 - 19:00</p>
+                                                    <p class="text-xs text-secondary mb-0">Đi trễ 5 phút</p>
+                                                </td>
+                                                <td>
+                                                    <p class="text-xs font-weight-normal mb-0">06:30 - 07:30</p>
+                                                </td>
+                                                <td>
+                                                    <p class="text-xs font-weight-normal mb-0">18:30 - 19:30</p>
+                                                </td>
+                                                <td>
+                                                    <span class="badge badge-dot me-4">
+                                                        <i class="bg-success"></i>
+                                                        <span class="text-dark text-xs">1 công / 480 phút</span>
+                                                    </span>
+                                                </td>
+                                                <td class="align-middle">
+                                                    <span class="badge badge-sm bg-gradient-success">Đang dùng</span>
+                                                </td>
+                                                <td class="align-middle text-center">
+                                                    <a href="javascript:;" class="text-secondary font-weight-bold text-xs me-3">Sửa</a>
+                                                    <a href="javascript:;" class="text-danger font-weight-bold text-xs">Xóa</a>
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td>Ca đêm 12 tiếng</td>
-                                                <td>NIGHT_12H</td>
-                                                <td>19:00</td>
-                                                <td>07:00</td>
-                                                <td>18:30</td>
-                                                <td>19:30</td>
-                                                <td>06:30</td>
-                                                <td>07:30</td>
                                                 <td>
-                                                    <span class="badge bg-dark">#111827</span>
+                                                    <div class="d-flex px-2 py-1">
+                                                        <div>
+                                                            <span class="avatar avatar-sm bg-gradient-dark border-radius-lg me-3">
+                                                                <i class="material-icons text-white text-sm">bedtime</i>
+                                                            </span>
+                                                        </div>
+                                                        <div class="d-flex flex-column justify-content-center">
+                                                            <h6 class="mb-0 text-xs">Ca đêm 12 tiếng</h6>
+                                                            <p class="text-xs text-secondary mb-0">NIGHT_12H</p>
+                                                        </div>
+                                                    </div>
                                                 </td>
                                                 <td>
-                                                    <span class="badge bg-secondary">Tạm ngưng</span>
+                                                    <p class="text-xs font-weight-bold mb-0">19:00 - 07:00</p>
+                                                    <p class="text-xs text-secondary mb-0">Qua ngày</p>
+                                                </td>
+                                                <td>
+                                                    <p class="text-xs font-weight-normal mb-0">18:30 - 19:30</p>
+                                                </td>
+                                                <td>
+                                                    <p class="text-xs font-weight-normal mb-0">06:30 - 07:30</p>
+                                                </td>
+                                                <td>
+                                                    <span class="badge badge-dot me-4">
+                                                        <i class="bg-info"></i>
+                                                        <span class="text-dark text-xs">1 công / 480 phút</span>
+                                                    </span>
+                                                </td>
+                                                <td class="align-middle">
+                                                    <span class="badge badge-sm bg-gradient-secondary">Tạm ngưng</span>
+                                                </td>
+                                                <td class="align-middle text-center">
+                                                    <a href="javascript:;" class="text-secondary font-weight-bold text-xs me-3">Sửa</a>
+                                                    <a href="javascript:;" class="text-danger font-weight-bold text-xs">Xóa</a>
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td>Ca hành chính</td>
-                                                <td>HC</td>
-                                                <td>08:00</td>
-                                                <td>17:30</td>
-                                                <td>07:45</td>
-                                                <td>08:15</td>
-                                                <td>17:15</td>
-                                                <td>18:00</td>
                                                 <td>
-                                                    <span class="badge bg-info">#0ea5e9</span>
+                                                    <div class="d-flex px-2 py-1">
+                                                        <div>
+                                                            <span class="avatar avatar-sm bg-gradient-info border-radius-lg me-3">
+                                                                <i class="material-icons text-white text-sm">business_center</i>
+                                                            </span>
+                                                        </div>
+                                                        <div class="d-flex flex-column justify-content-center">
+                                                            <h6 class="mb-0 text-xs">Ca hành chính</h6>
+                                                            <p class="text-xs text-secondary mb-0">HC</p>
+                                                        </div>
+                                                    </div>
                                                 </td>
                                                 <td>
-                                                    <span class="badge bg-success">Đang dùng</span>
+                                                    <p class="text-xs font-weight-bold mb-0">08:00 - 17:30</p>
+                                                    <p class="text-xs text-secondary mb-0">Về sớm 5 phút</p>
+                                                </td>
+                                                <td>
+                                                    <p class="text-xs font-weight-normal mb-0">07:45 - 08:15</p>
+                                                </td>
+                                                <td>
+                                                    <p class="text-xs font-weight-normal mb-0">17:15 - 18:00</p>
+                                                </td>
+                                                <td>
+                                                    <span class="badge badge-dot me-4">
+                                                        <i class="bg-success"></i>
+                                                        <span class="text-dark text-xs">1 công / 480 phút</span>
+                                                    </span>
+                                                </td>
+                                                <td class="align-middle">
+                                                    <span class="badge badge-sm bg-gradient-success">Đang dùng</span>
+                                                </td>
+                                                <td class="align-middle text-center">
+                                                    <a href="javascript:;" class="text-secondary font-weight-bold text-xs me-3">Sửa</a>
+                                                    <a href="javascript:;" class="text-danger font-weight-bold text-xs">Xóa</a>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -180,16 +201,12 @@
                             </div>
                         </div>
 
-                        <div class="col-lg-4">
+                        <div class="col-lg-4 mt-4 mt-lg-0">
                             <div class="card border shadow-none h-100">
                                 <div class="card-header pb-0">
                                     <div class="d-flex justify-content-between align-items-center gap-2">
                                         <h6 class="mb-0">Thông tin ca</h6>
-                                        <div class="d-flex gap-2 flex-wrap justify-content-end">
-                                            <button type="button" class="btn btn-sm btn-outline-primary mb-0">Add</button>
-                                            <button type="button" class="btn btn-sm btn-outline-success mb-0">Post</button>
-                                            <button type="button" class="btn btn-sm btn-outline-danger mb-0">Delete</button>
-                                        </div>
+                                        <span class="badge badge-sm bg-gradient-info">Đang chỉnh sửa</span>
                                     </div>
                                 </div>
                                 <div class="card-body pt-3">
@@ -314,7 +331,10 @@
                                         </select>
                                     </div>
 
-                                    <button type="button" class="btn bg-gradient-dark w-100 mb-0 mt-4">Lưu ca làm việc</button>
+                                    <div class="d-flex justify-content-end gap-2 mt-4">
+                                        <button type="button" class="btn btn-outline-secondary mb-0">Hủy</button>
+                                        <button type="button" class="btn bg-gradient-dark mb-0">Cập nhật</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
