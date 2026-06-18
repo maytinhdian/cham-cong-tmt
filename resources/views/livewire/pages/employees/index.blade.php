@@ -6,7 +6,7 @@
                     <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between">
                         <div>
                             <h6 class="mb-1">Danh sách nhân viên</h6>
-                            <p class="text-sm mb-0 text-muted">Quan ly danh sach nhan vien, trang thai, phong ban va ca lam</p>
+                            <p class="text-sm mb-0 text-muted">Quản lý nhân viên, phòng ban, chức vụ và trạng thái làm việc.</p>
                         </div>
                         <div class="d-flex gap-2 mt-3 mt-md-0">
                             <a href="{{ route('employee-dashboard') }}" class="btn btn-outline-secondary mb-0">Dashboard</a>
@@ -21,80 +21,56 @@
                                 <tr>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nhân viên</th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Phòng ban</th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Ca làm</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Chức vụ</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Ngày vào làm</th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Trạng thái</th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Thao tác</th>
+                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Thao tác</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>
-                                        <div class="d-flex px-2 py-1 align-items-center">
-                                            <div>
-                                                <img src="{{ asset('assets') }}/img/team-1.jpg" class="avatar avatar-sm me-3" alt="employee">
+                                @forelse ($employees as $employee)
+                                    <tr>
+                                        <td>
+                                            <div class="d-flex px-2 py-1 align-items-center">
+                                                <div>
+                                                    <img src="{{ $employee->avatar ? asset('storage/' . $employee->avatar) : asset('assets/img/default-avatar.png') }}"
+                                                        class="avatar avatar-sm me-3" alt="employee">
+                                                </div>
+                                                <div class="d-flex flex-column justify-content-center">
+                                                    <h6 class="mb-0 text-sm">{{ $employee->full_name }}</h6>
+                                                    <p class="text-xs text-secondary mb-0">{{ $employee->employee_code }}</p>
+                                                </div>
                                             </div>
-                                            <div class="d-flex flex-column justify-content-center">
-                                                <h6 class="mb-0 text-sm">Nguyen Minh Quan</h6>
-                                                <p class="text-xs text-secondary mb-0">EMP-001</p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td><p class="text-sm mb-0">Kinh doanh</p></td>
-                                    <td><p class="text-sm mb-0">Hành chính</p></td>
-                                    <td><span class="badge bg-gradient-success">Đang làm việc</span></td>
-                                    <td><a href="javascript:;" class="text-dark font-weight-bold text-xs">Sửa</a></td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="d-flex px-2 py-1 align-items-center">
-                                            <div>
-                                                <img src="{{ asset('assets') }}/img/team-2.jpg" class="avatar avatar-sm me-3" alt="employee">
-                                            </div>
-                                            <div class="d-flex flex-column justify-content-center">
-                                                <h6 class="mb-0 text-sm">Tran Thu Hang</h6>
-                                                <p class="text-xs text-secondary mb-0">EMP-002</p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td><p class="text-sm mb-0">Kế toán</p></td>
-                                    <td><p class="text-sm mb-0">Ca sáng</p></td>
-                                    <td><span class="badge bg-gradient-warning">Chờ cấp tài khoản</span></td>
-                                    <td><a href="javascript:;" class="text-dark font-weight-bold text-xs">Sửa</a></td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="d-flex px-2 py-1 align-items-center">
-                                            <div>
-                                                <img src="{{ asset('assets') }}/img/team-3.jpg" class="avatar avatar-sm me-3" alt="employee">
-                                            </div>
-                                            <div class="d-flex flex-column justify-content-center">
-                                                <h6 class="mb-0 text-sm">Le Quoc Bao</h6>
-                                                <p class="text-xs text-secondary mb-0">EMP-003</p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td><p class="text-sm mb-0">Công nghệ</p></td>
-                                    <td><p class="text-sm mb-0">Ca chiều</p></td>
-                                    <td><span class="badge bg-gradient-info">Đang onboarding</span></td>
-                                    <td><a href="javascript:;" class="text-dark font-weight-bold text-xs">Sửa</a></td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="d-flex px-2 py-1 align-items-center">
-                                            <div>
-                                                <img src="{{ asset('assets') }}/img/team-4.jpg" class="avatar avatar-sm me-3" alt="employee">
-                                            </div>
-                                            <div class="d-flex flex-column justify-content-center">
-                                                <h6 class="mb-0 text-sm">Pham Ngoc Anh</h6>
-                                                <p class="text-xs text-secondary mb-0">EMP-004</p>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td><p class="text-sm mb-0">Hành chính</p></td>
-                                    <td><p class="text-sm mb-0">Ca đêm</p></td>
-                                    <td><span class="badge bg-gradient-success">Đã gán ca</span></td>
-                                    <td><a href="javascript:;" class="text-dark font-weight-bold text-xs">Sửa</a></td>
-                                </tr>
+                                        </td>
+                                        <td>
+                                            <p class="text-sm font-weight-bold mb-0">{{ $employee->department?->name ?? 'Chưa gán' }}</p>
+                                            <p class="text-xs text-secondary mb-0">{{ $employee->department?->code ?? 'N/A' }}</p>
+                                        </td>
+                                        <td>
+                                            <p class="text-sm mb-0">{{ $employee->position?->name ?? 'Chưa gán' }}</p>
+                                        </td>
+                                        <td>
+                                            <p class="text-sm mb-0">{{ $employee->hire_date?->format('d/m/Y') ?? 'Chưa cập nhật' }}</p>
+                                        </td>
+                                        <td>
+                                            @if ($employee->work_status === 'active')
+                                                <span class="badge badge-sm bg-gradient-success">Đang làm việc</span>
+                                            @else
+                                                <span class="badge badge-sm bg-gradient-secondary">Tạm ngưng</span>
+                                            @endif
+                                        </td>
+                                        <td class="align-middle text-center">
+                                            <a href="javascript:;" class="text-secondary font-weight-bold text-xs me-3">Sửa</a>
+                                            <a href="javascript:;" class="text-danger font-weight-bold text-xs">Xóa</a>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="6" class="text-center py-4">
+                                            <p class="text-sm text-secondary mb-0">Chưa có nhân viên nào.</p>
+                                        </td>
+                                    </tr>
+                                @endforelse
                             </tbody>
                         </table>
                     </div>
@@ -111,10 +87,9 @@
                         <label class="form-label">Phòng ban</label>
                         <select class="form-control">
                             <option>Tất cả</option>
-                            <option>Kinh doanh</option>
-                            <option>Kế toán</option>
-                            <option>Công nghệ</option>
-                            <option>Hành chính</option>
+                            @foreach ($departments as $department)
+                                <option>{{ $department->name }}</option>
+                            @endforeach
                         </select>
                     </div>
                     <div class="form-group mt-3">
@@ -122,8 +97,7 @@
                         <select class="form-control">
                             <option>Tất cả</option>
                             <option>Đang làm việc</option>
-                            <option>Chờ cấp tài khoản</option>
-                            <option>Đang onboarding</option>
+                            <option>Tạm ngưng</option>
                         </select>
                     </div>
                     <div class="form-group mt-3 mb-0">
