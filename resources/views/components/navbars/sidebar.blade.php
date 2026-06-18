@@ -1,4 +1,4 @@
-<aside
+﻿<aside
     class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3   bg-gradient-dark"
     id="sidenav-main">
     <div class="sidenav-header">
@@ -70,7 +70,7 @@
                             <a class="nav-link text-white {{ Route::currentRouteName() == 'discover' ? 'active' : '' }}"
                                 href="{{ route('discover') }}">
                                 <span class="sidenav-mini-icon"> B </span>
-                                <span class="sidenav-normal  ms-2  ps-1"> Bảng tin </span>
+                                <span class="sidenav-normal  ms-2  ps-1"> Báº£ng tin </span>
                             </a>
                         </li>
                         <li class="nav-item {{ Route::currentRouteName() == 'sales' ? 'active' : '' }}">
@@ -166,6 +166,61 @@
                             </a>
                         </li>
                         @endcan
+                    </ul>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a data-bs-toggle="collapse" href="#employeeExamples"
+                    class="nav-link text-white {{ in_array(Route::currentRouteName(), ['employee-list', 'new-user', 'employee-dashboard', 'employee-bulk-create', 'employee-department', 'employee-position']) ? 'active' : '' }}"
+                    aria-controls="employeeExamples" role="button" aria-expanded="false">
+                    <i class="ni ni-badge opacity-10"></i>
+                    <span class="nav-link-text ms-2 ps-1">Quản lý nhân viên</span>
+                </a>
+                <div class="collapse {{ in_array(Route::currentRouteName(), ['employee-list', 'new-user', 'employee-dashboard', 'employee-bulk-create', 'employee-department', 'employee-position']) ? 'show' : '' }}"
+                    id="employeeExamples">
+                    <ul class="nav">
+                        <li class="nav-item {{ Route::currentRouteName() == 'employee-dashboard' ? 'active' : '' }}">
+                            <a class="nav-link text-white {{ Route::currentRouteName() == 'employee-dashboard' ? 'active' : '' }}"
+                                href="{{ route('employee-dashboard') }}">
+                                <span class="sidenav-mini-icon"> DB </span>
+                                <span class="sidenav-normal ms-2 ps-1"> Dashboard </span>
+                            </a>
+                        </li>
+                        <li class="nav-item {{ Route::currentRouteName() == 'employee-list' ? 'active' : '' }}">
+                            <a class="nav-link text-white {{ Route::currentRouteName() == 'employee-list' ? 'active' : '' }}"
+                                href="{{ route('employee-list') }}">
+                                <span class="sidenav-mini-icon"> DS </span>
+                                <span class="sidenav-normal ms-2 ps-1"> Danh sách nhân viên </span>
+                            </a>
+                        </li>
+                        <li class="nav-item {{ Route::currentRouteName() == 'new-user' ? 'active' : '' }}">
+                            <a class="nav-link text-white {{ Route::currentRouteName() == 'new-user' ? 'active' : '' }}"
+                                href="{{ route('new-user') }}">
+                                <span class="sidenav-mini-icon"> + </span>
+                                <span class="sidenav-normal ms-2 ps-1"> Thêm nhân viên </span>
+                            </a>
+                        </li>
+                        <li class="nav-item {{ Route::currentRouteName() == 'employee-bulk-create' ? 'active' : '' }}">
+                            <a class="nav-link text-white {{ Route::currentRouteName() == 'employee-bulk-create' ? 'active' : '' }}"
+                                href="{{ route('employee-bulk-create') }}">
+                                <span class="sidenav-mini-icon"><i class="fas fa-file-excel text-success"></i></span>
+                                <span class="sidenav-normal ms-2 ps-1"> Thêm nhân viên hàng loạt </span>
+                            </a>
+                        </li>
+                        <li class="nav-item {{ Route::currentRouteName() == 'employee-department' ? 'active' : '' }}">
+                            <a class="nav-link text-white {{ Route::currentRouteName() == 'employee-department' ? 'active' : '' }}"
+                                href="{{ route('employee-department') }}">
+                                <span class="sidenav-mini-icon"> PB </span>
+                                <span class="sidenav-normal ms-2 ps-1"> Phòng ban </span>
+                            </a>
+                        </li>
+                        <li class="nav-item {{ Route::currentRouteName() == 'employee-position' ? 'active' : '' }}">
+                            <a class="nav-link text-white {{ Route::currentRouteName() == 'employee-position' ? 'active' : '' }}"
+                                href="{{ route('employee-position') }}">
+                                <span class="sidenav-mini-icon"> CV </span>
+                                <span class="sidenav-normal ms-2 ps-1"> Chức vụ </span>
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </li>
@@ -530,33 +585,10 @@
                 <div class="collapse " id="authExamples">
                     <ul class="nav ">
                         <li class="nav-item ">
-                            <a class="nav-link text-white " data-bs-toggle="collapse" aria-expanded="false"
-                                href="#signinExample">
-                                <span class="sidenav-mini-icon"> S </span>
-                                <span class="sidenav-normal  ms-2  ps-1"> Sign In <b class="caret"></b></span>
+                            <a class="nav-link text-white " href="{{ route('cover-sign-in') }}">
+                                <span class="sidenav-mini-icon"> C </span>
+                                <span class="sidenav-normal  ms-2  ps-1"> Sign In </span>
                             </a>
-                            <div class="collapse " id="signinExample">
-                                <ul class="nav nav-sm flex-column">
-                                    <li class="nav-item">
-                                        <a class="nav-link text-white " href="{{ route('basic-sign-in') }}">
-                                            <span class="sidenav-mini-icon"> B </span>
-                                            <span class="sidenav-normal  ms-2  ps-1"> Basic </span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link text-white " href="{{ route('cover-sign-in') }}">
-                                            <span class="sidenav-mini-icon"> C </span>
-                                            <span class="sidenav-normal  ms-2  ps-1"> Cover </span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link text-white " href="{{ route('illustration-sign-in') }}">
-                                            <span class="sidenav-mini-icon"> I </span>
-                                            <span class="sidenav-normal  ms-2  ps-1"> Illustration </span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
                         </li>
                         <li class="nav-item ">
                             <a class="nav-link text-white " data-bs-toggle="collapse" aria-expanded="false"
@@ -588,92 +620,22 @@
                             </div>
                         </li>
                         <li class="nav-item ">
-                            <a class="nav-link text-white " data-bs-toggle="collapse" aria-expanded="false"
-                                href="#resetExample">
+                            <a class="nav-link text-white " href="{{ route('cover-reset') }}">
                                 <span class="sidenav-mini-icon"> R </span>
-                                <span class="sidenav-normal  ms-2  ps-1"> Reset Password <b class="caret"></b></span>
+                                <span class="sidenav-normal  ms-2  ps-1"> Reset Password </span>
                             </a>
-                            <div class="collapse " id="resetExample">
-                                <ul class="nav nav-sm flex-column">
-                                    <li class="nav-item">
-                                        <a class="nav-link text-white " href="{{ route('basic-reset') }}">
-                                            <span class="sidenav-mini-icon"> B </span>
-                                            <span class="sidenav-normal  ms-2  ps-1"> Basic </span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link text-white " href="{{ route('cover-reset') }}">
-                                            <span class="sidenav-mini-icon"> C </span>
-                                            <span class="sidenav-normal  ms-2  ps-1"> Cover </span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link text-white " href="{{ route('illustration-reset') }}">
-                                            <span class="sidenav-mini-icon"> I </span>
-                                            <span class="sidenav-normal  ms-2  ps-1"> Illustration </span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
                         </li>
                         <li class="nav-item ">
-                            <a class="nav-link text-white " data-bs-toggle="collapse" aria-expanded="false"
-                                href="#lockExample">
+                            <a class="nav-link text-white " href="{{ route('cover-lock') }}">
                                 <span class="sidenav-mini-icon"> L </span>
-                                <span class="sidenav-normal  ms-2  ps-1"> Lock <b class="caret"></b></span>
+                                <span class="sidenav-normal  ms-2  ps-1"> Lock </span>
                             </a>
-                            <div class="collapse " id="lockExample">
-                                <ul class="nav nav-sm flex-column">
-                                    <li class="nav-item">
-                                        <a class="nav-link text-white " href="{{ route('basic-lock') }}">
-                                            <span class="sidenav-mini-icon"> B </span>
-                                            <span class="sidenav-normal  ms-2  ps-1"> Basic </span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link text-white " href="{{ route('cover-lock') }}">
-                                            <span class="sidenav-mini-icon"> C </span>
-                                            <span class="sidenav-normal  ms-2  ps-1"> Cover </span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link text-white " href="{{ route('illustration-lock') }}">
-                                            <span class="sidenav-mini-icon"> I </span>
-                                            <span class="sidenav-normal  ms-2  ps-1"> Illustration </span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
                         </li>
                         <li class="nav-item ">
-                            <a class="nav-link text-white " data-bs-toggle="collapse" aria-expanded="false"
-                                href="#StepExample">
+                            <a class="nav-link text-white " href="{{ route('cover-verification') }}">
                                 <span class="sidenav-mini-icon"> 2 </span>
-                                <span class="sidenav-normal  ms-2  ps-1"> 2-Step Verification <b
-                                        class="caret"></b></span>
+                                <span class="sidenav-normal  ms-2  ps-1"> 2-Step Verification </span>
                             </a>
-                            <div class="collapse " id="StepExample">
-                                <ul class="nav nav-sm flex-column">
-                                    <li class="nav-item">
-                                        <a class="nav-link text-white " href="{{ route('basic-verification') }}">
-                                            <span class="sidenav-mini-icon"> B </span>
-                                            <span class="sidenav-normal  ms-2  ps-1"> Basic </span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link text-white " href="{{ route('cover-verification') }}">
-                                            <span class="sidenav-mini-icon"> C </span>
-                                            <span class="sidenav-normal  ms-2  ps-1"> Cover </span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link text-white " href="{{ route('illustration-verification') }}">
-                                            <span class="sidenav-mini-icon"> I </span>
-                                            <span class="sidenav-normal  ms-2  ps-1"> Illustration </span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
                         </li>
                         <li class="nav-item ">
                             <a class="nav-link text-white " data-bs-toggle="collapse" aria-expanded="false"
@@ -839,3 +801,4 @@
         </ul>
     </div>
 </aside>
+
