@@ -35,6 +35,7 @@ use App\Http\Livewire\Dashboard\SmartHome;
 use App\Http\Livewire\Pages\Employees\Index as EmployeeIndex;
 use App\Http\Livewire\Pages\Employees\Dashboard as EmployeeDashboard;
 use App\Http\Livewire\Pages\Employees\BulkCreate as EmployeeBulkCreate;
+use App\Http\Livewire\Pages\Employees\Detail as EmployeeDetail;
 use App\Http\Livewire\Pages\Employees\Department as EmployeeDepartment;
 use App\Http\Livewire\Pages\Employees\CompanyChart as EmployeeCompanyChart;
 use App\Http\Livewire\Pages\Employees\Position as EmployeePosition;
@@ -153,6 +154,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('pages/employees/departments', EmployeeDepartment::class)->name('employee-department');
     Route::get('pages/employees/company-chart', EmployeeCompanyChart::class)->name('employee-company-chart');
     Route::get('pages/employees/positions', EmployeePosition::class)->name('employee-position');
+    Route::get('pages/employees/{employee}', EmployeeDetail::class)->name('employee-detail');
     Route::get('pages/attendance/settings', AttendanceSettings::class)->name('attendance-settings');
     Route::get('pages/attendance/shift-definition', AttendanceShiftDefinition::class)->name('attendance-shift-definition');
     Route::get('pages/attendance/weekend-definition', AttendanceWeekendDefinition::class)->name('attendance-weekend-definition');
