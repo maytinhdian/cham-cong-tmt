@@ -24501,6 +24501,37 @@ ul li.editMode label {
   content: "\f089";
   position: absolute; }
 
+/* Sidebar collapse arrows should not depend on icon fonts. */
+#sidenav-main .navbar-nav .nav-link[data-bs-toggle="collapse"]::after {
+  content: "" !important;
+  display: inline-block;
+  width: 0.45rem;
+  height: 0.45rem;
+  margin-left: auto;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  color: rgba(206, 212, 218, 0.7);
+  transform: rotate(45deg);
+  transition: transform 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+#sidenav-main .navbar-nav .nav-link[data-bs-toggle="collapse"][aria-expanded="true"]::after {
+  color: #CED4DA;
+  transform: rotate(225deg);
+}
+
+#sidenav-main .navbar-nav .nav-link[data-bs-toggle="collapse"].active::after {
+  color: #fff;
+}
+
+.g-sidenav-hidden #sidenav-main .navbar-nav .nav-link[data-bs-toggle="collapse"]::after {
+  opacity: 0;
+}
+
+.g-sidenav-hidden #sidenav-main:hover .navbar-nav .nav-link[data-bs-toggle="collapse"]::after {
+  opacity: 1;
+}
+
 .rating > label {
   color: #ddd;
   float: right; }

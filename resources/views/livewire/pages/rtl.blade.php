@@ -2,11 +2,13 @@
     class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-end me-3 rotate-caret  bg-gradient-dark"
     id="sidenav-main">
     <div class="sidenav-header">
-        <i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute start-0 top-0 d-none d-xl-none"
+        <i class="ni ni-fat-remove p-3 cursor-pointer text-white opacity-5 position-absolute start-0 top-0 d-none d-xl-none"
             aria-hidden="true" id="iconSidenav"></i>
             <a class="navbar-brand m-0 p-4 d-flex align-items-center text-wrap" href="{{ route('analytics') }}">
-                <img src="{{ asset('assets') }}/img/logo-ct.png" class="navbar-brand-img h-100" alt="main_logo">
-                <span class="ms-2 font-weight-bold text-white">Material Dashboard 2 PRO Laravel Livewire</span>
+                <span class="icon icon-sm icon-shape bg-gradient-primary shadow text-center border-radius-md">
+                    <i class="ni ni-watch-time text-white opacity-10"></i>
+                </span>
+                <span class="ms-2 font-weight-bold text-white">TMT Time Attendance</span>
             </a>
     </div>
     <hr class="horizontal light mt-0 mb-2">

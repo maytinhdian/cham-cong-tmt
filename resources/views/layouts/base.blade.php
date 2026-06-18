@@ -21,37 +21,37 @@
     <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('assets') }}/img/apple-icon.png">
     <link rel="icon" type="image/png" href="{{ asset('assets') }}/img/favicon.png">
     <title>
-        Material Dashboard PRO by Creative Tim
+        TMT Time Attendance
     </title>
 
     <!-- Metas -->
     @if (env('IS_DEMO'))
         <meta name="keywords"
-            content="creative tim, updivision, html dashboard, laravel, livewire, alpine.js, html css dashboard laravel, livewire material dashboard laravel, laravel material dashboard laravel pro, livewire material dashboard, laravel material dashboard pro, material admin, livewire dashboard, laravel dashboard pro, laravel admin, web dashboard, bootstrap 5 dashboard laravel, bootstrap 5, css3 dashboard, bootstrap 5 admin laravel, material dashboard bootstrap 5 laravel, frontend, responsive bootstrap 5 dashboard, material dashboard, material laravel bootstrap 5 dashboard" />
+            content="TMT Time Attendance, time attendance, cham cong, HRM, Laravel, Livewire, Bootstrap" />
         <meta name="description"
-            content="Fullstack tool for building Laravel apps with Livewire and hundreds of UI components" />
-        <meta itemprop="name" content="Material Dashboard 2 PRO Laravel Livewire by Creative Tim & UPDIVISION" />
+            content="TMT Time Attendance system for employee, shift, department and attendance management" />
+        <meta itemprop="name" content="TMT Time Attendance" />
         <meta itemprop="description"
-            content="Fullstack tool for building Laravel apps with Livewire and hundreds of UI components" />
+            content="TMT Time Attendance system for employee, shift, department and attendance management" />
         <meta itemprop="image"
             content="https://s3.amazonaws.com/creativetim_bucket/products/601/original/material-dashboard-pro-laravel-livewire.jpg" />
         <meta name="twitter:card" content="product" />
-        <meta name="twitter:site" content="@creativetim" />
-        <meta name="twitter:title" content="Material Dashboard 2 PRO Laravel Livewire by Creative Tim & UPDIVISION" />
+        <meta name="twitter:site" content="@tmt" />
+        <meta name="twitter:title" content="TMT Time Attendance" />
         <meta name="twitter:description"
-            content="Fullstack tool for building Laravel apps with Livewire and hundreds of UI components" />
-        <meta name="twitter:creator" content="@creativetim" />
+            content="TMT Time Attendance system for employee, shift, department and attendance management" />
+        <meta name="twitter:creator" content="@tmt" />
         <meta name="twitter:image"
             content="https://s3.amazonaws.com/creativetim_bucket/products/601/original/material-dashboard-pro-laravel-livewire.jpg" />
         <meta property="fb:app_id" content="655968634437471" />
-        <meta property="og:title" content="Material Dashboard 2 PRO Laravel Livewire by Creative Tim & UPDIVISION" />
+        <meta property="og:title" content="TMT Time Attendance" />
         <meta property="og:type" content="article" />
-        <meta property="og:url" content="https://www.creative-tim.com/live/material-dashboard-pro-laravel-livewire" />
+        <meta property="og:url" content="{{ url('/') }}" />
         <meta property="og:image"
             content="https://s3.amazonaws.com/creativetim_bucket/products/601/original/material-dashboard-pro-laravel-livewire.jpg" />
         <meta property="og:description"
-            content="Fullstack tool for building Laravel apps with Livewire and hundreds of UI components" />
-        <meta property="og:site_name" content="Creative Tim" />
+            content="TMT Time Attendance system for employee, shift, department and attendance management" />
+        <meta property="og:site_name" content="TMT Time Attendance" />
     @endif
 
     <!--     Fonts and icons     -->

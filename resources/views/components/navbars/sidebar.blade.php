@@ -2,11 +2,13 @@
     class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3   bg-gradient-dark"
     id="sidenav-main">
     <div class="sidenav-header">
-        <i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none"
+        <i class="ni ni-fat-remove p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none"
             aria-hidden="true" id="iconSidenav"></i>
             <a class="navbar-brand m-0 p-4 d-flex align-items-center text-wrap" href="{{ route('analytics') }}">
-                <img src="{{ asset('assets') }}/img/logo-ct.png" class="navbar-brand-img h-100" alt="main_logo">
-                <span class="ms-2 font-weight-bold text-white">Material Dashboard 2 PRO Laravel Livewire</span>
+                <span class="icon icon-sm icon-shape bg-gradient-primary shadow text-center border-radius-md">
+                    <i class="ni ni-watch-time text-white opacity-10"></i>
+                </span>
+                <span class="ms-2 font-weight-bold text-white">TMT Time Attendance</span>
             </a>
     </div>
     <hr class="horizontal light mt-0 mb-2">
@@ -15,11 +17,15 @@
             <li class="nav-item mb-2 mt-0">
                 <a data-bs-toggle="collapse" href="#ProfileNav" class="nav-link text-white" aria-controls="ProfileNav"
                     role="button" aria-expanded="false">
-                    @if (auth()->user()->picture)
-                    <img src="/storage/{{(auth()->user()->picture)}}" alt="avatar" class="avatar">
-                    @else
-                    <img src="{{ asset('assets') }}/img/default-avatar.png" alt="avatar" class="avatar">
-                    @endif
+                    @php
+                        $userPicture = auth()->user()->picture;
+                        $defaultAvatar = asset('assets/img/default-avatar.png');
+                        $avatarUrl = $userPicture && \Illuminate\Support\Facades\Storage::disk('public')->exists($userPicture)
+                            ? \Illuminate\Support\Facades\Storage::url($userPicture)
+                            : $defaultAvatar;
+                    @endphp
+                    <img src="{{ $avatarUrl }}" alt="avatar" class="avatar"
+                        onerror="this.onerror=null;this.src='{{ $defaultAvatar }}';">
                     <span class="nav-link-text ms-2 ps-1">{{ auth()->user()->name }}</span>
                 </a>
                 <div class="collapse" id="ProfileNav" style="">
@@ -47,7 +53,7 @@
                 <a data-bs-toggle="collapse" href="#dashboardsExamples"
                     class="nav-link text-white {{ strpos(Request::route()->uri(), 'dashboard')=== false ? '' : 'active' }} "
                     aria-controls="dashboardsExamples" role="button" aria-expanded="false">
-                    <i class="material-icons-round opacity-10">dashboard</i>
+                    <i class="ni ni-shop opacity-10"></i>
                     <span class="nav-link-text ms-2 ps-1">Dashboards</span>
                 </a>
                 <div class="collapse {{ strpos(Request::route()->uri(), 'dashboard')=== false ? '' : 'show' }} "
@@ -95,7 +101,7 @@
                 <a data-bs-toggle="collapse" href="#LaravelExamples"
                     class="nav-link text-white {{ strpos(Request::route()->uri(), 'laravel-examples')=== false ? '' : 'active' }} "
                     aria-controls="LaravelExamples" role="button" aria-expanded="false">
-                    <i class="fab fa-laravel"></i>
+                    <i class="ni ni-laptop opacity-10"></i>
                     <span class="nav-link-text ms-2 ps-1">Laravel Examples</span>
                 </a>
                 <div class="collapse {{ strpos(Request::route()->uri(), 'laravel-examples')=== false ? '' : 'show' }} "
@@ -170,7 +176,7 @@
                 <a data-bs-toggle="collapse" href="#pagesExamples"
                     class="nav-link text-white {{ strpos(Request::route()->uri(), 'pages') === false ? '' : 'active' }}  "
                     aria-controls="pagesExamples" role="button" aria-expanded="false">
-                    <i class="material-icons-round {% if page.brand == 'RTL' %}ms-2{% else %} me-2{% endif %}">image</i>
+                    <i class="ni ni-image me-2"></i>
                     <span class="nav-link-text ms-2 ps-1">Pages</span>
                 </a>
                 <div class="collapse {{ strpos(Request::route()->uri(), 'pages') === false ? '' : 'show' }} "
@@ -376,7 +382,7 @@
                 <a data-bs-toggle="collapse" href="#applicationsExamples"
                     class="nav-link text-white {{ strpos(Request::route()->uri(), 'applications') === false ? '' : 'active' }}"
                     aria-controls="applicationsExamples" role="button" aria-expanded="false">
-                    <i class="material-icons-round {% if page.brand == 'RTL' %}ms-2{% else %} me-2{% endif %}">apps</i>
+                    <i class="ni ni-app me-2"></i>
                     <span class="nav-link-text ms-2 ps-1">Applications</span>
                 </a>
                 <div class="collapse {{ strpos(Request::route()->uri(), 'applications') === false ? '' : 'show' }}"
@@ -432,7 +438,7 @@
                     class="nav-link text-white {{ strpos(Request::route()->uri(), 'ecommerce')=== false ? '' : 'active' }} "
                     aria-controls="ecommerceExamples" role="button" aria-expanded="false">
                     <i
-                        class="material-icons-round {% if page.brand == 'RTL' %}ms-2{% else %} me-2{% endif %}">shopping_basket</i>
+                        class="ni ni-cart me-2"></i>
                     <span class="nav-link-text ms-2 ps-1">Ecommerce</span>
                 </a>
                 <div class="collapse {{ strpos(Request::route()->uri(), 'ecommerce')=== false ? '' : 'show' }}"
@@ -518,7 +524,7 @@
                 <a data-bs-toggle="collapse" href="#authExamples" class="nav-link text-white "
                     aria-controls="authExamples" role="button" aria-expanded="false">
                     <i
-                        class="material-icons-round {% if page.brand == 'RTL' %}ms-2{% else %} me-2{% endif %}">content_paste</i>
+                        class="ni ni-single-copy-04 me-2"></i>
                     <span class="nav-link-text ms-2 ps-1">Authentication</span>
                 </a>
                 <div class="collapse " id="authExamples">
@@ -700,101 +706,10 @@
                 <h6 class="ps-4  ms-2 text-uppercase text-xs font-weight-bolder text-white">DOCS</h6>
             </li>
             <li class="nav-item">
-                <a data-bs-toggle="collapse" href="#basicExamples" class="nav-link text-white "
-                    aria-controls="basicExamples" role="button" aria-expanded="false">
-                    <i
-                        class="material-icons-round {% if page.brand == 'RTL' %}ms-2{% else %} me-2{% endif %}">upcoming</i>
-                    <span class="nav-link-text ms-2 ps-1">Basic</span>
-                </a>
-                <div class="collapse " id="basicExamples">
-                    <ul class="nav ">
-                        <li class="nav-item ">
-                            <a class="nav-link text-white " data-bs-toggle="collapse" aria-expanded="false"
-                                href="#gettingStartedExample">
-                                <span class="sidenav-mini-icon"> G </span>
-                                <span class="sidenav-normal  ms-2  ps-1"> Getting Started <b class="caret"></b></span>
-                            </a>
-                            <div class="collapse " id="gettingStartedExample">
-                                <ul class="nav nav-sm flex-column">
-                                    <li class="nav-item">
-                                        <a class="nav-link text-white "
-                                            href="../../documentation/getting-started/installation.html"
-                                            target="_blank">
-                                            <span class="sidenav-mini-icon"> Q </span>
-                                            <span class="sidenav-normal  ms-2  ps-1"> Quick Start </span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link text-white "
-                                            href="../../documentation/getting-started/license.html" target="_blank">
-                                            <span class="sidenav-mini-icon"> L </span>
-                                            <span class="sidenav-normal  ms-2  ps-1"> License </span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link text-white "
-                                            href="../../documentation/getting-started/overview.html" target="_blank">
-                                            <span class="sidenav-mini-icon"> C </span>
-                                            <span class="sidenav-normal  ms-2  ps-1"> Contents </span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link text-white "
-                                            href="../../documentation/getting-started/build-tools.html" target="_blank">
-                                            <span class="sidenav-mini-icon"> B </span>
-                                            <span class="sidenav-normal  ms-2  ps-1"> Build Tools </span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link text-white " data-bs-toggle="collapse" aria-expanded="false"
-                                href="#foundationExample">
-                                <span class="sidenav-mini-icon"> F </span>
-                                <span class="sidenav-normal  ms-2  ps-1"> Foundation <b class="caret"></b></span>
-                            </a>
-                            <div class="collapse " id="foundationExample">
-                                <ul class="nav nav-sm flex-column">
-                                    <li class="nav-item">
-                                        <a class="nav-link text-white "
-                                            href="../../documentation/foundation/colors.html" target="_blank">
-                                            <span class="sidenav-mini-icon"> C </span>
-                                            <span class="sidenav-normal  ms-2  ps-1"> Colors </span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link text-white " href="../../documentation/foundation/grid.html"
-                                            target="_blank">
-                                            <span class="sidenav-mini-icon"> G </span>
-                                            <span class="sidenav-normal  ms-2  ps-1"> Grid </span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link text-white "
-                                            href="../../documentation/foundation/typography.html" target="_blank">
-                                            <span class="sidenav-mini-icon"> T </span>
-                                            <span class="sidenav-normal  ms-2  ps-1"> Typography </span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link text-white " href="../../documentation/foundation/icons.html"
-                                            target="_blank">
-                                            <span class="sidenav-mini-icon"> I </span>
-                                            <span class="sidenav-normal  ms-2  ps-1"> Icons </span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </li>
-            <li class="nav-item">
                 <a data-bs-toggle="collapse" href="#componentsExamples" class="nav-link text-white "
                     aria-controls="componentsExamples" role="button" aria-expanded="false">
                     <i
-                        class="material-icons-round {% if page.brand == 'RTL' %}ms-2{% else %} me-2{% endif %}">view_in_ar</i>
+                        class="ni ni-settings me-2"></i>
                     <span class="nav-link-text ms-2 ps-1">Components</span>
                 </a>
                 <div class="collapse " id="componentsExamples">
@@ -922,17 +837,5 @@
                 </div>
             </li>
         </ul>
-    </div>
-    <div class="sidenav-footer w-100 bottom-0 mt-2 ">
-        <div class="mx-3">
-            <a class="btn bg-gradient-primary w-100"
-                href="https://www.creative-tim.com/product/material-dashboard-pro-laravel-livewire" target="_blank" type="button">Buy Now</a>
-        </div>
-        <div class="mx-3">
-            <a class="btn bg-gradient-primary w-100" href="../../documentation/getting-started/installation.html" target="_blank">View documentation</a>
-        </div>
-        <div class="mx-3">
-            <a class="btn bg-gradient-primary w-100" href="https://www.creative-tim.com/product/material-dashboard-laravel-livewire" target="_blank">Get Free Version</a>
-        </div>
     </div>
 </aside>
