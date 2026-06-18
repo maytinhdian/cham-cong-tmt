@@ -285,7 +285,7 @@
                                 <i class="material-icons-round">badge</i>
                                 <span class="nav-link-text ms-2 ps-1">Hệ thống nhân sự</span>
                             </a>
-                            <div class="collapse {{ in_array(Route::currentRouteName(), ['attendance', 'attendance-settings', 'attendance-report', 'attendance-devices', 'request-management', 'work-schedule', 'employee-management', 'employee-new', 'department-management', 'shift-management']) ? 'show' : '' }}"
+                            <div class="collapse {{ in_array(Route::currentRouteName(), ['attendance', 'attendance-list', 'attendance-closing', 'attendance-settings', 'attendance-report', 'attendance-devices', 'request-management', 'work-schedule', 'employee-management', 'employee-new', 'department-management', 'shift-management']) ? 'show' : '' }}"
                                 id="humanResourceExamples">
                                 <ul class="nav nav-sm flex-column">
                                     <li class="nav-item {{ Route::currentRouteName() == 'department-management' ? 'active' : '' }}">
@@ -321,6 +321,13 @@
                                             href="{{ route('attendance-list') }}">
                                             <span class="sidenav-mini-icon"> D </span>
                                             <span class="sidenav-normal  ms-2  ps-1"> Danh sách chấm công </span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item {{ Route::currentRouteName() == 'attendance-closing' ? 'active' : '' }}">
+                                        <a class="nav-link text-white {{ Route::currentRouteName() == 'attendance-closing' ? 'active' : '' }}"
+                                            href="{{ route('attendance-closing') }}">
+                                            <span class="sidenav-mini-icon"> K </span>
+                                            <span class="sidenav-normal  ms-2  ps-1"> Chốt công </span>
                                         </a>
                                     </li>
                                     <li class="nav-item {{ Route::currentRouteName() == 'attendance-settings' ? 'active' : '' }}">
@@ -1077,17 +1084,5 @@
                 </div>
             </li>
         </ul>
-    </div>
-    <div class="sidenav-footer w-100 bottom-0 mt-2 ">
-        <div class="mx-3">
-            <a class="btn bg-gradient-primary w-100"
-                href="https://www.creative-tim.com/product/material-dashboard-pro-laravel-livewire" target="_blank" type="button">Buy Now</a>
-        </div>
-        <div class="mx-3">
-            <a class="btn bg-gradient-primary w-100" href="../../documentation/getting-started/installation.html" target="_blank">View documentation</a>
-        </div>
-        <div class="mx-3">
-            <a class="btn bg-gradient-primary w-100" href="https://www.creative-tim.com/product/material-dashboard-laravel-livewire" target="_blank">Get Free Version</a>
-        </div>
     </div>
 </aside>

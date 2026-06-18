@@ -3,7 +3,7 @@
         <div class="col-lg-8">
             <h5 class="mb-1">Danh sách nhân viên</h5>
             <p class="text-sm mb-0">
-                Quản lý nhân sự theo phòng ban, theo dõi trạng thái làm việc, ca làm và các hoạt động gần đây.
+                Bảng quản trị nhân sự theo kiểu DataTable, phù hợp để tìm kiếm, lọc, sắp xếp và thao tác nhanh trên hồ sơ.
             </p>
         </div>
         <div class="col-lg-4 text-lg-end mt-lg-0 mt-3">
@@ -23,7 +23,7 @@
     <div class="row mt-4">
         @foreach ($stats as $stat)
             <div class="col-xl-3 col-md-6 mt-md-0 mt-4">
-                <div class="card">
+                <div class="card h-100">
                     <div class="card-body p-3">
                         <div class="d-flex align-items-center">
                             <div class="icon icon-lg icon-shape bg-gradient-{{ $stat['color'] }} shadow-{{ $stat['color'] }} text-center border-radius-md">
@@ -41,12 +41,12 @@
     </div>
 
     <div class="row mt-4">
-        <div class="col-lg-8">
+        <div class="col-lg-12">
             <div class="card">
-                <div class="card-header pb-0 d-flex justify-content-between align-items-center">
+                <div class="card-header pb-0 d-flex justify-content-between align-items-center flex-wrap gap-2">
                     <div>
-                        <h6 class="mb-0">Nhân viên theo phòng ban</h6>
-                        <p class="text-sm mb-0">Tìm kiếm, lọc và thao tác nhanh trên hồ sơ nhân sự</p>
+                        <h6 class="mb-0">Bảng nhân viên dạng DataTable</h6>
+                        <p class="text-sm mb-0">Tìm kiếm, sắp xếp, phân trang và lọc nhanh theo phòng ban</p>
                     </div>
                     <div class="d-flex gap-2 flex-wrap">
                         <button type="button" class="btn btn-outline-primary btn-sm mb-0">Xuất Excel</button>
@@ -79,52 +79,53 @@
                     </div>
 
                     <div class="table-responsive">
-                        <table class="table align-items-center mb-0">
-                            <thead>
+                        <table class="table table-flush align-items-center mb-0" id="datatable-employees">
+                            <thead class="thead-light">
                                 <tr>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nhân viên</th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Phòng ban</th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Chức danh</th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Ca làm</th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Trạng thái</th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Thao tác</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Phòng ban</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Chức danh</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Ca làm</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Email</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Trạng thái</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Thao tác</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($employees as $employee)
                                     <tr>
-                                        <td>
-                                            <div class="d-flex px-3 py-1">
+                                        <td class="align-middle">
+                                            <div class="d-flex align-items-center px-2 py-1">
                                                 <div class="avatar avatar-sm me-3 rounded-circle bg-gradient-{{ $employee['color'] }} d-flex align-items-center justify-content-center">
                                                     <span class="text-white text-xs font-weight-bold">{{ strtoupper(substr($employee['name'], 0, 1)) }}</span>
                                                 </div>
                                                 <div class="d-flex flex-column justify-content-center">
                                                     <h6 class="mb-0 text-sm">{{ $employee['name'] }}</h6>
-                                                    <p class="text-xs text-secondary mb-0">{{ $employee['code'] }} - {{ $employee['email'] }}</p>
+                                                    <p class="text-xs text-secondary mb-0">{{ $employee['code'] }}</p>
                                                 </div>
                                             </div>
                                         </td>
-                                        <td>
+                                        <td class="align-middle">
                                             <span class="text-sm">{{ $employee['department'] }}</span>
                                         </td>
-                                        <td>
+                                        <td class="align-middle">
                                             <span class="text-sm">{{ $employee['title'] }}</span>
                                         </td>
-                                        <td>
-                                            <span class="text-sm font-weight-bold">{{ $employee['shift'] }}</span>
+                                        <td class="align-middle">
+                                            <span class="badge bg-light text-dark">{{ $employee['shift'] }}</span>
                                         </td>
-                                        <td>
+                                        <td class="align-middle">
+                                            <span class="text-sm text-secondary">{{ $employee['email'] }}</span>
+                                        </td>
+                                        <td class="align-middle">
                                             <span class="badge bg-{{ $employee['color'] }}">{{ $employee['status'] }}</span>
                                         </td>
-                                        <td>
+                                        <td class="align-middle">
                                             <a href="javascript:;" class="btn btn-link text-dark px-2 mb-0">
                                                 <i class="material-icons text-sm me-1">visibility</i>Xem
                                             </a>
                                             <a href="{{ route('employee-edit', ['id' => $employee['code']]) }}" class="btn btn-link text-success px-2 mb-0">
                                                 <i class="material-icons text-sm me-1">edit</i>Sửa
-                                            </a>
-                                            <a href="javascript:;" class="btn btn-link text-warning px-2 mb-0">
-                                                <i class="material-icons text-sm me-1">badge</i>Phòng ban
                                             </a>
                                         </td>
                                     </tr>
@@ -134,8 +135,12 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
 
-            <div class="card mt-4">
+    <div class="row mt-4">
+        <div class="col-lg-8">
+            <div class="card">
                 <div class="card-header pb-0">
                     <h6 class="mb-0">Hoạt động gần đây</h6>
                     <p class="text-sm mb-0">Các thay đổi nhân sự và phòng ban mới nhất</p>
@@ -198,3 +203,20 @@
         </div>
     </div>
 </div>
+
+@push('js')
+    <script src="{{ asset('assets') }}/js/plugins/datatables.js"></script>
+    <script src="{{ asset('assets') }}/js/plugins/perfect-scrollbar.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const table = document.querySelector('#datatable-employees');
+            if (table && window.simpleDatatables) {
+                new simpleDatatables.DataTable('#datatable-employees', {
+                    searchable: true,
+                    fixedHeight: true,
+                    perPage: 10
+                });
+            }
+        });
+    </script>
+@endpush
