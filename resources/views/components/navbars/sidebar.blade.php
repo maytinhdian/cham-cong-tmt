@@ -170,13 +170,60 @@
                 </div>
             </li>
             <li class="nav-item">
+                <a data-bs-toggle="collapse" href="#attendanceExamples"
+                    class="nav-link text-white {{ in_array(Route::currentRouteName(), ['attendance-settings', 'attendance-devices']) ? 'active' : '' }}"
+                    aria-controls="attendanceExamples" role="button" aria-expanded="false">
+                    <i class="ni ni-settings-gear-65 opacity-10"></i>
+                    <span class="nav-link-text ms-2 ps-1">Cài đặt chấm công</span>
+                </a>
+                <div class="collapse {{ in_array(Route::currentRouteName(), ['attendance-settings', 'attendance-devices']) ? 'show' : '' }}"
+                    id="attendanceExamples">
+                    <ul class="nav">
+                        <li class="nav-item {{ Route::currentRouteName() == 'attendance-settings' ? 'active' : '' }}">
+                            <a class="nav-link text-white {{ Route::currentRouteName() == 'attendance-settings' ? 'active' : '' }}"
+                                href="{{ route('attendance-settings') }}">
+                                <span class="sidenav-mini-icon"> CT </span>
+                                <span class="sidenav-normal ms-2 ps-1"> Cài đặt tính công </span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a data-bs-toggle="collapse" href="#deviceExamples"
+                    class="nav-link text-white {{ in_array(Route::currentRouteName(), ['attendance-devices']) ? 'active' : '' }}"
+                    aria-controls="deviceExamples" role="button" aria-expanded="false">
+                    <i class="ni ni-tablet-button opacity-10"></i>
+                    <span class="nav-link-text ms-2 ps-1">Thiết bị chấm công</span>
+                </a>
+                <div class="collapse {{ in_array(Route::currentRouteName(), ['attendance-devices']) ? 'show' : '' }}"
+                    id="deviceExamples">
+                    <ul class="nav">
+                        <li class="nav-item {{ Route::currentRouteName() == 'attendance-devices' ? 'active' : '' }}">
+                            <a class="nav-link text-white {{ Route::currentRouteName() == 'attendance-devices' ? 'active' : '' }}"
+                                href="{{ route('attendance-devices') }}">
+                                <span class="sidenav-mini-icon"> TB </span>
+                                <span class="sidenav-normal ms-2 ps-1"> Quản lý thiết bị </span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white {{ Route::currentRouteName() == 'attendance-reports' ? 'active' : '' }}"
+                    href="{{ route('attendance-reports') }}">
+                    <i class="ni ni-chart-bar-32 opacity-10"></i>
+                    <span class="nav-link-text ms-2 ps-1">Báo biểu</span>
+                </a>
+            </li>
+            <li class="nav-item">
                 <a data-bs-toggle="collapse" href="#employeeExamples"
-                    class="nav-link text-white {{ in_array(Route::currentRouteName(), ['employee-list', 'new-user', 'employee-dashboard', 'employee-bulk-create', 'employee-department', 'employee-position']) ? 'active' : '' }}"
+                    class="nav-link text-white {{ in_array(Route::currentRouteName(), ['employee-list', 'new-user', 'employee-dashboard', 'employee-bulk-create', 'employee-department', 'employee-company-chart', 'employee-position']) ? 'active' : '' }}"
                     aria-controls="employeeExamples" role="button" aria-expanded="false">
                     <i class="ni ni-badge opacity-10"></i>
                     <span class="nav-link-text ms-2 ps-1">Quản lý nhân viên</span>
                 </a>
-                <div class="collapse {{ in_array(Route::currentRouteName(), ['employee-list', 'new-user', 'employee-dashboard', 'employee-bulk-create', 'employee-department', 'employee-position']) ? 'show' : '' }}"
+                <div class="collapse {{ in_array(Route::currentRouteName(), ['employee-list', 'new-user', 'employee-dashboard', 'employee-bulk-create', 'employee-department', 'employee-company-chart', 'employee-position']) ? 'show' : '' }}"
                     id="employeeExamples">
                     <ul class="nav">
                         <li class="nav-item {{ Route::currentRouteName() == 'employee-dashboard' ? 'active' : '' }}">
@@ -212,6 +259,13 @@
                                 href="{{ route('employee-department') }}">
                                 <span class="sidenav-mini-icon"> PB </span>
                                 <span class="sidenav-normal ms-2 ps-1"> Phòng ban </span>
+                            </a>
+                        </li>
+                        <li class="nav-item {{ Route::currentRouteName() == 'employee-company-chart' ? 'active' : '' }}">
+                            <a class="nav-link text-white {{ Route::currentRouteName() == 'employee-company-chart' ? 'active' : '' }}"
+                                href="{{ route('employee-company-chart') }}">
+                                <span class="sidenav-mini-icon"> SC </span>
+                                <span class="sidenav-normal ms-2 ps-1"> Sơ đồ công ty </span>
                             </a>
                         </li>
                         <li class="nav-item {{ Route::currentRouteName() == 'employee-position' ? 'active' : '' }}">
