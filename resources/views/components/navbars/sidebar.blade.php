@@ -270,13 +270,13 @@
                         </li>
                         <li class="nav-item">
                             <a data-bs-toggle="collapse" href="#humanResourceExamples"
-                                class="nav-link text-white {{ in_array(Route::currentRouteName(), ['attendance', 'attendance-settings', 'employee-management', 'employee-new', 'department-management', 'shift-management']) ? 'active' : '' }}"
+                                class="nav-link text-white {{ in_array(Route::currentRouteName(), ['attendance', 'attendance-settings', 'attendance-report', 'attendance-devices', 'request-management', 'work-schedule', 'employee-management', 'employee-new', 'department-management', 'shift-management']) ? 'active' : '' }}"
                                 aria-controls="humanResourceExamples" role="button"
-                                aria-expanded="{{ in_array(Route::currentRouteName(), ['attendance', 'attendance-settings', 'employee-management', 'employee-new', 'department-management', 'shift-management']) ? 'true' : 'false' }}">
+                                aria-expanded="{{ in_array(Route::currentRouteName(), ['attendance', 'attendance-settings', 'attendance-report', 'attendance-devices', 'request-management', 'work-schedule', 'employee-management', 'employee-new', 'department-management', 'shift-management']) ? 'true' : 'false' }}">
                                 <i class="material-icons-round">badge</i>
                                 <span class="nav-link-text ms-2 ps-1">Hệ thống nhân sự</span>
                             </a>
-                            <div class="collapse {{ in_array(Route::currentRouteName(), ['attendance', 'attendance-settings', 'employee-management', 'employee-new', 'department-management', 'shift-management']) ? 'show' : '' }}"
+                            <div class="collapse {{ in_array(Route::currentRouteName(), ['attendance', 'attendance-settings', 'attendance-report', 'attendance-devices', 'request-management', 'work-schedule', 'employee-management', 'employee-new', 'department-management', 'shift-management']) ? 'show' : '' }}"
                                 id="humanResourceExamples">
                                 <ul class="nav nav-sm flex-column">
                                     <li class="nav-item {{ Route::currentRouteName() == 'department-management' ? 'active' : '' }}">
@@ -314,11 +314,101 @@
                                             <span class="sidenav-normal  ms-2  ps-1"> Thiết lập tính công </span>
                                         </a>
                                     </li>
+                                    <li class="nav-item {{ Route::currentRouteName() == 'request-management' ? 'active' : '' }}">
+                                        <a class="nav-link text-white {{ Route::currentRouteName() == 'request-management' ? 'active' : '' }}"
+                                            href="{{ route('request-management') }}">
+                                            <span class="sidenav-mini-icon"> R </span>
+                                            <span class="sidenav-normal  ms-2  ps-1"> Đơn nghỉ phép / OT </span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item {{ Route::currentRouteName() == 'work-schedule' ? 'active' : '' }}">
+                                        <a class="nav-link text-white {{ Route::currentRouteName() == 'work-schedule' ? 'active' : '' }}"
+                                            href="{{ route('work-schedule') }}">
+                                            <span class="sidenav-mini-icon"> L </span>
+                                            <span class="sidenav-normal  ms-2  ps-1"> Lịch làm việc & nghỉ lễ </span>
+                                        </a>
+                                    </li>
                                     <li class="nav-item {{ Route::currentRouteName() == 'employee-new' ? 'active' : '' }}">
                                         <a class="nav-link text-white {{ Route::currentRouteName() == 'employee-new' ? 'active' : '' }}"
                                             href="{{ route('employee-new') }}">
                                             <span class="sidenav-mini-icon"> + </span>
                                             <span class="sidenav-normal  ms-2  ps-1"> Thêm nhân viên </span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <a data-bs-toggle="collapse" href="#attendanceReportExamples"
+                                class="nav-link text-white {{ Route::currentRouteName() == 'attendance-report' ? 'active' : '' }}"
+                                aria-controls="attendanceReportExamples" role="button"
+                                aria-expanded="{{ Route::currentRouteName() == 'attendance-report' ? 'true' : 'false' }}">
+                                <i class="material-icons-round">assessment</i>
+                                <span class="nav-link-text ms-2 ps-1">Báo cáo công</span>
+                            </a>
+                            <div class="collapse {{ Route::currentRouteName() == 'attendance-report' ? 'show' : '' }}"
+                                id="attendanceReportExamples">
+                                <ul class="nav nav-sm flex-column">
+                                    <li class="nav-item">
+                                        <a class="nav-link text-white" href="{{ route('attendance-report') }}#overview">
+                                            <span class="sidenav-mini-icon"> O </span>
+                                            <span class="sidenav-normal ms-2 ps-1"> Tổng quan </span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link text-white" href="{{ route('attendance-report') }}#late">
+                                            <span class="sidenav-mini-icon"> L </span>
+                                            <span class="sidenav-normal ms-2 ps-1"> Đi muộn / về sớm </span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link text-white" href="{{ route('attendance-report') }}#absence">
+                                            <span class="sidenav-mini-icon"> A </span>
+                                            <span class="sidenav-normal ms-2 ps-1"> Vắng mặt </span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link text-white" href="{{ route('attendance-report') }}#overtime">
+                                            <span class="sidenav-mini-icon"> O </span>
+                                            <span class="sidenav-normal ms-2 ps-1"> OT </span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link text-white" href="{{ route('attendance-report') }}#export">
+                                            <span class="sidenav-mini-icon"> E </span>
+                                            <span class="sidenav-normal ms-2 ps-1"> Xuất báo cáo </span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <a data-bs-toggle="collapse" href="#attendanceDevicesExamples"
+                                class="nav-link text-white {{ Route::currentRouteName() == 'attendance-devices' ? 'active' : '' }}"
+                                aria-controls="attendanceDevicesExamples" role="button"
+                                aria-expanded="{{ Route::currentRouteName() == 'attendance-devices' ? 'true' : 'false' }}">
+                                <i class="material-icons-round">devices</i>
+                                <span class="nav-link-text ms-2 ps-1">Thiết bị chấm công</span>
+                            </a>
+                            <div class="collapse {{ Route::currentRouteName() == 'attendance-devices' ? 'show' : '' }}"
+                                id="attendanceDevicesExamples">
+                                <ul class="nav nav-sm flex-column">
+                                    <li class="nav-item">
+                                        <a class="nav-link text-white" href="{{ route('attendance-devices') }}#overview">
+                                            <span class="sidenav-mini-icon"> O </span>
+                                            <span class="sidenav-normal ms-2 ps-1"> Tổng quan </span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link text-white" href="{{ route('attendance-devices') }}#sync">
+                                            <span class="sidenav-mini-icon"> S </span>
+                                            <span class="sidenav-normal ms-2 ps-1"> Đồng bộ </span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link text-white" href="{{ route('attendance-devices') }}#maintenance">
+                                            <span class="sidenav-mini-icon"> M </span>
+                                            <span class="sidenav-normal ms-2 ps-1"> Bảo trì </span>
                                         </a>
                                     </li>
                                 </ul>
@@ -395,41 +485,6 @@
                                 href="{{ route('rtl') }}">
                                 <span class="sidenav-mini-icon"> R </span>
                                 <span class="sidenav-normal  ms-2  ps-1"> RTL </span>
-                            </a>
-                        </li>
-                        <li class="nav-item {{ Route::currentRouteName() == 'widgets' ? 'active' : '' }}">
-                            <a class="nav-link text-white  {{ Route::currentRouteName() == 'widgets' ? 'active' : '' }} "
-                                href="{{ route('widgets') }}">
-                                <span class="sidenav-mini-icon"> W </span>
-                                <span class="sidenav-normal  ms-2  ps-1"> Widgets </span>
-                            </a>
-                        </li>
-                        <li class="nav-item {{ Route::currentRouteName() == 'attendance' ? 'active' : '' }}">
-                            <a class="nav-link text-white  {{ Route::currentRouteName() == 'attendance' ? 'active' : '' }} "
-                                href="{{ route('attendance') }}">
-                                <span class="sidenav-mini-icon"> T </span>
-                                <span class="sidenav-normal  ms-2  ps-1"> Chấm công </span>
-                            </a>
-                        </li>
-                        <li class="nav-item {{ Route::currentRouteName() == 'employee-new' ? 'active' : '' }}">
-                            <a class="nav-link text-white  {{ Route::currentRouteName() == 'employee-new' ? 'active' : '' }} "
-                                href="{{ route('employee-new') }}">
-                                <span class="sidenav-mini-icon"> E </span>
-                                <span class="sidenav-normal  ms-2  ps-1"> Thêm nhân viên </span>
-                            </a>
-                        </li>
-                        <li class="nav-item {{ Route::currentRouteName() == 'employee-management' ? 'active' : '' }}">
-                            <a class="nav-link text-white  {{ Route::currentRouteName() == 'employee-management' ? 'active' : '' }} "
-                                href="{{ route('employee-management') }}">
-                                <span class="sidenav-mini-icon"> L </span>
-                                <span class="sidenav-normal  ms-2  ps-1"> Danh sách nhân viên </span>
-                            </a>
-                        </li>
-                        <li class="nav-item {{ Route::currentRouteName() == 'department-management' ? 'active' : '' }}">
-                            <a class="nav-link text-white  {{ Route::currentRouteName() == 'department-management' ? 'active' : '' }} "
-                                href="{{ route('department-management') }}">
-                                <span class="sidenav-mini-icon"> D </span>
-                                <span class="sidenav-normal  ms-2  ps-1"> Quản lý phòng ban </span>
                             </a>
                         </li>
                         <li class="nav-item  {{ Route::currentRouteName() == 'charts' ? 'active' : '' }}">

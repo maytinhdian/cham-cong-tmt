@@ -1,718 +1,410 @@
+<div class="container-fluid py-4 bg-gray-200">
+    <div class="row">
+        <div class="col-lg-8">
+            <h5 class="mb-1">Tổng quan chấm công</h5>
+            <p class="text-sm mb-0">
+                Theo dõi nhanh toàn bộ tình hình nhân sự, ca làm, đơn chờ duyệt, thiết bị chấm công và xu hướng công trong tuần.
+            </p>
+        </div>
+        <div class="col-lg-4 text-lg-end mt-lg-0 mt-3">
+            <div class="d-inline-flex gap-2 flex-wrap justify-content-lg-end">
+                <span class="badge badge-lg badge-dot me-2">
+                    <i class="bg-success"></i>
+                    <span class="text-dark">Hôm nay: {{ now()->format('d/m/Y') }}</span>
+                </span>
+                <span class="badge badge-lg badge-dot">
+                    <i class="bg-primary"></i>
+                    <span class="text-dark">Kỳ công: 01 - 30/06/2026</span>
+                </span>
+            </div>
+        </div>
+    </div>
 
-        <div class="container-fluid py-4">
-            <div class="row">
-                <div class="col-lg-12 position-relative z-index-2">
-                    <div class="card mb-4 ">
-                        <div class="d-flex">
-                            <div
-                                class="icon icon-shape icon-lg bg-gradient-success shadow text-center border-radius-xl mt-n3 ms-4">
-                                <i class="material-icons opacity-10" aria-hidden="true">language</i>
+    <div class="row mt-4">
+        @foreach ($summaryCards as $card)
+            <div class="col-xl-2 col-md-4 col-sm-6 mt-md-0 mt-4">
+                <div class="card h-100">
+                    <div class="card-body p-3">
+                        <div class="d-flex align-items-start justify-content-between">
+                            <div class="icon icon-lg icon-shape bg-gradient-{{ $card['color'] }} shadow-{{ $card['color'] }} text-center border-radius-md">
+                                <i class="material-icons opacity-10">{{ $card['icon'] }}</i>
                             </div>
-                            <h6 class="mt-3 mb-2 ms-3 ">Sales by Country</h6>
+                            <span class="badge badge-sm bg-light text-dark">Live</span>
                         </div>
-                        <div class="card-body p-3">
-                            <div class="row">
-                                <div class="col-lg-6 col-md-7">
-                                    <div class="table-responsive">
-                                        <table class="table align-items-center ">
-                                            <tbody>
-                                                <tr>
-                                                    <td class="w-30">
-                                                        <div class="d-flex px-2 py-1 align-items-center">
-                                                            <div>
-                                                                <img src="{{ asset('assets') }}/img/icons/flags/US.png"
-                                                                    alt="Country flag">
-                                                            </div>
-                                                            <div class="ms-4">
-                                                                <p class="text-xs font-weight-bold mb-0 ">Country:</p>
-                                                                <h6 class="text-sm font-weight-normal mb-0 ">United
-                                                                    States</h6>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="text-center">
-                                                            <p class="text-xs font-weight-bold mb-0 ">Sales:</p>
-                                                            <h6 class="text-sm font-weight-normal mb-0 ">2500</h6>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="text-center">
-                                                            <p class="text-xs font-weight-bold mb-0 ">Value:</p>
-                                                            <h6 class="text-sm font-weight-normal mb-0 ">$230,900</h6>
-                                                        </div>
-                                                    </td>
-                                                    <td class="align-middle text-sm">
-                                                        <div class="col text-center">
-                                                            <p class="text-xs font-weight-bold mb-0 ">Bounce:</p>
-                                                            <h6 class="text-sm font-weight-normal mb-0 ">29.9%</h6>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="w-30">
-                                                        <div class="d-flex px-2 py-1 align-items-center">
-                                                            <div>
-                                                                <img src="{{ asset('assets') }}/img/icons/flags/DE.png"
-                                                                    alt="Country flag">
-                                                            </div>
-                                                            <div class="ms-4">
-                                                                <p class="text-xs font-weight-bold mb-0 ">Country:</p>
-                                                                <h6 class="text-sm font-weight-normal mb-0 ">Germany
-                                                                </h6>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="text-center">
-                                                            <p class="text-xs font-weight-bold mb-0 ">Sales:</p>
-                                                            <h6 class="text-sm font-weight-normal mb-0 ">3.900</h6>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="text-center">
-                                                            <p class="text-xs font-weight-bold mb-0 ">Value:</p>
-                                                            <h6 class="text-sm font-weight-normal mb-0 ">$440,000</h6>
-                                                        </div>
-                                                    </td>
-                                                    <td class="align-middle text-sm">
-                                                        <div class="col text-center">
-                                                            <p class="text-xs font-weight-bold mb-0 ">Bounce:</p>
-                                                            <h6 class="text-sm font-weight-normal mb-0 ">40.22%</h6>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="w-30">
-                                                        <div class="d-flex px-2 py-1 align-items-center">
-                                                            <div>
-                                                                <img src="{{ asset('assets') }}/img/icons/flags/GB.png"
-                                                                    alt="Country flag">
-                                                            </div>
-                                                            <div class="ms-4">
-                                                                <p class="text-xs font-weight-bold mb-0 ">Country:</p>
-                                                                <h6 class="text-sm font-weight-normal mb-0 ">Great
-                                                                    Britain</h6>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="text-center">
-                                                            <p class="text-xs font-weight-bold mb-0 ">Sales:</p>
-                                                            <h6 class="text-sm font-weight-normal mb-0 ">1.400</h6>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="text-center">
-                                                            <p class="text-xs font-weight-bold mb-0 ">Value:</p>
-                                                            <h6 class="text-sm font-weight-normal mb-0 ">$190,700</h6>
-                                                        </div>
-                                                    </td>
-                                                    <td class="align-middle text-sm">
-                                                        <div class="col text-center">
-                                                            <p class="text-xs font-weight-bold mb-0 ">Bounce:</p>
-                                                            <h6 class="text-sm font-weight-normal mb-0 ">23.44%</h6>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="w-30">
-                                                        <div class="d-flex px-2 py-1 align-items-center">
-                                                            <div>
-                                                                <img src="{{ asset('assets') }}/img/icons/flags/BR.png"
-                                                                    alt="Country flag">
-                                                            </div>
-                                                            <div class="ms-4">
-                                                                <p class="text-xs font-weight-bold mb-0 ">Country:</p>
-                                                                <h6 class="text-sm font-weight-normal mb-0 ">Brasil</h6>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="text-center">
-                                                            <p class="text-xs font-weight-bold mb-0 ">Sales:</p>
-                                                            <h6 class="text-sm font-weight-normal mb-0 ">562</h6>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="text-center">
-                                                            <p class="text-xs font-weight-bold mb-0 ">Value:</p>
-                                                            <h6 class="text-sm font-weight-normal mb-0 ">$143,960</h6>
-                                                        </div>
-                                                    </td>
-                                                    <td class="align-middle text-sm">
-                                                        <div class="col text-center">
-                                                            <p class="text-xs font-weight-bold mb-0 ">Bounce:</p>
-                                                            <h6 class="text-sm font-weight-normal mb-0 ">32.14%</h6>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 col-md-5">
-                                    <div id="map" class="mt-0 mt-lg-n4"></div>
-                                </div>
-                            </div>
+                        <div class="mt-3">
+                            <p class="text-sm mb-1 text-capitalize">{{ $card['label'] }}</p>
+                            <h4 class="mb-1">{{ $card['value'] }}</h4>
+                            <p class="mb-0 text-sm text-secondary">{{ $card['change'] }}</p>
                         </div>
                     </div>
-                    <div class="row mb-4">
-                        <div class="col-lg-4 col-md-6 mt-4 mb-4">
-                            <div class="card z-index-2 ">
-                                <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
-                                    <div class="bg-gradient-primary shadow-primary border-radius-lg py-3 pe-1">
-                                        <div class="chart">
-                                            <canvas id="chart-bars" class="chart-canvas" height="170"></canvas>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card-body">
-                                    <h6 class="mb-0 ">Website Views</h6>
-                                    <p class="text-sm ">Last Campaign Performance</p>
-                                    <hr class="dark horizontal">
-                                    <div class="d-flex ">
-                                        <i class="material-icons text-sm my-auto me-1">schedule</i>
-                                        <p class="mb-0 text-sm"> campaign sent 2 days ago </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6 mt-4 mb-4">
-                            <div class="card z-index-2  ">
-                                <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
-                                    <div class="bg-gradient-success shadow-success border-radius-lg py-3 pe-1">
-                                        <div class="chart">
-                                            <canvas id="chart-line" class="chart-canvas" height="170"></canvas>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card-body">
-                                    <h6 class="mb-0 "> Daily Sales </h6>
-                                    <p class="text-sm "> (<span class="font-weight-bolder">+15%</span>) increase in
-                                        today sales. </p>
-                                    <hr class="dark horizontal">
-                                    <div class="d-flex ">
-                                        <i class="material-icons text-sm my-auto me-1">schedule</i>
-                                        <p class="mb-0 text-sm"> updated 4 min ago </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 mt-4 mb-3">
-                            <div class="card z-index-2 ">
-                                <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
-                                    <div class="bg-gradient-dark shadow-dark border-radius-lg py-3 pe-1">
-                                        <div class="chart">
-                                            <canvas id="chart-line-tasks" class="chart-canvas" height="170"></canvas>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card-body">
-                                    <h6 class="mb-0 ">Completed Tasks</h6>
-                                    <p class="text-sm ">Last Campaign Performance</p>
-                                    <hr class="dark horizontal">
-                                    <div class="d-flex ">
-                                        <i class="material-icons text-sm my-auto me-1">schedule</i>
-                                        <p class="mb-0 text-sm">just updated</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                </div>
+            </div>
+        @endforeach
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-lg-8">
+            <div class="card h-100">
+                <div class="card-header pb-0 d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="mb-0">Biến động công trong tuần</h6>
+                        <p class="text-sm mb-0">So sánh số lượng đúng giờ và đi muộn theo từng ngày</p>
                     </div>
+                    <button type="button" class="btn btn-outline-primary btn-sm mb-0">Xem chi tiết</button>
+                </div>
+                <div class="card-body">
+                    <div class="chart">
+                        <canvas id="attendance-trend-chart" class="chart-canvas" height="300"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 mt-lg-0 mt-4">
+            <div class="card h-100">
+                <div class="card-header pb-0">
+                    <h6 class="mb-0">Cơ cấu trạng thái</h6>
+                    <p class="text-sm mb-0">Tỷ lệ tổng hợp của toàn bộ nhân sự trong ngày</p>
+                </div>
+                <div class="card-body">
+                    <div class="chart text-center">
+                        <canvas id="attendance-status-chart" class="chart-canvas" height="220"></canvas>
+                    </div>
+
+                    <div class="mt-4">
+                        @foreach ($statusBreakdown as $status)
+                            <div class="d-flex justify-content-between align-items-center {{ !$loop->last ? 'mb-3' : '' }}">
+                                <div class="d-flex align-items-center">
+                                    <span class="badge bg-{{ $status['color'] }} me-3">&nbsp;</span>
+                                    <div>
+                                        <h6 class="mb-0 text-sm">{{ $status['label'] }}</h6>
+                                        <p class="mb-0 text-xs text-secondary">{{ $status['value'] }} người</p>
+                                    </div>
+                                </div>
+                                <span class="text-sm font-weight-bold">{{ $status['percent'] }}</span>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-lg-8">
+            <div class="card h-100">
+                <div class="card-header pb-0 d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="mb-0">Bảng chấm công hôm nay</h6>
+                        <p class="text-sm mb-0">Danh sách vào - ra gần nhất, có thể nối dữ liệu máy hoặc import thủ công</p>
+                    </div>
+                    <button type="button" class="btn btn-outline-dark btn-sm mb-0">Xuất Excel</button>
+                </div>
+                <div class="card-body px-0 pt-3">
+                    <div class="table-responsive">
+                        <table class="table align-items-center mb-0">
+                            <thead>
+                                <tr>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nhân viên</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Phòng ban</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Giờ vào</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Giờ ra</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Trạng thái</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($todayLogs as $log)
+                                    <tr>
+                                        <td>
+                                            <div class="d-flex px-3 py-1">
+                                                <div class="d-flex flex-column justify-content-center">
+                                                    <h6 class="mb-0 text-sm">{{ $log['name'] }}</h6>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span class="text-sm text-secondary">{{ $log['dept'] }}</span>
+                                        </td>
+                                        <td>
+                                            <span class="text-sm font-weight-bold">{{ $log['in'] }}</span>
+                                        </td>
+                                        <td>
+                                            <span class="text-sm font-weight-bold">{{ $log['out'] }}</span>
+                                        </td>
+                                        <td>
+                                            <span class="badge badge-sm {{ str_contains($log['status'], 'muộn') ? 'bg-warning' : (str_contains($log['status'], 'Vắng') ? 'bg-danger' : 'bg-success') }}">
+                                                {{ $log['status'] }}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 mt-lg-0 mt-4">
+            <div class="card h-100">
+                <div class="card-header pb-0">
+                    <h6 class="mb-0">Ca làm hôm nay</h6>
+                    <p class="text-sm mb-0">Số lượng nhân sự theo từng ca</p>
+                </div>
+                <div class="card-body">
+                    @foreach ($todayShifts as $shift)
+                        <div class="d-flex align-items-center {{ !$loop->last ? 'mb-3' : '' }}">
+                            <div class="icon icon-shape icon-md bg-gradient-{{ $shift['color'] }} shadow-{{ $shift['color'] }} text-center border-radius-md">
+                                <i class="material-icons opacity-10">schedule</i>
+                            </div>
+                            <div class="ms-3 flex-grow-1">
+                                <h6 class="mb-0 text-sm">{{ $shift['title'] }}</h6>
+                                <p class="text-xs text-secondary mb-0">{{ $shift['time'] }}</p>
+                            </div>
+                            <span class="badge badge-sm bg-light text-dark">{{ $shift['members'] }}</span>
+                        </div>
+                    @endforeach
+
+                    <div class="alert alert-secondary text-dark mt-4 mb-0">
+                        Có thể gắn trực tiếp với lịch làm việc, ngày nghỉ lễ và ca qua đêm ở các màn hình cấu hình phía sau.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-lg-4">
+            <div class="card h-100">
+                <div class="card-header pb-0">
+                    <h6 class="mb-0">Đơn chờ duyệt</h6>
+                    <p class="text-sm mb-0">Nghỉ phép, OT và đổi ca</p>
+                </div>
+                <div class="card-body">
+                    @foreach ($pendingRequests as $request)
+                        <div class="d-flex align-items-center border-radius-lg p-3 bg-gray-100 {{ !$loop->last ? 'mb-3' : '' }}">
+                            <div class="icon icon-shape icon-md bg-gradient-primary shadow-primary text-center border-radius-md">
+                                <i class="material-icons opacity-10">assignment</i>
+                            </div>
+                            <div class="ms-3 flex-grow-1">
+                                <h6 class="mb-0 text-sm">{{ $request['name'] }}</h6>
+                                <p class="text-xs text-secondary mb-0">{{ $request['person'] }} - {{ $request['time'] }}</p>
+                            </div>
+                            <span class="badge {{ $request['status'] === 'Đã duyệt' ? 'bg-success' : 'bg-warning' }}">
+                                {{ $request['status'] }}
+                            </span>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 mt-lg-0 mt-4">
+            <div class="card h-100">
+                <div class="card-header pb-0">
+                    <h6 class="mb-0">Thiết bị chấm công</h6>
+                    <p class="text-sm mb-0">Trạng thái đồng bộ của các máy đang hoạt động</p>
+                </div>
+                <div class="card-body">
+                    @foreach ($deviceStatus as $device)
+                        <div class="border-radius-lg p-3 bg-gray-100 {{ !$loop->last ? 'mb-3' : '' }}">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div class="me-3">
+                                    <h6 class="mb-1 text-sm">{{ $device['name'] }}</h6>
+                                    <p class="text-xs text-secondary mb-0">{{ $device['location'] }}</p>
+                                </div>
+                                <span class="badge {{ $device['status'] === 'Online' ? 'bg-success' : 'bg-warning' }}">
+                                    {{ $device['status'] }}
+                                </span>
+                            </div>
+                            <p class="text-xs text-secondary mb-0 mt-2">Đồng bộ: {{ $device['sync'] }}</p>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 mt-lg-0 mt-4">
+            <div class="card h-100">
+                <div class="card-header pb-0">
+                    <h6 class="mb-0">Tổng hợp phòng ban</h6>
+                    <p class="text-sm mb-0">Tỷ lệ hiện diện và đi muộn theo bộ phận</p>
+                </div>
+                <div class="card-body px-0 pt-3">
+                    <div class="table-responsive">
+                        <table class="table align-items-center mb-0">
+                            <thead>
+                                <tr>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Phòng ban</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">NV</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Đi muộn</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Tỷ lệ</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($departmentOverview as $dept)
+                                    <tr>
+                                        <td>
+                                            <h6 class="mb-0 text-sm">{{ $dept['name'] }}</h6>
+                                        </td>
+                                        <td>
+                                            <span class="text-sm text-secondary">{{ $dept['headcount'] }}</span>
+                                        </td>
+                                        <td>
+                                            <span class="text-sm text-secondary">{{ $dept['late'] }}</span>
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-light text-dark">{{ $dept['rate'] }}</span>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header pb-0 d-flex justify-content-between align-items-center">
+                    <div>
+                        <h6 class="mb-0">Điểm cần chú ý hôm nay</h6>
+                        <p class="text-sm mb-0">Các trạng thái cần nhân sự xử lý sớm trong ca hiện tại</p>
+                    </div>
+                </div>
+                <div class="card-body">
                     <div class="row">
-                        <div class="col-lg-3 col-md-6 col-sm-6">
-                            <div class="card  mb-2">
-                                <div class="card-header p-3 pt-2">
-                                    <div
-                                        class="icon icon-lg icon-shape bg-gradient-dark shadow-dark shadow text-center border-radius-xl mt-n4 position-absolute">
-                                        <i class="material-icons opacity-10">weekend</i>
-                                    </div>
-                                    <div class="text-end pt-1">
-                                        <p class="text-sm mb-0 text-capitalize">Bookings</p>
-                                        <h4 class="mb-0">281</h4>
-                                    </div>
-                                </div>
-                                <hr class="dark horizontal my-0">
-                                <div class="card-footer p-3">
-                                    <p class="mb-0"><span class="text-success text-sm font-weight-bolder">+55%
-                                        </span>than lask week</p>
-                                </div>
+                        <div class="col-lg-3 col-md-6 mb-3 mb-lg-0">
+                            <div class="border-radius-lg bg-gradient-success p-3 h-100">
+                                <p class="text-white text-xs opacity-8 mb-1">Tỷ lệ đúng giờ</p>
+                                <h3 class="text-white mb-0">82%</h3>
+                                <p class="text-white text-sm opacity-8 mb-0">Mục tiêu: trên 85%</p>
                             </div>
                         </div>
-                        <div class="col-lg-3 col-md-6 col-sm-6 mt-sm-0 mt-4">
-                            <div class="card  mb-2">
-                                <div class="card-header p-3 pt-2">
-                                    <div
-                                        class="icon icon-lg icon-shape bg-gradient-primary shadow-primary shadow text-center border-radius-xl mt-n4 position-absolute">
-                                        <i class="material-icons opacity-10">leaderboard</i>
-                                    </div>
-                                    <div class="text-end pt-1">
-                                        <p class="text-sm mb-0 text-capitalize">Today's Users</p>
-                                        <h4 class="mb-0">2,300</h4>
-                                    </div>
-                                </div>
-                                <hr class="dark horizontal my-0">
-                                <div class="card-footer p-3">
-                                    <p class="mb-0"><span class="text-success text-sm font-weight-bolder">+3%
-                                        </span>than last month</p>
-                                </div>
+                        <div class="col-lg-3 col-md-6 mb-3 mb-lg-0">
+                            <div class="border-radius-lg bg-gradient-warning p-3 h-100">
+                                <p class="text-white text-xs opacity-8 mb-1">Đi muộn</p>
+                                <h3 class="text-white mb-0">21 người</h3>
+                                <p class="text-white text-sm opacity-8 mb-0">Cần đối soát ngay sau giờ vào ca</p>
                             </div>
                         </div>
-                        <div class="col-lg-3 col-md-6 col-sm-6 mt-lg-0 mt-4">
-                            <div class="card  mb-2">
-                                <div class="card-header p-3 pt-2 bg-transparent">
-                                    <div
-                                        class="icon icon-lg icon-shape bg-gradient-success shadow-success text-center border-radius-xl mt-n4 position-absolute">
-                                        <i class="material-icons opacity-10">store</i>
-                                    </div>
-                                    <div class="text-end pt-1">
-                                        <p class="text-sm mb-0 text-capitalize ">Revenue</p>
-                                        <h4 class="mb-0 ">34k</h4>
-                                    </div>
-                                </div>
-                                <hr class="horizontal my-0 dark">
-                                <div class="card-footer p-3">
-                                    <p class="mb-0 "><span class="text-success text-sm font-weight-bolder">+1%
-                                        </span>than yesterday</p>
-                                </div>
+                        <div class="col-lg-3 col-md-6 mb-3 mb-md-0">
+                            <div class="border-radius-lg bg-gradient-primary p-3 h-100">
+                                <p class="text-white text-xs opacity-8 mb-1">Đơn chờ duyệt</p>
+                                <h3 class="text-white mb-0">14 đơn</h3>
+                                <p class="text-white text-sm opacity-8 mb-0">Có 3 đơn vừa phát sinh sáng nay</p>
                             </div>
                         </div>
-                        <div class="col-lg-3 col-md-6 col-sm-6 mt-lg-0 mt-4">
-                            <div class="card ">
-                                <div class="card-header p-3 pt-2 bg-transparent">
-                                    <div
-                                        class="icon icon-lg icon-shape bg-gradient-info shadow-info text-center border-radius-xl mt-n4 position-absolute">
-                                        <i class="material-icons opacity-10">person_add</i>
-                                    </div>
-                                    <div class="text-end pt-1">
-                                        <p class="text-sm mb-0 text-capitalize ">Followers</p>
-                                        <h4 class="mb-0 ">+91</h4>
-                                    </div>
-                                </div>
-                                <hr class="horizontal my-0 dark">
-                                <div class="card-footer p-3">
-                                    <p class="mb-0 ">Just updated</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mt-5">
-                        <div class="col-lg-4 col-md-6">
-                            <div class="card" data-animation="true">
-                                <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-                                    <a class="d-block blur-shadow-image">
-                                        <img src="{{ asset('assets') }}/img/products/product-1-min.jpg"
-                                            alt="img-blur-shadow" class="img-fluid shadow border-radius-lg">
-                                    </a>
-                                    <div class="colored-shadow"
-                                        style="background-image: url(&quot;{{ asset('assets') }}/img/products/product-1-min.jpg&quot;);">
-                                    </div>
-                                </div>
-                                <div class="card-body text-center">
-                                    <div class="d-flex mt-n6 mx-auto">
-                                        <a class="btn btn-link text-primary ms-auto border-0" data-bs-toggle="tooltip"
-                                            data-bs-placement="bottom" title="Refresh">
-                                            <i class="material-icons text-lg">refresh</i>
-                                        </a>
-                                        <button class="btn btn-link text-info me-auto border-0" data-bs-toggle="tooltip"
-                                            data-bs-placement="bottom" title="Edit">
-                                            <i class="material-icons text-lg">edit</i>
-                                        </button>
-                                    </div>
-                                    <h5 class="font-weight-normal mt-3">
-                                        <a href="javascript:;">Cozy 5 Stars Apartment</a>
-                                    </h5>
-                                    <p class="mb-0">
-                                        The place is close to Barceloneta Beach and bus stop just 2 min by walk and near
-                                        to "Naviglio" where you can enjoy the main night life in Barcelona.
-                                    </p>
-                                </div>
-                                <hr class="dark horizontal my-0">
-                                <div class="card-footer d-flex">
-                                    <p class="font-weight-normal my-auto">$899/night</p>
-                                    <i class="material-icons position-relative ms-auto text-lg me-1 my-auto">place</i>
-                                    <p class="text-sm my-auto"> Barcelona, Spain</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6 mt-5 mt-md-0">
-                            <div class="card" data-animation="true">
-                                <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-                                    <a class="d-block blur-shadow-image">
-                                        <img src="{{ asset('assets') }}/img/products/product-2-min.jpg"
-                                            alt="img-blur-shadow" class="img-fluid shadow border-radius-lg">
-                                    </a>
-                                    <div class="colored-shadow"
-                                        style="background-image: url(&quot;{{ asset('assets') }}/img/products/product-2-min.jpg&quot;);">
-                                    </div>
-                                </div>
-                                <div class="card-body text-center">
-                                    <div class="d-flex mt-n6 mx-auto">
-                                        <a class="btn btn-link text-primary ms-auto border-0" data-bs-toggle="tooltip"
-                                            data-bs-placement="bottom" title="Refresh">
-                                            <i class="material-icons text-lg">refresh</i>
-                                        </a>
-                                        <button class="btn btn-link text-info me-auto border-0" data-bs-toggle="tooltip"
-                                            data-bs-placement="bottom" title="Edit">
-                                            <i class="material-icons text-lg">edit</i>
-                                        </button>
-                                    </div>
-                                    <h5 class="font-weight-normal mt-3">
-                                        <a href="javascript:;">Office Studio</a>
-                                    </h5>
-                                    <p class="mb-0">
-                                        The place is close to Metro Station and bus stop just 2 min by walk and near to
-                                        "Naviglio" where you can enjoy the night life in London, UK.
-                                    </p>
-                                </div>
-                                <hr class="dark horizontal my-0">
-                                <div class="card-footer d-flex">
-                                    <p class="font-weight-normal my-auto">$1.119/night</p>
-                                    <i class="material-icons position-relative ms-auto text-lg me-1 my-auto">place</i>
-                                    <p class="text-sm my-auto"> London, UK</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 mt-5 mt-lg-0">
-                            <div class="card" data-animation="true">
-                                <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-                                    <a class="d-block blur-shadow-image">
-                                        <img src="{{ asset('assets') }}/img/products/product-3-min.jpg"
-                                            alt="img-blur-shadow" class="img-fluid shadow border-radius-lg">
-                                    </a>
-                                    <div class="colored-shadow"
-                                        style="background-image: url(&quot;{{ asset('assets') }}/img/products/product-3-min.jpg&quot;);">
-                                    </div>
-                                </div>
-                                <div class="card-body text-center">
-                                    <div class="d-flex mt-n6 mx-auto">
-                                        <a class="btn btn-link text-primary ms-auto border-0" data-bs-toggle="tooltip"
-                                            data-bs-placement="bottom" title="Refresh">
-                                            <i class="material-icons text-lg">refresh</i>
-                                        </a>
-                                        <button class="btn btn-link text-info me-auto border-0" data-bs-toggle="tooltip"
-                                            data-bs-placement="bottom" title="Edit">
-                                            <i class="material-icons text-lg">edit</i>
-                                        </button>
-                                    </div>
-                                    <h5 class="font-weight-normal mt-3">
-                                        <a href="javascript:;">Beautiful Castle</a>
-                                    </h5>
-                                    <p class="mb-0">
-                                        The place is close to Metro Station and bus stop just 2 min by walk and near to
-                                        "Naviglio" where you can enjoy the main night life in Milan.
-                                    </p>
-                                </div>
-                                <hr class="dark horizontal my-0">
-                                <div class="card-footer d-flex">
-                                    <p class="font-weight-normal my-auto">$459/night</p>
-                                    <i class="material-icons position-relative ms-auto text-lg me-1 my-auto">place</i>
-                                    <p class="text-sm my-auto"> Milan, Italy</p>
-                                </div>
+                        <div class="col-lg-3 col-md-6">
+                            <div class="border-radius-lg bg-gradient-dark p-3 h-100">
+                                <p class="text-white text-xs opacity-8 mb-1">Thiết bị cảnh báo</p>
+                                <h3 class="text-white mb-0">1 máy</h3>
+                                <p class="text-white text-sm opacity-8 mb-0">Máy kho vận cần kiểm tra lại tín hiệu</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    @push('js')
-    <script src="{{ asset('assets') }}/js/plugins/perfect-scrollbar.min.js"></script>
+    </div>
+</div>
+
+@push('js')
     <script src="{{ asset('assets') }}/js/plugins/chartjs.min.js"></script>
-    <script src="{{ asset('assets') }}/js/plugins/world.js"></script>
     <script>
-        var ctx = document.getElementById("chart-bars").getContext("2d");
-
-        new Chart(ctx, {
-            type: "bar",
-            data: {
-                labels: ["M", "T", "W", "T", "F", "S", "S"],
-                datasets: [{
-                    label: "Sales",
-                    tension: 0.4,
-                    borderWidth: 0,
-                    borderRadius: 4,
-                    borderSkipped: false,
-                    backgroundColor: "rgba(255, 255, 255, .8)",
-                    data: [50, 20, 10, 22, 50, 10, 40],
-                    maxBarThickness: 6
-                }, ],
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: false,
-                    }
+        const trendCanvas = document.getElementById('attendance-trend-chart');
+        if (trendCanvas) {
+            new Chart(trendCanvas.getContext('2d'), {
+                type: 'line',
+                data: {
+                    labels: @json($trendLabels),
+                    datasets: [{
+                        label: 'Đúng giờ',
+                        tension: 0.35,
+                        borderWidth: 3,
+                        borderColor: '#2dce89',
+                        backgroundColor: 'rgba(45, 206, 137, .12)',
+                        fill: true,
+                        data: @json($attendanceSeries),
+                        pointRadius: 4,
+                        pointBackgroundColor: '#2dce89',
+                    }, {
+                        label: 'Đi muộn',
+                        tension: 0.35,
+                        borderWidth: 3,
+                        borderColor: '#fb6340',
+                        backgroundColor: 'rgba(251, 99, 64, .12)',
+                        fill: true,
+                        data: @json($lateSeries),
+                        pointRadius: 4,
+                        pointBackgroundColor: '#fb6340',
+                    }],
                 },
-                interaction: {
-                    intersect: false,
-                    mode: 'index',
-                },
-                scales: {
-                    y: {
-                        grid: {
-                            drawBorder: false,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
                             display: true,
-                            drawOnChartArea: true,
-                            drawTicks: false,
-                            borderDash: [5, 5],
-                            color: 'rgba(255, 255, 255, .2)'
-                        },
-                        ticks: {
-                            suggestedMin: 0,
-                            suggestedMax: 500,
+                            labels: {
+                                usePointStyle: true,
+                            }
+                        }
+                    },
+                    interaction: {
+                        intersect: false,
+                        mode: 'index',
+                    },
+                    scales: {
+                        y: {
                             beginAtZero: true,
-                            padding: 10,
-                            font: {
-                                size: 14,
-                                weight: 300,
-                                family: "Roboto",
-                                style: 'normal',
-                                lineHeight: 2
+                            grid: {
+                                drawBorder: false,
+                                color: 'rgba(0,0,0,.06)',
                             },
-                            color: "#fff"
+                            ticks: {
+                                color: '#67748e',
+                            }
                         },
-                    },
-                    x: {
-                        grid: {
-                            drawBorder: false,
-                            display: true,
-                            drawOnChartArea: true,
-                            drawTicks: false,
-                            borderDash: [5, 5],
-                            color: 'rgba(255, 255, 255, .2)'
-                        },
-                        ticks: {
-                            display: true,
-                            color: '#f8f9fa',
-                            padding: 10,
-                            font: {
-                                size: 14,
-                                weight: 300,
-                                family: "Roboto",
-                                style: 'normal',
-                                lineHeight: 2
+                        x: {
+                            grid: {
+                                display: false,
                             },
+                            ticks: {
+                                color: '#67748e',
+                            }
                         }
-                    },
-                },
-            },
-        });
-
-
-        var ctx2 = document.getElementById("chart-line").getContext("2d");
-
-        new Chart(ctx2, {
-            type: "line",
-            data: {
-                labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-                datasets: [{
-                    label: "Mobile apps",
-                    tension: 0,
-                    borderWidth: 0,
-                    pointRadius: 5,
-                    pointBackgroundColor: "rgba(255, 255, 255, .8)",
-                    pointBorderColor: "transparent",
-                    borderColor: "rgba(255, 255, 255, .8)",
-                    borderColor: "rgba(255, 255, 255, .8)",
-                    borderWidth: 4,
-                    backgroundColor: "transparent",
-                    fill: true,
-                    data: [50, 40, 300, 320, 500, 350, 200, 230, 500],
-                    maxBarThickness: 6
-
-                }],
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: false,
-                    }
-                },
-                interaction: {
-                    intersect: false,
-                    mode: 'index',
-                },
-                scales: {
-                    y: {
-                        grid: {
-                            drawBorder: false,
-                            display: true,
-                            drawOnChartArea: true,
-                            drawTicks: false,
-                            borderDash: [5, 5],
-                            color: 'rgba(255, 255, 255, .2)'
-                        },
-                        ticks: {
-                            display: true,
-                            color: '#f8f9fa',
-                            padding: 10,
-                            font: {
-                                size: 14,
-                                weight: 300,
-                                family: "Roboto",
-                                style: 'normal',
-                                lineHeight: 2
-                            },
-                        }
-                    },
-                    x: {
-                        grid: {
-                            drawBorder: false,
-                            display: false,
-                            drawOnChartArea: false,
-                            drawTicks: false,
-                            borderDash: [5, 5]
-                        },
-                        ticks: {
-                            display: true,
-                            color: '#f8f9fa',
-                            padding: 10,
-                            font: {
-                                size: 14,
-                                weight: 300,
-                                family: "Roboto",
-                                style: 'normal',
-                                lineHeight: 2
-                            },
-                        }
-                    },
-                },
-            },
-        });
-
-        var ctx3 = document.getElementById("chart-line-tasks").getContext("2d");
-
-        new Chart(ctx3, {
-            type: "line",
-            data: {
-                labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-                datasets: [{
-                    label: "Mobile apps",
-                    tension: 0,
-                    borderWidth: 0,
-                    pointRadius: 5,
-                    pointBackgroundColor: "rgba(255, 255, 255, .8)",
-                    pointBorderColor: "transparent",
-                    borderColor: "rgba(255, 255, 255, .8)",
-                    borderWidth: 4,
-                    backgroundColor: "transparent",
-                    fill: true,
-                    data: [50, 40, 300, 220, 500, 250, 400, 230, 500],
-                    maxBarThickness: 6
-
-                }],
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: false,
-                    }
-                },
-                interaction: {
-                    intersect: false,
-                    mode: 'index',
-                },
-                scales: {
-                    y: {
-                        grid: {
-                            drawBorder: false,
-                            display: true,
-                            drawOnChartArea: true,
-                            drawTicks: false,
-                            borderDash: [5, 5],
-                            color: 'rgba(255, 255, 255, .2)'
-                        },
-                        ticks: {
-                            display: true,
-                            padding: 10,
-                            color: '#f8f9fa',
-                            font: {
-                                size: 14,
-                                weight: 300,
-                                family: "Roboto",
-                                style: 'normal',
-                                lineHeight: 2
-                            },
-                        }
-                    },
-                    x: {
-                        grid: {
-                            drawBorder: false,
-                            display: false,
-                            drawOnChartArea: false,
-                            drawTicks: false,
-                            borderDash: [5, 5]
-                        },
-                        ticks: {
-                            display: true,
-                            color: '#f8f9fa',
-                            padding: 10,
-                            font: {
-                                size: 14,
-                                weight: 300,
-                                family: "Roboto",
-                                style: 'normal',
-                                lineHeight: 2
-                            },
-                        }
-                    },
-                },
-            },
-        });
-
-        // Initialize the vector map
-        var map = new jsVectorMap({
-            selector: "#map",
-            map: "world_merc",
-            zoomOnScroll: false,
-            zoomButtons: false,
-            selectedMarkers: [1, 3],
-            markersSelectable: true,
-            markers: [{
-                    name: "USA",
-                    coords: [40.71296415909766, -74.00437720027804]
-                },
-                {
-                    name: "Germany",
-                    coords: [51.17661451970939, 10.97947735117339]
-                },
-                {
-                    name: "Brazil",
-                    coords: [-7.596735421549542, -54.781694323779185]
-                },
-                {
-                    name: "Russia",
-                    coords: [62.318222797104276, 89.81564777631716]
-                },
-                {
-                    name: "China",
-                    coords: [22.320178999475512, 114.17161225541399],
-                    style: {
-                        fill: '#E91E63'
                     }
                 }
-            ],
-            markerStyle: {
-                initial: {
-                    fill: "#e91e63"
+            });
+        }
+
+        const statusCanvas = document.getElementById('attendance-status-chart');
+        if (statusCanvas) {
+            new Chart(statusCanvas.getContext('2d'), {
+                type: 'doughnut',
+                data: {
+                    labels: @json($statusLabels),
+                    datasets: [{
+                        data: @json($statusValues),
+                        backgroundColor: ['#2dce89', '#fb6340', '#f5365c', '#11cdef'],
+                        borderWidth: 0,
+                    }],
                 },
-                hover: {
-                    fill: "E91E63"
-                },
-                selected: {
-                    fill: "E91E63"
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '68%',
+                    plugins: {
+                        legend: {
+                            display: false,
+                        }
+                    }
                 }
-            },
-
-
-        });
-
+            });
+        }
     </script>
-    @endpush
+@endpush
