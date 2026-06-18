@@ -17,17 +17,27 @@
                     </div>
                 </div>
                 <div class="card-body pt-0">
+                    @if (session('success'))
+                        <div class="alert alert-success text-white mt-4 mb-0" role="alert">
+                            {{ session('success') }}
+                        </div>
+                    @endif
+
                     <div class="row g-3">
                         <div class="col-12 col-lg-6">
-                            <button type="button" class="btn w-100 text-start border border-2 p-4 mb-0 option-card js-mode-btn active" data-mode="wizard">
+                            <button
+                                type="button"
+                                wire:click="$set('formMode', 'wizard')"
+                                class="btn w-100 text-start border border-2 p-4 mb-0 option-card {{ $formMode === 'wizard' ? 'border-primary shadow-lg' : '' }}"
+                            >
                                 <div class="d-flex align-items-center justify-content-between">
                                     <div class="d-flex align-items-center">
                                         <div class="avatar avatar-lg bg-gradient-primary me-3">
-                                            <i class="ni ni-app text-white opacity-10"></i>
+                                            <i class="material-icons-round text-white opacity-10">dynamic_form</i>
                                         </div>
                                         <div>
                                             <h6 class="mb-1">Dùng wizard đầy đủ</h6>
-                                            <p class="text-sm mb-0">Nhập chi tiết, có nhiều bước, phù hợp khi tạo nhân viên mới hoàn chỉnh.</p>
+                                            <p class="text-sm mb-0">Nhập chi tiết nhiều bước, phù hợp khi tạo hồ sơ nhân viên hoàn chỉnh.</p>
                                         </div>
                                     </div>
                                     <span class="badge bg-gradient-primary">Khuyến nghị</span>
@@ -35,11 +45,15 @@
                             </button>
                         </div>
                         <div class="col-12 col-lg-6">
-                            <button type="button" class="btn w-100 text-start border border-2 p-4 mb-0 option-card js-mode-btn" data-mode="quick">
+                            <button
+                                type="button"
+                                wire:click="$set('formMode', 'quick')"
+                                class="btn w-100 text-start border border-2 p-4 mb-0 option-card {{ $formMode === 'quick' ? 'border-primary shadow-lg' : '' }}"
+                            >
                                 <div class="d-flex align-items-center justify-content-between">
                                     <div class="d-flex align-items-center">
                                         <div class="avatar avatar-lg bg-gradient-dark me-3">
-                                            <i class="ni ni-single-02 text-white opacity-10"></i>
+                                            <i class="material-icons-round text-white opacity-10">person_add</i>
                                         </div>
                                         <div>
                                             <h6 class="mb-1">Chỉ thêm thông tin bắt buộc</h6>
@@ -51,10 +65,37 @@
                             </button>
                         </div>
                     </div>
+
+                    <div class="row mt-4">
+                        <div class="col-md-4">
+                            <div class="card h-100">
+                                <div class="card-body p-3">
+                                    <p class="text-sm text-secondary mb-1">Nhân viên hiện có</p>
+                                    <h6 class="mb-0">{{ $employeeCount }}</h6>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mt-3 mt-md-0">
+                            <div class="card h-100">
+                                <div class="card-body p-3">
+                                    <p class="text-sm text-secondary mb-1">Phòng ban khả dụng</p>
+                                    <h6 class="mb-0">{{ $departments->count() }}</h6>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mt-3 mt-md-0">
+                            <div class="card h-100">
+                                <div class="card-body p-3">
+                                    <p class="text-sm text-secondary mb-1">Chức vụ khả dụng</p>
+                                    <h6 class="mb-0">{{ $positions->count() }}</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div id="wizardMode">
+            @if ($formMode === 'wizard')
                 <div class="multisteps-form mb-9">
                     <div class="row">
                         <div class="col-12 col-lg-8 m-auto">
@@ -78,37 +119,50 @@
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    <form class="multisteps-form__form">
+                                    <form class="multisteps-form__form" wire:submit.prevent="saveEmployee">
                                         <div class="multisteps-form__panel border-radius-xl bg-white js-active" data-animation="FadeIn">
                                             <h5 class="font-weight-bolder mb-0">Thông tin cá nhân</h5>
-                                            <p class="mb-0 text-sm">Nhập các thông tin cơ bản của nhân viên.</p>
+                                            <p class="mb-0 text-sm">Nhập thông tin cơ bản của nhân viên.</p>
                                             <div class="multisteps-form__content">
                                                 <div class="row mt-3">
                                                     <div class="col-12 col-sm-6">
-                                                        <div class="input-group input-group-dynamic">
-                                                            <label class="form-label">Họ và tên</label>
-                                                            <input class="multisteps-form__input form-control" type="text" />
-                                                        </div>
+                                                        <label class="form-label">Họ và tên <span class="text-danger">*</span></label>
+                                                        <input class="form-control" type="text" wire:model="fullName" placeholder="Nguyễn Văn A">
+                                                        @error('fullName') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
                                                     </div>
                                                     <div class="col-12 col-sm-6 mt-3 mt-sm-0">
-                                                        <div class="input-group input-group-dynamic">
-                                                            <label class="form-label">Mã nhân viên</label>
-                                                            <input class="multisteps-form__input form-control" type="text" />
-                                                        </div>
+                                                        <label class="form-label">Mã nhân viên <span class="text-danger">*</span></label>
+                                                        <input class="form-control" type="text" wire:model="employeeCode" placeholder="EMP-005">
+                                                        @error('employeeCode') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
                                                     </div>
                                                 </div>
                                                 <div class="row mt-3">
                                                     <div class="col-12 col-sm-6">
-                                                        <div class="input-group input-group-dynamic">
-                                                            <label class="form-label">Số điện thoại</label>
-                                                            <input class="multisteps-form__input form-control" type="text" />
-                                                        </div>
+                                                        <label class="form-label">Số điện thoại</label>
+                                                        <input class="form-control" type="text" wire:model="phone" placeholder="0900000000">
+                                                        @error('phone') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
                                                     </div>
                                                     <div class="col-12 col-sm-6 mt-3 mt-sm-0">
-                                                        <div class="input-group input-group-dynamic">
-                                                            <label class="form-label">Email</label>
-                                                            <input class="multisteps-form__input form-control" type="email" />
-                                                        </div>
+                                                        <label class="form-label">Email</label>
+                                                        <input class="form-control" type="email" wire:model="email" placeholder="nhanvien@tmt.vn">
+                                                        @error('email') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
+                                                    </div>
+                                                </div>
+                                                <div class="row mt-3">
+                                                    <div class="col-12 col-sm-6">
+                                                        <label class="form-label">Giới tính</label>
+                                                        <select class="form-control" wire:model="gender">
+                                                            <option value="">Chưa chọn</option>
+                                                            <option value="male">Nam</option>
+                                                            <option value="female">Nữ</option>
+                                                            <option value="other">Khác</option>
+                                                        </select>
+                                                        @error('gender') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
+                                                    </div>
+                                                    <div class="col-12 col-sm-6 mt-3 mt-sm-0">
+                                                        <label class="form-label">Ngày sinh</label>
+                                                        <input class="form-control" type="date" wire:model="dateOfBirth">
+                                                        @error('dateOfBirth') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
                                                     </div>
                                                 </div>
                                                 <div class="button-row d-flex mt-4">
@@ -119,43 +173,57 @@
 
                                         <div class="multisteps-form__panel border-radius-xl bg-white" data-animation="FadeIn">
                                             <h5 class="font-weight-bolder mb-0">Thông tin công việc</h5>
-                                            <p class="mb-0 text-sm">Chọn phòng ban, chức vụ và ca làm cho nhân viên.</p>
+                                            <p class="mb-0 text-sm">Chọn phòng ban, chức vụ và ca làm ban đầu cho nhân viên.</p>
                                             <div class="multisteps-form__content">
                                                 <div class="row mt-3">
                                                     <div class="col-12 col-sm-6">
                                                         <label class="form-label mb-1">Phòng ban</label>
-                                                        <select class="form-control">
-                                                            <option>Kinh doanh</option>
-                                                            <option>Kế toán</option>
-                                                            <option>Công nghệ</option>
-                                                            <option>Hành chính</option>
+                                                        <select class="form-control" wire:model="departmentId">
+                                                            <option value="">Chưa gán phòng ban</option>
+                                                            @foreach ($departments as $department)
+                                                                <option value="{{ $department->id }}">{{ $department->name }}</option>
+                                                            @endforeach
                                                         </select>
+                                                        @error('departmentId') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
                                                     </div>
                                                     <div class="col-12 col-sm-6 mt-3 mt-sm-0">
                                                         <label class="form-label mb-1">Chức vụ</label>
-                                                        <select class="form-control">
-                                                            <option>Nhân viên</option>
-                                                            <option>Trưởng phòng</option>
-                                                            <option>Phó phòng</option>
-                                                            <option>Thực tập sinh</option>
+                                                        <select class="form-control" wire:model="positionId">
+                                                            <option value="">Chưa gán chức vụ</option>
+                                                            @foreach ($positions as $position)
+                                                                <option value="{{ $position->id }}">{{ $position->name }}</option>
+                                                            @endforeach
                                                         </select>
+                                                        @error('positionId') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
                                                     </div>
                                                 </div>
                                                 <div class="row mt-3">
                                                     <div class="col-12 col-sm-6">
-                                                        <label class="form-label mb-1">Ca làm</label>
-                                                        <select class="form-control">
-                                                            <option>Hành chính</option>
-                                                            <option>Ca sáng</option>
-                                                            <option>Ca chiều</option>
-                                                            <option>Ca đêm</option>
+                                                        <label class="form-label mb-1">Ca làm ban đầu</label>
+                                                        <select class="form-control" wire:model="shiftId">
+                                                            <option value="">Chưa chọn ca</option>
+                                                            @foreach ($shifts as $shift)
+                                                                <option value="{{ $shift->id }}">{{ $shift->name }}</option>
+                                                            @endforeach
                                                         </select>
+                                                        <p class="text-xs text-secondary mt-1 mb-0">Ca làm sẽ được dùng làm ghi chú ban đầu, chưa phải phân ca chính thức.</p>
+                                                        @error('shiftId') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
                                                     </div>
                                                     <div class="col-12 col-sm-6 mt-3 mt-sm-0">
-                                                        <div class="input-group input-group-dynamic">
-                                                            <label class="form-label">Ngày vào làm</label>
-                                                            <input class="multisteps-form__input form-control" type="date" />
-                                                        </div>
+                                                        <label class="form-label">Ngày vào làm</label>
+                                                        <input class="form-control" type="date" wire:model="hireDate">
+                                                        @error('hireDate') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
+                                                    </div>
+                                                </div>
+                                                <div class="row mt-3">
+                                                    <div class="col-12">
+                                                        <label class="form-label mb-1">Trạng thái làm việc</label>
+                                                        <select class="form-control" wire:model="workStatus">
+                                                            <option value="active">Đang làm việc</option>
+                                                            <option value="probation">Thử việc</option>
+                                                            <option value="inactive">Tạm ngưng</option>
+                                                        </select>
+                                                        @error('workStatus') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
                                                     </div>
                                                 </div>
                                                 <div class="button-row d-flex mt-4">
@@ -167,31 +235,10 @@
 
                                         <div class="multisteps-form__panel border-radius-xl bg-white" data-animation="FadeIn">
                                             <h5 class="font-weight-bolder mb-0">Tài khoản hệ thống</h5>
-                                            <p class="mb-0 text-sm">Tạo tài khoản đăng nhập nếu nhân viên cần sử dụng hệ thống.</p>
+                                            <p class="mb-0 text-sm">Giai đoạn này chỉ tạo hồ sơ nhân viên. Tài khoản đăng nhập sẽ nối sau ở module phân quyền.</p>
                                             <div class="multisteps-form__content">
-                                                <div class="row mt-3">
-                                                    <div class="col-12 col-sm-6">
-                                                        <div class="input-group input-group-dynamic">
-                                                            <label class="form-label">Tên đăng nhập</label>
-                                                            <input class="multisteps-form__input form-control" type="text" />
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-12 col-sm-6 mt-3 mt-sm-0">
-                                                        <div class="input-group input-group-dynamic">
-                                                            <label class="form-label">Mật khẩu</label>
-                                                            <input class="multisteps-form__input form-control" type="password" />
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row mt-3">
-                                                    <div class="col-12">
-                                                        <label class="form-label mb-1">Quyền truy cập</label>
-                                                        <select class="form-control">
-                                                            <option>Nhân viên</option>
-                                                            <option>Quản lý</option>
-                                                            <option>Nhân sự</option>
-                                                        </select>
-                                                    </div>
+                                                <div class="alert alert-info text-white mt-3 mb-0" role="alert">
+                                                    Sau khi có module phân quyền, nhân viên có thể được liên kết với tài khoản `users` và vai trò đăng nhập.
                                                 </div>
                                                 <div class="button-row d-flex mt-4">
                                                     <button class="btn bg-gradient-light mb-0 js-btn-prev" type="button" title="Prev">Quay lại</button>
@@ -202,18 +249,20 @@
 
                                         <div class="multisteps-form__panel border-radius-xl bg-white h-100" data-animation="FadeIn">
                                             <h5 class="font-weight-bolder mb-0">Ghi chú và xác nhận</h5>
-                                            <p class="mb-0 text-sm">Thêm ghi chú cuối cùng trước khi lưu nhân viên.</p>
+                                            <p class="mb-0 text-sm">Kiểm tra thông tin cuối cùng trước khi lưu nhân viên.</p>
                                             <div class="multisteps-form__content mt-3">
                                                 <div class="row">
                                                     <div class="col-12">
-                                                        <div class="input-group input-group-dynamic">
-                                                            <textarea class="multisteps-form__textarea form-control" rows="5" placeholder="Ghi chú, người tạo, lý do tạo..."></textarea>
-                                                        </div>
+                                                        <label class="form-label">Ghi chú</label>
+                                                        <textarea class="form-control" rows="5" wire:model="note" placeholder="Ghi chú, người tạo, lý do tạo..."></textarea>
+                                                        @error('note') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
                                                     </div>
                                                 </div>
                                                 <div class="button-row d-flex mt-4">
                                                     <button class="btn bg-gradient-light mb-0 js-btn-prev" type="button" title="Prev">Quay lại</button>
-                                                    <button class="btn bg-gradient-dark ms-auto mb-0" type="button" title="Send">Lưu nhân viên</button>
+                                                    <button class="btn bg-gradient-dark ms-auto mb-0" type="submit" title="Send">
+                                                        Lưu nhân viên
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
@@ -223,9 +272,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <div id="quickMode" class="d-none">
+            @else
                 <div class="row">
                     <div class="col-12 col-lg-8 m-auto">
                         <div class="card">
@@ -234,112 +281,83 @@
                                 <p class="text-sm mb-0">Dùng khi cần tạo hồ sơ nhanh, chỉ nhập những thông tin cần thiết.</p>
                             </div>
                             <div class="card-body">
-                                <div class="row">
-                                    <div class="col-12 col-sm-6">
-                                        <div class="input-group input-group-dynamic">
-                                            <label class="form-label">Họ và tên</label>
-                                            <input class="form-control" type="text" />
+                                <form wire:submit.prevent="saveEmployee">
+                                    <div class="row">
+                                        <div class="col-12 col-sm-6">
+                                            <label class="form-label">Họ và tên <span class="text-danger">*</span></label>
+                                            <input class="form-control" type="text" wire:model="fullName" placeholder="Nguyễn Văn A">
+                                            @error('fullName') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
+                                        </div>
+                                        <div class="col-12 col-sm-6 mt-3 mt-sm-0">
+                                            <label class="form-label">Mã nhân viên <span class="text-danger">*</span></label>
+                                            <input class="form-control" type="text" wire:model="employeeCode" placeholder="EMP-005">
+                                            @error('employeeCode') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
                                         </div>
                                     </div>
-                                    <div class="col-12 col-sm-6 mt-3 mt-sm-0">
-                                        <div class="input-group input-group-dynamic">
-                                            <label class="form-label">Mã nhân viên</label>
-                                            <input class="form-control" type="text" />
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row mt-3">
-                                    <div class="col-12 col-sm-6">
-                                        <div class="input-group input-group-dynamic">
+                                    <div class="row mt-3">
+                                        <div class="col-12 col-sm-6">
                                             <label class="form-label">Email</label>
-                                            <input class="form-control" type="email" />
+                                            <input class="form-control" type="email" wire:model="email" placeholder="nhanvien@tmt.vn">
+                                            @error('email') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
                                         </div>
-                                    </div>
-                                    <div class="col-12 col-sm-6 mt-3 mt-sm-0">
-                                        <div class="input-group input-group-dynamic">
+                                        <div class="col-12 col-sm-6 mt-3 mt-sm-0">
                                             <label class="form-label">Số điện thoại</label>
-                                            <input class="form-control" type="text" />
+                                            <input class="form-control" type="text" wire:model="phone" placeholder="0900000000">
+                                            @error('phone') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row mt-3">
-                                    <div class="col-12 col-sm-6">
-                                        <label class="form-label mb-1">Phòng ban</label>
-                                        <select class="form-control">
-                                            <option>Kinh doanh</option>
-                                            <option>Kế toán</option>
-                                            <option>Công nghệ</option>
-                                            <option>Hành chính</option>
-                                        </select>
+                                    <div class="row mt-3">
+                                        <div class="col-12 col-sm-6">
+                                            <label class="form-label mb-1">Phòng ban</label>
+                                            <select class="form-control" wire:model="departmentId">
+                                                <option value="">Chưa gán phòng ban</option>
+                                                @foreach ($departments as $department)
+                                                    <option value="{{ $department->id }}">{{ $department->name }}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('departmentId') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
+                                        </div>
+                                        <div class="col-12 col-sm-6 mt-3 mt-sm-0">
+                                            <label class="form-label mb-1">Chức vụ</label>
+                                            <select class="form-control" wire:model="positionId">
+                                                <option value="">Chưa gán chức vụ</option>
+                                                @foreach ($positions as $position)
+                                                    <option value="{{ $position->id }}">{{ $position->name }}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('positionId') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
+                                        </div>
                                     </div>
-                                    <div class="col-12 col-sm-6 mt-3 mt-sm-0">
-                                        <label class="form-label mb-1">Chức vụ</label>
-                                        <select class="form-control">
-                                            <option>Nhân viên</option>
-                                            <option>Trưởng phòng</option>
-                                            <option>Phó phòng</option>
-                                            <option>Thực tập sinh</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="row mt-3">
-                                    <div class="col-12">
-                                        <div class="input-group input-group-dynamic">
+                                    <div class="row mt-3">
+                                        <div class="col-12 col-sm-6">
                                             <label class="form-label">Ngày vào làm</label>
-                                            <input class="form-control" type="date" />
+                                            <input class="form-control" type="date" wire:model="hireDate">
+                                            @error('hireDate') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
+                                        </div>
+                                        <div class="col-12 col-sm-6 mt-3 mt-sm-0">
+                                            <label class="form-label mb-1">Trạng thái</label>
+                                            <select class="form-control" wire:model="workStatus">
+                                                <option value="active">Đang làm việc</option>
+                                                <option value="probation">Thử việc</option>
+                                                <option value="inactive">Tạm ngưng</option>
+                                            </select>
+                                            @error('workStatus') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
                                         </div>
                                     </div>
-                                </div>
-                                <div class="d-flex justify-content-between mt-4">
-                                    <button type="button" class="btn btn-outline-secondary mb-0 js-mode-btn" data-mode="wizard">Quay lại wizard</button>
-                                    <button type="button" class="btn bg-gradient-dark mb-0">Lưu nhân viên</button>
-                                </div>
+                                    <div class="d-flex justify-content-between mt-4">
+                                        <button type="button" class="btn btn-outline-secondary mb-0" wire:click="$set('formMode', 'wizard')">Quay lại wizard</button>
+                                        <button type="submit" class="btn bg-gradient-dark mb-0">Lưu nhân viên</button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            @endif
         </div>
     </div>
 </div>
 
 @push('js')
-<script src="{{ asset('assets') }}/js/plugins/perfect-scrollbar.min.js"></script>
-<script src="{{ asset('assets') }}/js/plugins/choices.min.js"></script>
 <script src="{{ asset('assets') }}/js/plugins/multistep-form.js"></script>
-<script>
-    if (document.getElementById('choices-state')) {
-        var element = document.getElementById('choices-state');
-        const example = new Choices(element, {
-            searchEnabled: false
-        });
-    }
-
-    const modeButtons = document.querySelectorAll('.js-mode-btn');
-    const wizardMode = document.getElementById('wizardMode');
-    const quickMode = document.getElementById('quickMode');
-    const optionCards = document.querySelectorAll('.option-card');
-
-    function setMode(mode) {
-        if (mode === 'quick') {
-            wizardMode.classList.add('d-none');
-            quickMode.classList.remove('d-none');
-        } else {
-            quickMode.classList.add('d-none');
-            wizardMode.classList.remove('d-none');
-        }
-
-        optionCards.forEach((card) => {
-            const active = card.dataset.mode === mode;
-            card.classList.toggle('border-primary', active);
-            card.classList.toggle('shadow-lg', active);
-        });
-    }
-
-    modeButtons.forEach((button) => {
-        button.addEventListener('click', () => setMode(button.dataset.mode));
-    });
-
-    setMode('wizard');
-</script>
 @endpush
