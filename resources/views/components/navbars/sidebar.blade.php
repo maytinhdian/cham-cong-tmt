@@ -348,6 +348,13 @@
                                 <span class="sidenav-normal  ms-2  ps-1"> Widgets </span>
                             </a>
                         </li>
+                        <li class="nav-item {{ Route::currentRouteName() == 'attendance' ? 'active' : '' }}">
+                            <a class="nav-link text-white  {{ Route::currentRouteName() == 'attendance' ? 'active' : '' }} "
+                                href="{{ route('attendance') }}">
+                                <span class="sidenav-mini-icon"> T </span>
+                                <span class="sidenav-normal  ms-2  ps-1"> Chấm công </span>
+                            </a>
+                        </li>
                         <li class="nav-item  {{ Route::currentRouteName() == 'charts' ? 'active' : '' }}">
                             <a class="nav-link text-white {{ Route::currentRouteName() == 'charts' ? 'active' : '' }}"
                                 href="{{ route('charts') }}">

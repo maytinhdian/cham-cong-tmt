@@ -51,6 +51,7 @@ use App\Http\Livewire\Pages\Account\Invoice;
 use App\Http\Livewire\Pages\Account\Security;
 use App\Http\Livewire\Pages\Account\Settings;
 use App\Http\Livewire\Pages\Charts;
+use App\Http\Livewire\Pages\Attendance;
 use App\Http\Livewire\Pages\Notifications;
 use App\Http\Livewire\Pages\PricingPage;
 use App\Http\Livewire\Pages\Profile\Overview;
@@ -130,6 +131,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('laravel-examples/user-profile', ProfileEdit::class)->name('user-profile');
 
 	Route::get('pages/charts', Charts::class)->name('charts');
+	Route::get('pages/attendance', Attendance::class)->name('attendance');
 	Route::get('pages/notifications', Notifications::class)->name('notifications');
 	Route::get('pages/pricing-page', PricingPage::class)->name('pricing-page');
     Route::get('pages/rtl', Rtl::class)->name('rtl');
