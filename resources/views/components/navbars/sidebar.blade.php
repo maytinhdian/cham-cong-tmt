@@ -307,6 +307,13 @@
                                             <span class="sidenav-normal  ms-2  ps-1"> Chấm công </span>
                                         </a>
                                     </li>
+                                    <li class="nav-item {{ Route::currentRouteName() == 'attendance-list' ? 'active' : '' }}">
+                                        <a class="nav-link text-white {{ Route::currentRouteName() == 'attendance-list' ? 'active' : '' }}"
+                                            href="{{ route('attendance-list') }}">
+                                            <span class="sidenav-mini-icon"> D </span>
+                                            <span class="sidenav-normal  ms-2  ps-1"> Danh sách chấm công </span>
+                                        </a>
+                                    </li>
                                     <li class="nav-item {{ Route::currentRouteName() == 'attendance-settings' ? 'active' : '' }}">
                                         <a class="nav-link text-white {{ Route::currentRouteName() == 'attendance-settings' ? 'active' : '' }}"
                                             href="{{ route('attendance-settings') }}">

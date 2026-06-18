@@ -52,6 +52,7 @@ use App\Http\Livewire\Pages\Account\Security;
 use App\Http\Livewire\Pages\Account\Settings;
 use App\Http\Livewire\Pages\Charts;
 use App\Http\Livewire\Pages\Attendance;
+use App\Http\Livewire\Pages\AttendanceList;
 use App\Http\Livewire\Pages\AttendanceSettings;
 use App\Http\Livewire\Pages\AttendanceReport;
 use App\Http\Livewire\Pages\AttendanceDevices;
@@ -142,6 +143,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 	Route::get('pages/charts', Charts::class)->name('charts');
 	Route::get('pages/attendance', Attendance::class)->name('attendance');
+	Route::get('pages/attendance-list', AttendanceList::class)->name('attendance-list');
 	Route::get('pages/attendance-settings', AttendanceSettings::class)->name('attendance-settings');
 	Route::get('pages/attendance-report', AttendanceReport::class)->name('attendance-report');
 	Route::get('pages/attendance-devices', AttendanceDevices::class)->name('attendance-devices');
