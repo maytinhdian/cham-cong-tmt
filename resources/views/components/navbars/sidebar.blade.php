@@ -163,6 +163,15 @@
                     </ul>
                 </div>
             </li>
+            @can('manage-users', App\Models\User::class)
+            <li class="nav-item">
+                <a class="nav-link text-white {{ Route::currentRouteName() == 'permission-management' ? 'active' : '' }}"
+                    href="{{ route('permission-management') }}">
+                    <i class="material-icons-round opacity-10">admin_panel_settings</i>
+                    <span class="nav-link-text ms-2 ps-1">Phân quyền</span>
+                </a>
+            </li>
+            @endcan
             <li class="nav-item mt-3">
                 <h6 class="ps-4  ms-2 text-uppercase text-xs font-weight-bolder text-white">PAGES</h6>
             </li>
@@ -325,7 +334,7 @@
                                         <a class="nav-link text-white {{ Route::currentRouteName() == 'request-management' ? 'active' : '' }}"
                                             href="{{ route('request-management') }}">
                                             <span class="sidenav-mini-icon"> R </span>
-                                            <span class="sidenav-normal  ms-2  ps-1"> Đơn nghỉ phép / OT </span>
+                                            <span class="sidenav-normal  ms-2  ps-1"> Duyệt đơn nghỉ phép / OT </span>
                                         </a>
                                     </li>
                                     <li class="nav-item {{ Route::currentRouteName() == 'work-schedule' ? 'active' : '' }}">

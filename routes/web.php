@@ -56,6 +56,7 @@ use App\Http\Livewire\Pages\AttendanceList;
 use App\Http\Livewire\Pages\AttendanceSettings;
 use App\Http\Livewire\Pages\AttendanceReport;
 use App\Http\Livewire\Pages\AttendanceDevices;
+use App\Http\Livewire\Pages\Permissions\Index as PermissionIndex;
 use App\Http\Livewire\Pages\Requests\Index as RequestIndex;
 use App\Http\Livewire\Pages\WorkSchedule;
 use App\Http\Livewire\Pages\Employees\NewEmployee;
@@ -147,6 +148,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('pages/attendance-settings', AttendanceSettings::class)->name('attendance-settings');
 	Route::get('pages/attendance-report', AttendanceReport::class)->name('attendance-report');
 	Route::get('pages/attendance-devices', AttendanceDevices::class)->name('attendance-devices');
+	Route::get('pages/permissions', PermissionIndex::class)->name('permission-management');
 	Route::get('pages/requests', RequestIndex::class)->name('request-management');
 	Route::get('pages/work-schedule', WorkSchedule::class)->name('work-schedule');
 	Route::get('pages/employees', EmployeeIndex::class)->name('employee-management');

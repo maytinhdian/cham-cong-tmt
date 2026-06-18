@@ -1,9 +1,9 @@
 <div class="container-fluid py-4 bg-gray-200">
     <div class="row">
         <div class="col-lg-8">
-            <h5 class="mb-1">Đơn nghỉ phép / OT / công tác</h5>
+            <h5 class="mb-1">Duyệt đơn nghỉ phép / OT</h5>
             <p class="text-sm mb-0">
-                Quản lý toàn bộ yêu cầu của nhân viên trước khi cập nhật vào bảng công và báo cáo.
+                Quản lý toàn bộ yêu cầu trước khi cập nhật vào bảng công và báo cáo.
             </p>
         </div>
         <div class="col-lg-4 text-lg-end mt-lg-0 mt-3">
@@ -23,7 +23,7 @@
     <div class="row mt-4">
         @foreach ($stats as $stat)
             <div class="col-xl-3 col-md-6 mt-md-0 mt-4">
-                <div class="card">
+                <div class="card h-100">
                     <div class="card-body p-3">
                         <div class="d-flex align-items-center">
                             <div class="icon icon-lg icon-shape bg-gradient-{{ $stat['color'] }} shadow-{{ $stat['color'] }} text-center border-radius-md">
@@ -100,7 +100,7 @@
 
         <div class="col-lg-8 mt-lg-0 mt-4">
             <div class="card h-100">
-                <div class="card-header pb-0 d-flex justify-content-between align-items-center">
+                <div class="card-header pb-0 d-flex justify-content-between align-items-center flex-wrap gap-2">
                     <div>
                         <h6 class="mb-0">Danh sách yêu cầu chờ duyệt</h6>
                         <p class="text-sm mb-0">Theo dõi trạng thái và đưa ra quyết định nhanh</p>
@@ -116,6 +116,7 @@
                             <thead>
                                 <tr>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nhân viên</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Phòng ban</th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Loại</th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Thời gian</th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Lý do</th>
@@ -124,7 +125,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($pendingRequests as $request)
+                                @foreach ($approvalQueue as $request)
                                     <tr>
                                         <td>
                                             <div class="d-flex px-3 py-1">
@@ -133,6 +134,9 @@
                                                     <p class="text-xs text-secondary mb-0">{{ $request['code'] }}</p>
                                                 </div>
                                             </div>
+                                        </td>
+                                        <td>
+                                            <span class="text-sm text-secondary">{{ $request['department'] }}</span>
                                         </td>
                                         <td>
                                             <span class="text-sm">{{ $request['type'] }}</span>
@@ -161,27 +165,99 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
 
-            <div class="card mt-4">
+    <div class="row mt-4">
+        <div class="col-lg-5">
+            <div class="card h-100">
                 <div class="card-header pb-0">
-                    <h6 class="mb-0">Lịch sử xử lý</h6>
-                    <p class="text-sm mb-0">Ghi nhận các yêu cầu vừa được duyệt hoặc từ chối</p>
+                    <h6 class="mb-0">Chi tiết đơn đang chọn</h6>
+                    <p class="text-sm mb-0">Xem nhanh dữ liệu trước khi ra quyết định</p>
+                </div>
+                <div class="card-body">
+                    <div class="border-radius-lg bg-gradient-dark p-3 mb-3">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <p class="text-white text-sm opacity-8 mb-1">Nhân viên</p>
+                                <h5 class="text-white mb-1">{{ $selectedRequest['employee'] }}</h5>
+                                <p class="text-white text-sm opacity-8 mb-0">{{ $selectedRequest['code'] }} - {{ $selectedRequest['department'] }}</p>
+                            </div>
+                            <span class="badge bg-light text-dark">{{ $selectedRequest['status'] }}</span>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <div class="card bg-gray-100 shadow-none mb-0">
+                                <div class="card-body p-3">
+                                    <p class="text-xs text-secondary mb-1">Loại yêu cầu</p>
+                                    <h6 class="mb-0">{{ $selectedRequest['type'] }}</h6>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <div class="card bg-gray-100 shadow-none mb-0">
+                                <div class="card-body p-3">
+                                    <p class="text-xs text-secondary mb-1">Thời lượng</p>
+                                    <h6 class="mb-0">{{ $selectedRequest['duration'] }}</h6>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <div class="card bg-gray-100 shadow-none mb-0">
+                                <div class="card-body p-3">
+                                    <p class="text-xs text-secondary mb-1">Người duyệt</p>
+                                    <h6 class="mb-0">{{ $selectedRequest['approver'] }}</h6>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <div class="card bg-gray-100 shadow-none mb-0">
+                                <div class="card-body p-3">
+                                    <p class="text-xs text-secondary mb-1">Gửi lúc</p>
+                                    <h6 class="mb-0">{{ $selectedRequest['submittedAt'] }}</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-light text-dark border">
+                        <strong>Lý do:</strong> {{ $selectedRequest['reason'] }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-7 mt-lg-0 mt-4">
+            <div class="card h-100">
+                <div class="card-header pb-0">
+                    <h6 class="mb-0">Khu vực đối soát</h6>
+                    <p class="text-sm mb-0">Chốt nhanh trước khi cập nhật vào bảng công</p>
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        @foreach ($history as $item)
-                            <div class="col-md-6 mt-3">
-                                <div class="border-radius-lg p-3 bg-gray-100 h-100">
-                                    <div class="d-flex justify-content-between align-items-start">
-                                        <div class="me-3">
-                                            <h6 class="mb-1 text-sm">{{ $item['title'] }}</h6>
-                                            <p class="text-xs text-secondary mb-0">{{ $item['detail'] }}</p>
+                        @foreach ($pendingByType as $item)
+                            <div class="col-xl-3 col-sm-6 mb-3">
+                                <div class="card mb-0">
+                                    <div class="card-body p-3">
+                                        <div class="d-flex align-items-center">
+                                            <div class="icon icon-lg icon-shape bg-gradient-{{ $item['color'] }} shadow-{{ $item['color'] }} text-center border-radius-md">
+                                                <i class="material-icons opacity-10">{{ $item['icon'] }}</i>
+                                            </div>
+                                            <div class="ms-3">
+                                                <p class="text-sm mb-1 text-capitalize">{{ $item['label'] }}</p>
+                                                <h5 class="mb-0">{{ $item['value'] }}</h5>
+                                            </div>
                                         </div>
-                                        <span class="text-xs text-secondary">{{ $item['time'] }}</span>
                                     </div>
                                 </div>
                             </div>
                         @endforeach
+                    </div>
+
+                    <div class="alert alert-secondary text-dark mt-2 mb-0">
+                        Tự động khóa đơn khi trùng lịch đã duyệt, đồng thời cập nhật phần công và OT liên quan.
                     </div>
                 </div>
             </div>
@@ -242,9 +318,38 @@
                             <label class="form-check-label">{{ $note }}</label>
                         </div>
                     @endforeach
+
                     <div class="d-grid gap-2 mt-4">
                         <button type="button" class="btn bg-gradient-success mb-0">Lưu thiết lập</button>
                         <button type="button" class="btn btn-outline-dark mb-0">Xem báo cáo</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header pb-0">
+                    <h6 class="mb-0">Lịch sử xử lý</h6>
+                    <p class="text-sm mb-0">Ghi nhận các yêu cầu vừa được duyệt hoặc từ chối</p>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        @foreach ($history as $item)
+                            <div class="col-md-6 mt-3">
+                                <div class="border-radius-lg p-3 bg-gray-100 h-100">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <div class="me-3">
+                                            <h6 class="mb-1 text-sm">{{ $item['title'] }}</h6>
+                                            <p class="text-xs text-secondary mb-0">{{ $item['detail'] }}</p>
+                                        </div>
+                                        <span class="text-xs text-secondary">{{ $item['time'] }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
                     </div>
                 </div>
             </div>
