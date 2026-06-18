@@ -362,6 +362,20 @@
                                 <span class="sidenav-normal  ms-2  ps-1"> Thêm nhân viên </span>
                             </a>
                         </li>
+                        <li class="nav-item {{ Route::currentRouteName() == 'employee-management' ? 'active' : '' }}">
+                            <a class="nav-link text-white  {{ Route::currentRouteName() == 'employee-management' ? 'active' : '' }} "
+                                href="{{ route('employee-management') }}">
+                                <span class="sidenav-mini-icon"> L </span>
+                                <span class="sidenav-normal  ms-2  ps-1"> Danh sách nhân viên </span>
+                            </a>
+                        </li>
+                        <li class="nav-item {{ Route::currentRouteName() == 'department-management' ? 'active' : '' }}">
+                            <a class="nav-link text-white  {{ Route::currentRouteName() == 'department-management' ? 'active' : '' }} "
+                                href="{{ route('department-management') }}">
+                                <span class="sidenav-mini-icon"> D </span>
+                                <span class="sidenav-normal  ms-2  ps-1"> Quản lý phòng ban </span>
+                            </a>
+                        </li>
                         <li class="nav-item  {{ Route::currentRouteName() == 'charts' ? 'active' : '' }}">
                             <a class="nav-link text-white {{ Route::currentRouteName() == 'charts' ? 'active' : '' }}"
                                 href="{{ route('charts') }}">
