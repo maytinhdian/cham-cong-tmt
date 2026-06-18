@@ -55,6 +55,7 @@ use App\Http\Livewire\Pages\Attendance;
 use App\Http\Livewire\Pages\Employees\NewEmployee;
 use App\Http\Livewire\Pages\Employees\Index as EmployeeIndex;
 use App\Http\Livewire\Pages\Departments\Index as DepartmentIndex;
+use App\Http\Livewire\Pages\Shifts\Index as ShiftIndex;
 use App\Http\Livewire\Pages\Notifications;
 use App\Http\Livewire\Pages\PricingPage;
 use App\Http\Livewire\Pages\Profile\Overview;
@@ -138,6 +139,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('pages/employees', EmployeeIndex::class)->name('employee-management');
 	Route::get('pages/employees/new', NewEmployee::class)->name('employee-new');
 	Route::get('pages/departments', DepartmentIndex::class)->name('department-management');
+	Route::get('pages/shifts', ShiftIndex::class)->name('shift-management');
 	Route::get('pages/notifications', Notifications::class)->name('notifications');
 	Route::get('pages/pricing-page', PricingPage::class)->name('pricing-page');
     Route::get('pages/rtl', Rtl::class)->name('rtl');
