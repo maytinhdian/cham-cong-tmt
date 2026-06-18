@@ -120,7 +120,7 @@
                                             <a href="javascript:;" class="btn btn-link text-dark px-2 mb-0">
                                                 <i class="material-icons text-sm me-1">visibility</i>Xem
                                             </a>
-                                            <a href="javascript:;" class="btn btn-link text-success px-2 mb-0">
+                                            <a href="{{ route('employee-edit', ['id' => $employee['code']]) }}" class="btn btn-link text-success px-2 mb-0">
                                                 <i class="material-icons text-sm me-1">edit</i>Sửa
                                             </a>
                                             <a href="javascript:;" class="btn btn-link text-warning px-2 mb-0">
