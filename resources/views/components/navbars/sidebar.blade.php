@@ -259,6 +259,26 @@
                 </div>
             </li>
             <li class="nav-item">
+                <a data-bs-toggle="collapse" href="#timesheetExamples"
+                    class="nav-link text-white {{ in_array(Route::currentRouteName(), ['attendance-daily-timesheet']) ? 'active' : '' }}"
+                    aria-controls="timesheetExamples" role="button" aria-expanded="false">
+                    <i class="ni ni-calendar-grid-58 opacity-10"></i>
+                    <span class="nav-link-text ms-2 ps-1">Bảng công</span>
+                </a>
+                <div class="collapse {{ in_array(Route::currentRouteName(), ['attendance-daily-timesheet']) ? 'show' : '' }}"
+                    id="timesheetExamples">
+                    <ul class="nav">
+                        <li class="nav-item {{ Route::currentRouteName() == 'attendance-daily-timesheet' ? 'active' : '' }}">
+                            <a class="nav-link text-white {{ Route::currentRouteName() == 'attendance-daily-timesheet' ? 'active' : '' }}"
+                                href="{{ route('attendance-daily-timesheet') }}">
+                                <span class="sidenav-mini-icon"> NG </span>
+                                <span class="sidenav-normal ms-2 ps-1"> Bảng công ngày </span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link text-white {{ Route::currentRouteName() == 'attendance-reports' ? 'active' : '' }}"
                     href="{{ route('attendance-reports') }}">
                     <i class="ni ni-chart-bar-32 opacity-10"></i>

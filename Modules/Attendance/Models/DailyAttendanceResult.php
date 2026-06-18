@@ -5,6 +5,7 @@ namespace Modules\Attendance\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Modules\Schedule\Models\EmployeeSchedule;
 use Modules\Shift\Models\Shift;
 use Modules\User\Models\Employee;
@@ -57,5 +58,13 @@ class DailyAttendanceResult extends Model
     public function shift(): BelongsTo
     {
         return $this->belongsTo(Shift::class);
+    }
+
+    /**
+     * List manual corrections that have been applied to this daily result.
+     */
+    public function adjustments(): HasMany
+    {
+        return $this->hasMany(DailyTimesheetAdjustment::class);
     }
 }

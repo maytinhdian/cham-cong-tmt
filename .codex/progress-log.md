@@ -79,6 +79,14 @@ Recommended next feature after this note:
   - `activity_logs` table.
   - `Modules/Core` DTO, model, event, service, and subscriber for shared activity/audit logging.
   - Registered Core activity subscriber in Laravel's event provider.
+- Added daily timesheet review foundation:
+  - Daily timesheet service based on `daily_attendance_results`.
+  - Daily timesheet Livewire page with date, department, employee, and status filters.
+  - New sidebar menu `Bảng công` with `Bảng công ngày`.
+- Added daily timesheet adjustment foundation:
+  - `daily_timesheet_adjustments` table for manual correction history.
+  - Adjustment DTO, model, service, and action under `Modules/Attendance`.
+  - Daily timesheet UI can open an adjustment form for one row, update clock-in/out, require a reason, and write Core `activity_logs`.
 
 ## Documentation Rule For Code Changes
 
