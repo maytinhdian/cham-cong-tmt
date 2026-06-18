@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cài đặt ca làm việc - Giai đoạn 1</title>
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --card: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --border: #e5e7eb;
+      --primary: #2563eb;
+      --primary-soft: #eff6ff;
+      --danger: #dc2626;
+      --warning: #f59e0b;
+      --success: #16a34a;
+      --radius: 14px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    .layout {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 28px;
+    }
+
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: flex-start;
+      margin-bottom: 24px;
+    }
+
+    .page-title {
+      margin: 0;
+      font-size: 28px;
+      font-weight: 700;
+    }
+
+    .page-desc {
+      margin: 8px 0 0;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 10px;
+      padding: 10px 16px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .btn-secondary {
+      background: #fff;
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 22px;
+      align-items: start;
+    }
+
+    .sidebar,
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 20px;
+      padding: 14px;
+    }
+
+    .nav-item {
+      display: block;
+      padding: 12px 14px;
+      border-radius: 10px;
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .nav-item:hover,
+    .nav-item.active {
+      background: var(--primary-soft);
+      color: var(--primary);
+    }
+
+    .content {
+      display: grid;
+      gap: 18px;
+    }
+
+    .card {
+      padding: 22px;
+    }
+
+    .card-title {
+      margin: 0 0 6px;
+      font-size: 20px;
+    }
+
+    .card-desc {
+      margin: 0 0 20px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .form-grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .field.full {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 14px;
+      background: #fff;
+      color: var(--text);
+    }
+
+    textarea {
+      min-height: 88px;
+      resize: vertical;
+    }
+
+    .hint {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .switch-row,
+    .checkbox-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #fafafa;
+    }
+
+    .checkbox-row input {
+      width: auto;
+    }
+
+    .section-line {
+      border: 0;
+      border-top: 1px solid var(--border);
+      margin: 22px 0;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 9px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      margin-left: 8px;
+    }
+
+    .badge-required {
+      background: #fee2e2;
+      color: var(--danger);
+    }
+
+    .badge-stage {
+      background: #ecfdf5;
+      color: var(--success);
+    }
+
+    .shift-list {
+      display: grid;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .shift-item {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 14px;
+      padding: 14px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: #fafafa;
+    }
+
+    .shift-name {
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .shift-meta {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .status {
+      font-size: 12px;
+      font-weight: 700;
+      padding: 5px 9px;
+      border-radius: 999px;
+      align-self: start;
+    }
+
+    .status-active {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .status-night {
+      background: #ede9fe;
+      color: #5b21b6;
+    }
+
+    .note-box {
+      border-left: 4px solid var(--warning);
+      background: #fffbeb;
+      padding: 14px;
+      border-radius: 10px;
+      color: #78350f;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 900px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+      }
+
+      .form-grid,
+      .form-grid-3 {
+        grid-template-columns: 1fr;
+      }
+
+      .page-header {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="layout">
+    <header class="page-header">
+      <div>
+        <h1 class="page-title">Cài đặt ca làm việc</h1>
+        <p class="page-desc">
+          Khai báo nghiệp vụ tính công giai đoạn 1: ca ngày, ca đêm, ca qua đêm, đi muộn, về sớm,
+          tăng ca sau ca, thiếu log, nghỉ phép và khóa công.
+        </p>
+      </div>
+      <div class="actions">
+        <button class="btn btn-secondary">Hủy</button>
+        <button class="btn btn-primary">Lưu cài đặt</button>
+      </div>
+    </header>
+
+    <div class="grid">
+      <aside class="sidebar">
+        <a class="nav-item active" href="#general">1. Thông tin ca</a>
+        <a class="nav-item" href="#time">2. Thời gian ca</a>
+        <a class="nav-item" href="#log-window">3. Khung nhận log</a>
+        <a class="nav-item" href="#late-early">4. Đi muộn / về sớm</a>
+        <a class="nav-item" href="#work-hour">5. Tính giờ làm</a>
+        <a class="nav-item" href="#overtime">6. Tăng ca sau ca</a>
+        <a class="nav-item" href="#missing-log">7. Thiếu log</a>
+        <a class="nav-item" href="#leave-lock">8. Nghỉ phép / khóa công</a>
+        <a class="nav-item" href="#rotation">9. Xoay ca 15 ngày</a>
+      </aside>
+
+      <section class="content">
+        <section class="card" id="general">
+          <h2 class="card-title">1. Thông tin ca <span class="badge badge-stage">Giai đoạn 1</span></h2>
+          <p class="card-desc">Khai báo mã ca, tên ca và loại ca để hệ thống phân biệt ca ngày, ca đêm.</p>
+
+          <div class="form-grid">
+            <div class="field">
+              <label>Mã ca <span class="badge badge-required">Bắt buộc</span></label>
+              <input type="text" placeholder="VD: DAY_12H" value="DAY_12H" />
+              <div class="hint">Dùng để định danh trong hệ thống, không nên đổi sau khi đã phát sinh dữ liệu.</div>
+            </div>
+
+            <div class="field">
+              <label>Tên ca</label>
+              <input type="text" placeholder="VD: Ca ngày 12 tiếng" value="Ca ngày 12 tiếng" />
+            </div>
+
+            <div class="field">
+              <label>Loại ca</label>
+              <select>
+                <option>Ca ngày</option>
+                <option>Ca đêm</option>
+                <option>Ca hành chính</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label>Trạng thái</label>
+              <select>
+                <option>Đang sử dụng</option>
+                <option>Tạm ngưng</option>
+              </select>
+            </div>
+
+            <div class="field full">
+              <label>Ghi chú</label>
+              <textarea placeholder="Ghi chú về ca làm việc...">Ca dùng cho công nhân sản xuất, làm 12 tiếng.</textarea>
+            </div>
+          </div>
+        </section>
+
+        <section class="card" id="time">
+          <h2 class="card-title">2. Thời gian ca</h2>
+          <p class="card-desc">Khai báo giờ bắt đầu, giờ kết thúc, số giờ công chuẩn và ca có qua ngày hay không.</p>
+
+          <div class="form-grid-3">
+            <div class="field">
+              <label>Giờ vào ca</label>
+              <input type="time" value="07:00" />
+            </div>
+
+            <div class="field">
+              <label>Giờ ra ca</label>
+              <input type="time" value="19:00" />
+            </div>
+
+            <div class="field">
+              <label>Ca qua ngày</label>
+              <select>
+                <option>Không</option>
+                <option>Có</option>
+              </select>
+              <div class="hint">Bật “Có” cho ca 19:00 đến 07:00 hôm sau.</div>
+            </div>
+
+            <div class="field">
+              <label>Giờ công chuẩn</label>
+              <input type="number" step="0.5" value="8" />
+              <div class="hint">Ví dụ: ca 12 tiếng nhưng công chuẩn có thể là 8 giờ.</div>
+            </div>
+
+            <div class="field">
+              <label>Giờ nghỉ giữa ca</label>
+              <input type="number" value="60" />
+              <div class="hint">Đơn vị: phút.</div>
+            </div>
+
+            <div class="field">
+              <label>Cách trừ giờ nghỉ</label>
+              <select>
+                <option>Trừ cố định theo ca</option>
+                <option>Theo log ra/vào nghỉ</option>
+                <option>Không trừ</option>
+              </select>
+            </div>
+          </div>
+        </section>
+
+        <section class="card" id="log-window">
+          <h2 class="card-title">3. Khung nhận log</h2>
+          <p class="card-desc">Giúp hệ thống biết log nào thuộc về ca này, đặc biệt quan trọng với ca đêm.</p>
+
+          <div class="form-grid">
+            <div class="field">
+              <label>Cho phép check-in sớm trước ca</label>
+              <input type="number" value="120" />
+              <div class="hint">Đơn vị: phút. Ví dụ ca 07:00, nhập 120 nghĩa là nhận log từ 05:00.</div>
+            </div>
+
+            <div class="field">
+              <label>Cho phép check-out trễ sau ca</label>
+              <input type="number" value="120" />
+              <div class="hint">Đơn vị: phút. Ví dụ ca 19:00, nhập 120 nghĩa là nhận log đến 21:00.</div>
+            </div>
+
+            <div class="field">
+              <label>Cách lấy giờ vào</label>
+              <select>
+                <option>Log đầu tiên trong khung ca</option>
+                <option>Log gần giờ vào ca nhất</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label>Cách lấy giờ ra</label>
+              <select>
+                <option>Log cuối cùng trong khung ca</option>
+                <option>Log gần giờ ra ca nhất</option>
+              </select>
+            </div>
+          </div>
+
+          <hr class="section-line" />
+
+          <div class="note-box">
+            Ví dụ ca đêm 19:00–07:00 hôm sau: có thể nhận check-in từ 17:00 và check-out đến 09:00 hôm sau.
+          </div>
+        </section>
+
+        <section class="card" id="late-early">
+          <h2 class="card-title">4. Đi muộn / về sớm</h2>
+          <p class="card-desc">Khai báo số phút cho phép và cách tính vi phạm.</p>
+
+          <div class="form-grid">
+            <div class="field">
+              <label>Cho phép đi muộn</label>
+              <input type="number" value="5" />
+              <div class="hint">Đơn vị: phút. Sau mức này mới tính đi muộn.</div>
+            </div>
+
+            <div class="field">
+              <label>Cho phép về sớm</label>
+              <input type="number" value="5" />
+              <div class="hint">Đơn vị: phút. Sau mức này mới tính về sớm.</div>
+            </div>
+
+            <div class="field">
+              <label>Cách tính đi muộn</label>
+              <select>
+                <option>Tính toàn bộ số phút trễ</option>
+                <option>Trừ phần được phép</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label>Cách tính về sớm</label>
+              <select>
+                <option>Tính toàn bộ số phút về sớm</option>
+                <option>Trừ phần được phép</option>
+              </select>
+            </div>
+          </div>
+        </section>
+
+        <section class="card" id="work-hour">
+          <h2 class="card-title">5. Quy tắc tính giờ làm</h2>
+          <p class="card-desc">Cấu hình cách tính tổng giờ làm, công chuẩn và làm tròn.</p>
+
+          <div class="form-grid">
+            <div class="field">
+              <label>Kiểu tính công</label>
+              <select>
+                <option>Theo giờ làm thực tế</option>
+                <option>Theo đủ ca = 1 công</option>
+                <option>Theo tỷ lệ giờ chuẩn</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label>Làm tròn giờ làm</label>
+              <select>
+                <option>Không làm tròn</option>
+                <option>Làm tròn xuống 5 phút</option>
+                <option>Làm tròn xuống 10 phút</option>
+                <option>Làm tròn xuống 15 phút</option>
+                <option>Làm tròn xuống 30 phút</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label>Tối thiểu bao nhiêu phút tính có mặt</label>
+              <input type="number" value="240" />
+              <div class="hint">Ví dụ 240 phút = 4 giờ, có thể tính nửa công.</div>
+            </div>
+
+            <div class="field">
+              <label>Ngưỡng đủ 1 công</label>
+              <input type="number" value="480" />
+              <div class="hint">Ví dụ 480 phút = 8 giờ.</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="card" id="overtime">
+          <h2 class="card-title">6. Tăng ca sau ca</h2>
+          <p class="card-desc">Giai đoạn 1 chỉ khai báo OT sau ca. OT trước ca có thể bổ sung ở giai đoạn sau.</p>
+
+          <div class="form-grid">
+            <div class="switch-row">
+              <input type="checkbox" checked />
+              <label>Cho phép tính tăng ca sau ca</label>
+            </div>
+
+            <div class="field">
+              <label>Điều kiện tính OT</label>
+              <select>
+                <option>Phải có duyệt OT</option>
+                <option>Tự động tính theo log</option>
+                <option>Có log và HR xác nhận</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label>Tối thiểu OT</label>
+              <input type="number" value="30" />
+              <div class="hint">Dưới số phút này không tính OT.</div>
+            </div>
+
+            <div class="field">
+              <label>Làm tròn OT</label>
+              <select>
+                <option>Làm tròn xuống 30 phút</option>
+                <option>Làm tròn xuống 15 phút</option>
+                <option>Làm tròn xuống 60 phút</option>
+                <option>Không làm tròn</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label>OT tối đa mỗi ngày</label>
+              <input type="number" value="4" />
+              <div class="hint">Đơn vị: giờ.</div>
+            </div>
+
+            <div class="field">
+              <label>Ngày đổi ca</label>
+              <select>
+                <option>Không tính tăng ca</option>
+                <option>Vẫn tính tăng ca nếu có duyệt</option>
+              </select>
+            </div>
+          </div>
+        </section>
+
+        <section class="card" id="missing-log">
+          <h2 class="card-title">7. Xử lý thiếu log</h2>
+          <p class="card-desc">Khai báo cách xử lý khi thiếu check-in hoặc check-out.</p>
+
+          <div class="form-grid">
+            <div class="field">
+              <label>Thiếu check-in</label>
+              <select>
+                <option>Đánh dấu bất thường, chờ HR xử lý</option>
+                <option>Không tính công</option>
+                <option>Dùng giờ vào ca làm check-in tạm</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label>Thiếu check-out</label>
+              <select>
+                <option>Đánh dấu bất thường, chờ HR xử lý</option>
+                <option>Không tính công</option>
+                <option>Dùng giờ ra ca làm check-out tạm</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label>Có cho nhân viên gửi yêu cầu bổ sung công?</label>
+              <select>
+                <option>Có</option>
+                <option>Không</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label>Người duyệt bổ sung công</label>
+              <select>
+                <option>HR</option>
+                <option>Quản lý trực tiếp</option>
+                <option>HR + Quản lý trực tiếp</option>
+              </select>
+            </div>
+          </div>
+        </section>
+
+        <section class="card" id="leave-lock">
+          <h2 class="card-title">8. Nghỉ phép và khóa công</h2>
+          <p class="card-desc">Giai đoạn 1 cần biết ngày nghỉ phép để không tính nhân viên là vắng mặt.</p>
+
+          <div class="form-grid">
+            <div class="field">
+              <label>Khi có nghỉ phép đã duyệt</label>
+              <select>
+                <option>Tính theo loại nghỉ phép</option>
+                <option>Không tính công</option>
+                <option>Tính đủ công</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label>Ngày nghỉ lễ</label>
+              <select>
+                <option>Theo lịch nghỉ lễ công ty</option>
+                <option>Không áp dụng trong giai đoạn 1</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label>Cho sửa công sau khi khóa?</label>
+              <select>
+                <option>Không</option>
+                <option>Chỉ Admin</option>
+                <option>Admin + HR trưởng</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label>Ngày khóa công mặc định</label>
+              <input type="number" value="3" />
+              <div class="hint">Ví dụ ngày 3 tháng sau sẽ khóa công tháng trước.</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="card" id="rotation">
+          <h2 class="card-title">9. Cấu hình xoay ca 15 ngày</h2>
+          <p class="card-desc">Dành cho công nhân làm luân phiên 15 ngày ca ngày, 15 ngày ca đêm.</p>
+
+          <div class="form-grid">
+            <div class="field">
+              <label>Chu kỳ ca ngày</label>
+              <input type="number" value="15" />
+              <div class="hint">Đơn vị: ngày.</div>
+            </div>
+
+            <div class="field">
+              <label>Chu kỳ ca đêm</label>
+              <input type="number" value="15" />
+              <div class="hint">Đơn vị: ngày.</div>
+            </div>
+
+            <div class="field">
+              <label>Ngày đổi ca</label>
+              <select>
+                <option>Không tính tăng ca</option>
+                <option>Nghỉ chuyển ca</option>
+                <option>Tính theo lịch phân ca riêng</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label>Áp dụng cho nhóm</label>
+              <select>
+                <option>Công nhân sản xuất</option>
+                <option>Tổ A</option>
+                <option>Tổ B</option>
+                <option>Tất cả nhân viên</option>
+              </select>
+            </div>
+          </div>
+
+          <hr class="section-line" />
+
+          <h3>Ca mẫu trong hệ thống</h3>
+          <div class="shift-list">
+            <div class="shift-item">
+              <div>
+                <div class="shift-name">Ca ngày 12 tiếng</div>
+                <div class="shift-meta">07:00 → 19:00 · Không qua ngày · Công chuẩn 8 giờ · OT sau ca</div>
+              </div>
+              <span class="status status-active">Đang dùng</span>
+            </div>
+
+            <div class="shift-item">
+              <div>
+                <div class="shift-name">Ca đêm 12 tiếng</div>
+                <div class="shift-meta">19:00 → 07:00 hôm sau · Qua ngày · Công chuẩn 8 giờ · OT sau ca</div>
+              </div>
+              <span class="status status-night">Ca đêm</span>
+            </div>
+          </div>
+        </section>
+      </section>
+    </div>
+  </main>
+</body>
+</html>
