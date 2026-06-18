@@ -4,7 +4,9 @@ namespace Modules\Device\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Modules\Attendance\Models\RawAttendanceLog;
 
 class AttendanceDevice extends Model
 {
@@ -29,4 +31,20 @@ class AttendanceDevice extends Model
         'last_connected_at' => 'datetime',
         'last_synced_at' => 'datetime',
     ];
+
+    /**
+     * List raw attendance logs imported from this device.
+     */
+    public function rawLogs(): HasMany
+    {
+        return $this->hasMany(RawAttendanceLog::class);
+    }
+
+    /**
+     * List device user codes mapped to internal employees for this device.
+     */
+    public function userMaps(): HasMany
+    {
+        return $this->hasMany(AttendanceDeviceUserMap::class);
+    }
 }

@@ -54,6 +54,14 @@ Recommended next feature after this note:
   - `attendance_devices` table normalization.
   - `Modules/Device` model, DTO, service, and create/update actions.
   - Real device management page with create, edit, soft delete, simulated connection check, and simulated sync timestamp.
+- Added raw attendance log foundation:
+  - `raw_attendance_logs` table.
+  - `Modules/Attendance` raw log model, DTO, service, and save action.
+  - Real raw log page with manual entry, date/device/employee/status filters, ignore, and delete.
+- Added device user mapping foundation:
+  - `attendance_device_user_maps` table.
+  - `Modules/Device` mapping model, DTO, service, and save action.
+  - Real mapping page with create, edit, delete, filters, and apply-to-raw-logs action.
 
 ## Documentation Rule For Code Changes
 

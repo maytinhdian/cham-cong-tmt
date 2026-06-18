@@ -41,6 +41,8 @@ use App\Http\Livewire\Pages\Employees\CompanyChart as EmployeeCompanyChart;
 use App\Http\Livewire\Pages\Employees\Position as EmployeePosition;
 use App\Http\Livewire\Pages\Attendance\Settings as AttendanceSettings;
 use App\Http\Livewire\Pages\Attendance\Devices as AttendanceDevices;
+use App\Http\Livewire\Pages\Attendance\DeviceUserMappings as AttendanceDeviceUserMappings;
+use App\Http\Livewire\Pages\Attendance\RawLogs as AttendanceRawLogs;
 use App\Http\Livewire\Pages\Attendance\Schedule as AttendanceSchedule;
 use App\Http\Livewire\Pages\Attendance\ShiftDefinition as AttendanceShiftDefinition;
 use App\Http\Livewire\Pages\Attendance\WeekendDefinition as AttendanceWeekendDefinition;
@@ -162,6 +164,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('pages/attendance/weekend-definition', AttendanceWeekendDefinition::class)->name('attendance-weekend-definition');
     Route::get('pages/attendance/symbol-statistics', AttendanceSymbolStatistics::class)->name('attendance-symbol-statistics');
     Route::get('pages/attendance/devices', AttendanceDevices::class)->name('attendance-devices');
+    Route::get('pages/attendance/device-user-mappings', AttendanceDeviceUserMappings::class)->name('attendance-device-user-mappings');
+    Route::get('pages/attendance/raw-logs', AttendanceRawLogs::class)->name('attendance-raw-logs');
     Route::get('pages/reports', AttendanceReports::class)->name('attendance-reports');
 	Route::get('pages/vr/vr-default', VrDefault::class)->name('vr-default');
 	Route::get('pages/vr/vr-info', VrInfo::class)->name('vr-info');

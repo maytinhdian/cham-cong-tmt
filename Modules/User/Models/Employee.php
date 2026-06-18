@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\User as Account;
+use Modules\Attendance\Models\RawAttendanceLog;
+use Modules\Device\Models\AttendanceDeviceUserMap;
 use Modules\Org\Models\Department;
 use Modules\Org\Models\Position;
 use Modules\Schedule\Models\EmployeeSchedule;
@@ -56,5 +58,21 @@ class Employee extends Model
     public function schedules(): HasMany
     {
         return $this->hasMany(EmployeeSchedule::class);
+    }
+
+    /**
+     * List raw attendance punches mapped to this employee.
+     */
+    public function rawAttendanceLogs(): HasMany
+    {
+        return $this->hasMany(RawAttendanceLog::class);
+    }
+
+    /**
+     * List device user-code mappings that point to this employee.
+     */
+    public function attendanceDeviceUserMaps(): HasMany
+    {
+        return $this->hasMany(AttendanceDeviceUserMap::class);
     }
 }
