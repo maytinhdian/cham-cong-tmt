@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\User as Account;
+use Modules\Org\Models\Department;
+use Modules\Org\Models\Position;
 
 class Employee extends Model
 {
@@ -37,5 +39,15 @@ class Employee extends Model
     public function account(): BelongsTo
     {
         return $this->belongsTo(Account::class, 'user_id');
+    }
+
+    public function department(): BelongsTo
+    {
+        return $this->belongsTo(Department::class);
+    }
+
+    public function position(): BelongsTo
+    {
+        return $this->belongsTo(Position::class);
     }
 }
