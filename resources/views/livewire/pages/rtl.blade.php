@@ -61,8 +61,8 @@
                         </li>
                         <li class="nav-item ">
                             <a class="nav-link text-white " href="{{ route('discover') }}">
-                                <span class="sidenav-mini-icon"> D </span>
-                                <span class="sidenav-normal  me-3  ps-1"> Discover </span>
+                                <span class="sidenav-mini-icon"> B </span>
+                                <span class="sidenav-normal  me-3  ps-1"> Bảng tin </span>
                             </a>
                         </li>
                         <li class="nav-item ">

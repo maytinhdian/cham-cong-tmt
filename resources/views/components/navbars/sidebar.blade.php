@@ -69,8 +69,8 @@
                         <li class="nav-item {{ Route::currentRouteName() == 'discover' ? 'active' : '' }} ">
                             <a class="nav-link text-white {{ Route::currentRouteName() == 'discover' ? 'active' : '' }}"
                                 href="{{ route('discover') }}">
-                                <span class="sidenav-mini-icon"> D </span>
-                                <span class="sidenav-normal  ms-2  ps-1"> Discover </span>
+                                <span class="sidenav-mini-icon"> B </span>
+                                <span class="sidenav-normal  ms-2  ps-1"> Bảng tin </span>
                             </a>
                         </li>
                         <li class="nav-item {{ Route::currentRouteName() == 'sales' ? 'active' : '' }}">

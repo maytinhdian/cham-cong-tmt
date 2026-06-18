@@ -42,7 +42,7 @@
                                         <span class="ps-2">Analytics</span>
                                     </a>
                                     <a href="{{ route('discover') }}" class="dropdown-item border-radius-md">
-                                        <span class="ps-2">Discover</span>
+                                        <span class="ps-2">Bảng tin</span>
                                     </a>
                                     <a href="{{ route('sales') }}" class="dropdown-item border-radius-md">
                                         <span class="ps-2">Sales</span>
@@ -143,7 +143,7 @@
                             Analytics
                         </a>
                         <a href="{{ route('discover') }}" class="dropdown-item border-radius-md">
-                            Discover
+                            Bảng tin
                         </a>
                         <a href="{{ route('sales') }}" class="dropdown-item border-radius-md">
                             Sales

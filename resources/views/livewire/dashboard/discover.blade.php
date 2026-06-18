@@ -1,559 +1,234 @@
-
-        <div class="container-fluid px-2 px-md-4">
-            <div class="page-header min-height-300 border-radius-xl mt-4"
-                style="background-image: url('https://images.unsplash.com/photo-1531512073830-ba890ca4eba2?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80');">
-                <span class="mask  bg-gradient-primary  opacity-6"></span>
+<div class="container-fluid py-4">
+    <div class="page-header min-height-250 border-radius-xl mt-4 position-relative overflow-hidden"
+        style="background-image: url('{{ asset('assets') }}/img/bg-smart-home-1.jpg'); background-size: cover; background-position: center;">
+        <span class="mask bg-gradient-dark opacity-6"></span>
+        <div class="container position-relative z-index-2 h-100">
+            <div class="row h-100 align-items-end pb-4">
+                <div class="col-lg-8">
+                    <p class="text-white text-uppercase text-sm mb-2 opacity-8">Human Resources Bulletin</p>
+                    <h1 class="text-white mb-2">Bảng tin</h1>
+                    <p class="text-white mb-0 opacity-8">
+                        Noi cap nhat thong bao noi bo, nhan vien moi, sinh nhat, nghi phep va lich lam viec cho toan bo
+                        doanh nghiep.
+                    </p>
+                </div>
+                <div class="col-lg-4 text-lg-end mt-3 mt-lg-0">
+                    <a href="javascript:;" class="btn btn-white mb-0">Dang thong bao</a>
+                </div>
             </div>
-            <div class="card card-body mx-3 mx-md-4 mt-n6">
-                <div class="row gx-4">
-                    <div class="col-auto">
-                        <div class="avatar avatar-xl position-relative">
-                            <img src="{{ asset('assets') }}/img/bruce-mars.jpg" alt="profile_image"
-                                class="w-100 rounded-circle shadow-sm">
+        </div>
+    </div>
+
+    <div class="row mt-n5">
+        <div class="col-12 col-md-6 col-xl-3 mb-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-3">
+                    <div class="d-flex align-items-center">
+                        <div class="icon icon-shape icon-sm bg-gradient-primary shadow text-center border-radius-md me-3">
+                            <i class="ni ni-notification-70 text-white opacity-10"></i>
                         </div>
-                    </div>
-                    <div class="col-auto my-auto">
-                        <div class="h-100">
-                            <h5 class="mb-1">
-                                Richard Davis
-                            </h5>
-                            <p class="mb-0 font-weight-normal text-sm">
-                                CEO / Co-Founder
-                            </p>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6 my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3">
-                        <div class="nav-wrapper position-relative end-0">
-                            <ul class="nav nav-pills nav-fill p-1" role="tablist">
-                                <li class="nav-item">
-                                    <a class="nav-link mb-0 px-0 py-1 active " data-bs-toggle="tab" href="javascript:;"
-                                        role="tab" aria-selected="true">
-                                        <i class="material-icons text-lg position-relative">home</i>
-                                        <span class="ms-1">App</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link mb-0 px-0 py-1 " data-bs-toggle="tab" href="javascript:;"
-                                        role="tab" aria-selected="false">
-                                        <i class="material-icons text-lg position-relative">email</i>
-                                        <span class="ms-1">Messages</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link mb-0 px-0 py-1 " data-bs-toggle="tab" href="javascript:;"
-                                        role="tab" aria-selected="false">
-                                        <i class="material-icons text-lg position-relative">settings</i>
-                                        <span class="ms-1">Settings</span>
-                                    </a>
-                                </li>
-                            </ul>
+                        <div>
+                            <p class="text-sm mb-0 text-muted">Thong bao hom nay</p>
+                            <h5 class="mb-0">08 muc</h5>
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="card overflow-scroll card-plain">
-                                <div class="card-body d-flex ps-0">
-                                    <div class="col-lg-1 col-md-2 col-sm-3 col-4 text-center">
-                                        <a href="javascript:;"
-                                            class="avatar avatar-lg border-1 rounded-circle bg-white shadow-sm">
-                                            <i class="material-icons text-dark text-xl">add</i>
-                                        </a>
-                                        <p class="mb-0 text-sm" style="margin-top:6px;">Add story</p>
+            </div>
+        </div>
+        <div class="col-12 col-md-6 col-xl-3 mb-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-3">
+                    <div class="d-flex align-items-center">
+                        <div class="icon icon-shape icon-sm bg-gradient-success shadow text-center border-radius-md me-3">
+                            <i class="ni ni-badge text-white opacity-10"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm mb-0 text-muted">Nhan vien moi</p>
+                            <h5 class="mb-0">05 nguoi</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-6 col-xl-3 mb-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-3">
+                    <div class="d-flex align-items-center">
+                        <div class="icon icon-shape icon-sm bg-gradient-warning shadow text-center border-radius-md me-3">
+                            <i class="ni ni-calendar-grid-58 text-white opacity-10"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm mb-0 text-muted">Nghi phep / cu phap</p>
+                            <h5 class="mb-0">12 yeu cau</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-6 col-xl-3 mb-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-3">
+                    <div class="d-flex align-items-center">
+                        <div class="icon icon-shape icon-sm bg-gradient-danger shadow text-center border-radius-md me-3">
+                            <i class="ni ni-time-alarm text-white opacity-10"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm mb-0 text-muted">Canh bao cham cong</p>
+                            <h5 class="mb-0">03 truong hop</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12 col-xl-8">
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-header pb-0">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <h5 class="mb-1">Thong bao noi bo</h5>
+                            <p class="text-sm mb-0 text-muted">Cac thong bao quan trong lien quan den cham cong va nhan su</p>
+                        </div>
+                        <span class="badge bg-gradient-primary">Pinned</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-secondary d-flex align-items-start mb-4" role="alert">
+                        <div class="icon icon-shape icon-sm bg-gradient-dark shadow text-center border-radius-md me-3 flex-shrink-0">
+                            <i class="ni ni-single-copy-04 text-white opacity-10"></i>
+                        </div>
+                        <div>
+                            <h6 class="mb-1">Cap nhat quy trinh xac nhan cong</h6>
+                            <p class="mb-0 text-sm">
+                                Tu ngay 01/07, nhan vien can xac nhan cong truoc 09:10 sang. He thong se tu dong
+                                chot du lieu sau khung gio quy dinh.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="list-group list-group-flush">
+                        <div class="list-group-item px-0">
+                            <div class="d-flex align-items-start">
+                                <div class="avatar avatar-sm rounded-circle bg-gradient-success me-3 flex-shrink-0">
+                                    <i class="ni ni-badge text-white opacity-10"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <h6 class="mb-1">Nhan vien moi tuan nay</h6>
+                                        <small class="text-muted">2 gio truoc</small>
                                     </div>
-                                    <div class="col-lg-1 col-md-2 col-sm-3 col-4 text-center">
-                                        <a href="javascript:;"
-                                            class="avatar avatar-lg rounded-circle border border-primary">
-                                            <img alt="Image placeholder" class="p-1"
-                                                src="{{ asset('assets') }}/img/team-1.jpg">
-                                        </a>
-                                        <p class="mb-0 text-sm">Abbie W</p>
+                                    <p class="mb-2 text-sm">
+                                        03 thanh vien moi da duoc cap tai khoan va gan vao phong Kinh doanh, Ke toan,
+                                        va Hanh chinh.
+                                    </p>
+                                    <div class="d-flex flex-wrap gap-2">
+                                        <span class="badge bg-light text-dark">Phuc Nguyen</span>
+                                        <span class="badge bg-light text-dark">Thu Trang</span>
+                                        <span class="badge bg-light text-dark">Minh Khoa</span>
                                     </div>
-                                    <div class="col-lg-1 col-md-2 col-sm-3 col-4 text-center">
-                                        <a href="javascript:;"
-                                            class="avatar avatar-lg rounded-circle border border-primary">
-                                            <img alt="Image placeholder" class="p-1"
-                                                src="{{ asset('assets') }}/img/team-2.jpg">
-                                        </a>
-                                        <p class="mb-0 text-sm">Boris U</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="list-group-item px-0">
+                            <div class="d-flex align-items-start">
+                                <div class="avatar avatar-sm rounded-circle bg-gradient-warning me-3 flex-shrink-0">
+                                    <i class="ni ni-calendar-grid-58 text-white opacity-10"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <h6 class="mb-1">Lich nghi le sap toi</h6>
+                                        <small class="text-muted">Hom qua</small>
                                     </div>
-                                    <div class="col-lg-1 col-md-2 col-sm-3 col-4 text-center">
-                                        <a href="javascript:;"
-                                            class="avatar avatar-lg rounded-circle border border-primary">
-                                            <img alt="Image placeholder" class="p-1"
-                                                src="{{ asset('assets') }}/img/team-3.jpg">
-                                        </a>
-                                        <p class="mb-0 text-sm">Kay R</p>
+                                    <p class="mb-0 text-sm">
+                                        Bo phan nhan su da cap nhat lich nghi le Quoc Khanh va ca lam bu trong thang
+                                        toi. Vui long kiem tra lai lich cua tung phong ban.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="list-group-item px-0">
+                            <div class="d-flex align-items-start">
+                                <div class="avatar avatar-sm rounded-circle bg-gradient-info me-3 flex-shrink-0">
+                                    <i class="ni ni-notification-70 text-white opacity-10"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <h6 class="mb-1">Nhac nho hoan tat phe duyet phep</h6>
+                                        <small class="text-muted">4 gio truoc</small>
                                     </div>
-                                    <div class="col-lg-1 col-md-2 col-sm-3 col-4 text-center">
-                                        <a href="javascript:;"
-                                            class="avatar avatar-lg rounded-circle border border-primary">
-                                            <img alt="Image placeholder" class="p-1"
-                                                src="{{ asset('assets') }}/img/team-4.jpg">
-                                        </a>
-                                        <p class="mb-0 text-sm">Tom M</p>
-                                    </div>
-                                    <div class="col-lg-1 col-md-2 col-sm-3 col-4 text-center">
-                                        <a href="javascript:;"
-                                            class="avatar avatar-lg rounded-circle border border-primary">
-                                            <img alt="Image placeholder" class="p-1"
-                                                src="{{ asset('assets') }}/img/team-5.jpg">
-                                        </a>
-                                        <p class="mb-0 text-sm">Nicole N</p>
-                                    </div>
-                                    <div class="col-lg-1 col-md-2 col-sm-3 col-4 text-center">
-                                        <a href="javascript:;"
-                                            class="avatar avatar-lg rounded-circle border border-primary">
-                                            <img alt="Image placeholder" class="p-1"
-                                                src="{{ asset('assets') }}/img/marie.jpg">
-                                        </a>
-                                        <p class="mb-0 text-sm">Marie P</p>
-                                    </div>
-                                    <div class="col-lg-1 col-md-2 col-sm-3 col-4 text-center">
-                                        <a href="javascript:;"
-                                            class="avatar avatar-lg rounded-circle border border-primary">
-                                            <img alt="Image placeholder" class="p-1"
-                                                src="{{ asset('assets') }}/img/bruce-mars.jpg">
-                                        </a>
-                                        <p class="mb-0 text-sm">Bruce M</p>
-                                    </div>
-                                    <div class="col-lg-1 col-md-2 col-sm-3 col-4 text-center">
-                                        <a href="javascript:;"
-                                            class="avatar avatar-lg rounded-circle border border-secondary">
-                                            <img alt="Image placeholder" class="p-1"
-                                                src="{{ asset('assets') }}/img/ivana-squares.jpg">
-                                        </a>
-                                        <p class="mb-0 text-sm">Sandra A</p>
-                                    </div>
-                                    <div class="col-lg-1 col-md-2 col-sm-3 col-4 text-center">
-                                        <a href="javascript:;"
-                                            class="avatar avatar-lg rounded-circle border border-secondary">
-                                            <img alt="Image placeholder" class="p-1"
-                                                src="{{ asset('assets') }}/img/kal-visuals-square.jpg">
-                                        </a>
-                                        <p class="mb-0 text-sm">Katty L</p>
-                                    </div>
-                                    <div class="col-lg-1 col-md-2 col-sm-3 col-4 text-center">
-                                        <a href="javascript:;"
-                                            class="avatar avatar-lg rounded-circle border border-secondary">
-                                            <img alt="Image placeholder" class="p-1"
-                                                src="{{ asset('assets') }}/img/ivana-square.jpg">
-                                        </a>
-                                        <p class="mb-0 text-sm">Emma O</p>
-                                    </div>
-                                    <div class="col-lg-1 col-md-2 col-sm-3 col-4 text-center">
-                                        <a href="javascript:;"
-                                            class="avatar avatar-lg rounded-circle border border-secondary">
-                                            <img alt="Image placeholder" class="p-1"
-                                                src="https://raw.githubusercontent.com/creativetimofficial/public-assets/master/soft-ui-design-system/assets/img/team-9.jpg">
-                                        </a>
-                                        <p class="mb-0 text-sm">Tao G</p>
-                                    </div>
+                                    <p class="mb-0 text-sm">
+                                        Quan ly phong ban vui long phe duyet tat ca don nghi phep con ton dong truoc
+                                        17:00 hom nay de dong bo bao cao cong.
+                                    </p>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row mt-4">
-                        <div class="col-12 col-lg-8">
-                            <div class="card card-plain">
-                                <div class="card-header d-flex align-items-center py-3">
-                                    <div class="d-block d-md-flex align-items-center">
-                                        <a href="javascript:;">
-                                            <img src="{{ asset('assets') }}/img/team-4.jpg" class="avatar"
-                                                alt="profile-image">
-                                        </a>
-                                        <div class="mx-0 mx-md-3">
-                                            <a href="javascript:;" class="text-dark font-weight-600 text-sm">John
-                                                Snow</a>
-                                            <small class="d-block text-muted">3 days ago</small>
-                                        </div>
-                                    </div>
-                                    <div class="text-end ms-auto">
-                                        <button type="button" class="btn btn-sm bg-gradient-primary mb-0">
-                                            <i class="material-icons text-white pe-2">add</i>Follow
-                                        </button>
-                                    </div>
-                                </div>
-                                <hr class="dark horizontal">
-                                <div class="card-body pt-3">
-                                    <p class="mb-4">
-                                        Personal profiles are the perfect way for you to grab their attention and
-                                        persuade recruiters to continue reading your CV because you’re telling them from
-                                        the off exactly why they should hire you.
-                                    </p>
-                                    <img alt="Image placeholder"
-                                        src="https://images.unsplash.com/photo-1578271887552-5ac3a72752bc?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1950&q=80"
-                                        class="img-fluid border-radius-lg shadow-lg">
-                                    <div class="row align-items-center px-2 mt-4 mb-2">
-                                        <div class="col-sm-6">
-                                            <div class="d-flex">
-                                                <div class="d-flex align-items-center">
-                                                    <i class="material-icons text-sm me-1 cursor-pointer">thumb_up</i>
-                                                    <span class="text-sm me-3 ">150</span>
-                                                </div>
-                                                <div class="d-flex align-items-center">
-                                                    <i
-                                                        class="material-icons text-sm me-1 cursor-pointer">mode_comment</i>
-                                                    <span class="text-sm me-3">36</span>
-                                                </div>
-                                                <div class="d-flex align-items-center">
-                                                    <i class="material-icons text-sm me-1 cursor-pointer">forward</i>
-                                                    <span class="text-sm me-2">12</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6 d-none d-sm-block">
-                                            <div class="d-flex align-items-center justify-content-sm-end">
-                                                <div class="d-flex align-items-center">
-                                                    <a href="javascript:;" class="avatar avatar-xs rounded-circle"
-                                                        data-toggle="tooltip" data-original-title="Jessica Rowland">
-                                                        <img alt="Image placeholder"
-                                                            src="{{ asset('assets') }}/img/team-5.jpg" class="">
-                                                    </a>
-                                                    <a href="javascript:;" class="avatar avatar-xs rounded-circle"
-                                                        data-toggle="tooltip" data-original-title="Audrey Love">
-                                                        <img alt="Image placeholder"
-                                                            src="{{ asset('assets') }}/img/team-2.jpg"
-                                                            class="rounded-circle">
-                                                    </a>
-                                                    <a href="javascript:;" class="avatar avatar-xs rounded-circle"
-                                                        data-toggle="tooltip" data-original-title="Michael Lewis">
-                                                        <img alt="Image placeholder"
-                                                            src="{{ asset('assets') }}/img/team-1.jpg"
-                                                            class="rounded-circle">
-                                                    </a>
-                                                </div>
-                                                <small class="ps-2 font-weight-bold">and 30+ more</small>
-                                            </div>
-                                        </div>
-                                        <hr class="horizontal dark my-3">
-                                    </div>
-                                    <!-- Comments -->
-                                    <div class="mb-1">
-                                        <div class="d-flex">
-                                            <div class="flex-shrink-0">
-                                                <img alt="Image placeholder" class="avatar rounded-circle"
-                                                    src="{{ asset('assets') }}/img/bruce-mars.jpg">
-                                            </div>
-                                            <div class="flex-grow-1 ms-3">
-                                                <h6 class="h5 mt-0">Michael Lewis</h6>
-                                                <p class="text-sm">I always felt like I could do anything. That’s the
-                                                    main thing people are controlled by! Thoughts- their perception of
-                                                    themselves!</p>
-                                                <div class="d-flex">
-                                                    <div>
-                                                        <i
-                                                            class="material-icons text-sm me-1 cursor-pointer">thumb_up</i>
-                                                    </div>
-                                                    <span class="text-sm me-2">3 likes</span>
-                                                    <div>
-                                                        <i class="material-icons text-sm me-1 cursor-pointer">share</i>
-                                                    </div>
-                                                    <span class="text-sm me-2">2 shares</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex mt-3">
-                                            <div class="flex-shrink-0">
-                                                <img alt="Image placeholder" class="avatar rounded-circle"
-                                                    src="{{ asset('assets') }}/img/team-5.jpg">
-                                            </div>
-                                            <div class="flex-grow-1 ms-3">
-                                                <h6 class="h5 mt-0">Jessica Stones</h6>
-                                                <p class="text-sm">Society has put up so many boundaries, so many
-                                                    limitations on what’s right and wrong that it’s almost impossible to
-                                                    get a pure thought out. It’s like a little kid, a little boy.</p>
-                                                <div class="d-flex">
-                                                    <div>
-                                                        <i
-                                                            class="material-icons text-sm me-1 cursor-pointer">thumb_up</i>
-                                                    </div>
-                                                    <span class="text-sm me-2">10 likes</span>
-                                                    <div>
-                                                        <i class="material-icons text-sm me-1 cursor-pointer">share</i>
-                                                    </div>
-                                                    <span class="text-sm me-2">1 share</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex mt-4">
-                                            <div class="flex-shrink-0">
-                                                <img alt="Image placeholder" class="avatar rounded-circle me-3"
-                                                    src="{{ asset('assets') }}/img/team-4.jpg">
-                                            </div>
-                                            <div class="flex-grow-1 my-auto">
-                                                <div class="input-group input-group-static">
-                                                    <textarea class="form-control" placeholder="Write your comment"
-                                                        rows="4" spellcheck="false"></textarea>
-                                                </div>
-                                            </div>
-                                            <button class="btn bg-gradient-primary btn-sm mt-auto mb-0 ms-2"
-                                                type="button" name="button"><i
-                                                    class="material-icons text-sm">send</i></button>
+                </div>
+            </div>
+
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-header pb-0">
+                    <h5 class="mb-1">Nhan vien moi</h5>
+                    <p class="text-sm mb-0 text-muted">Thong tin chao don va trang thai khoi dong</p>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-12 col-md-6">
+                            <div class="card border shadow-none h-100">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center">
+                                        <img src="{{ asset('assets') }}/img/team-1.jpg" class="avatar avatar-lg rounded-circle me-3" alt="employee">
+                                        <div>
+                                            <h6 class="mb-1">Pham Minh Anh</h6>
+                                            <p class="text-sm mb-1 text-muted">Nhan vien HR, phong Hanh chinh</p>
+                                            <span class="badge bg-gradient-success">Da kich hoat</span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-12 col-lg-4">
-                            <div class="card mb-3 mt-lg-0 mt-4 card-plain">
-                                <div class="card-body pb-0">
-                                    <div class="row align-items-center mb-3">
-                                        <div class="col-9">
-                                            <h5 class="mb-1 text-gradient text-primary">
-                                                <a href="javascript:;">Digital Marketing</a>
-                                            </h5>
-                                        </div>
-                                        <div class="col-3 text-end">
-                                            <div class="dropstart">
-                                                <a href="javascript:;" class="text-secondary" id="dropdownMarketingCard"
-                                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                                    <i class="material-icons text-xl">more_vert</i>
-                                                </a>
-                                                <ul class="dropdown-menu dropdown-menu-lg-start px-2 py-3"
-                                                    aria-labelledby="dropdownMarketingCard">
-                                                    <li><a class="dropdown-item border-radius-md"
-                                                            href="javascript:;">Edit Team</a></li>
-                                                    <li><a class="dropdown-item border-radius-md"
-                                                            href="javascript:;">Add Member</a></li>
-                                                    <li><a class="dropdown-item border-radius-md"
-                                                            href="javascript:;">See Details</a></li>
-                                                    <li>
-                                                        <hr class="dropdown-divider">
-                                                    </li>
-                                                    <li><a class="dropdown-item border-radius-md text-danger"
-                                                            href="javascript:;">Remove Team</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <p>A group of people who collectively are responsible for all of the work necessary
-                                        to produce working, validated assets.</p>
-                                    <ul class="list-unstyled mx-auto">
-                                        <li class="d-flex">
-                                            <p class="mb-0">Industry:</p>
-                                            <span class="badge badge-secondary ms-auto">Marketing Team</span>
-                                        </li>
-                                        <li>
-                                            <hr class="horizontal dark">
-                                        </li>
-                                        <li class="d-flex">
-                                            <p class="mb-0">Rating:</p>
-                                            <div class="rating ms-auto">
-                                                <i class="material-icons text-lg">grade</i>
-                                                <i class="material-icons text-lg">grade</i>
-                                                <i class="material-icons text-lg">grade</i>
-                                                <i class="material-icons text-lg">grade</i>
-                                                <i class="material-icons text-lg">star_outline</i>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <hr class="horizontal dark">
-                                        </li>
-                                        <li class="d-flex">
-                                            <p class="mb-0">Members:</p>
-                                            <div class="avatar-group ms-auto">
-                                                <a href="javascript:;" class="avatar avatar-lg avatar-xs rounded-circle"
-                                                    data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                                    title="Alexa Tompson">
-                                                    <img alt="Image placeholder"
-                                                        src="{{ asset('assets') }}/img/team-1.jpg">
-                                                </a>
-                                                <a href="javascript:;" class="avatar avatar-lg avatar-xs rounded-circle"
-                                                    data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                                    title="Romina Hadid">
-                                                    <img alt="Image placeholder"
-                                                        src="{{ asset('assets') }}/img/team-2.jpg">
-                                                </a>
-                                                <a href="javascript:;" class="avatar avatar-lg avatar-xs rounded-circle"
-                                                    data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                                    title="Alexander Smith">
-                                                    <img alt="Image placeholder"
-                                                        src="{{ asset('assets') }}/img/team-3.jpg">
-                                                </a>
-                                                <a href="javascript:;" class="avatar avatar-lg avatar-xs rounded-circle"
-                                                    data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                                    title="Martin Doe">
-                                                    <img alt="Image placeholder"
-                                                        src="{{ asset('assets') }}/img/team-4.jpg">
-                                                </a>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="card mt-4 mb-3 card-plain">
-                                <div class="card-body pb-0">
-                                    <div class="row align-items-center mb-3">
-                                        <div class="col-9">
-                                            <h5 class="mb-1 text-gradient text-primary">
-                                                <a href="javascript:;">Design</a>
-                                            </h5>
-                                        </div>
-                                        <div class="col-3 text-end">
-                                            <div class="dropstart">
-                                                <a href="javascript:;" class="text-secondary" id="dropdownDesignCard"
-                                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                                    <i class="material-icons text-xl">more_vert</i>
-                                                </a>
-                                                <ul class="dropdown-menu dropdown-menu-lg-start px-2 py-3"
-                                                    aria-labelledby="dropdownDesignCard">
-                                                    <li><a class="dropdown-item border-radius-md"
-                                                            href="javascript:;">Edit Team</a></li>
-                                                    <li><a class="dropdown-item border-radius-md"
-                                                            href="javascript:;">Add Member</a></li>
-                                                    <li><a class="dropdown-item border-radius-md"
-                                                            href="javascript:;">See Details</a></li>
-                                                    <li>
-                                                        <hr class="dropdown-divider">
-                                                    </li>
-                                                    <li><a class="dropdown-item border-radius-md text-danger"
-                                                            href="javascript:;">Remove Team</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <p>Because it's about motivating the doers. Because I’m here to follow my dreams and
-                                        inspire other people to follow their dreams, too.</p>
-                                    <ul class="list-unstyled mx-auto">
-                                        <li class="d-flex">
-                                            <p class="mb-0">Industry:</p>
-                                            <span class="badge badge-secondary ms-auto">Design Team</span>
-                                        </li>
-                                        <li>
-                                            <hr class="horizontal dark">
-                                        </li>
-                                        <li class="d-flex">
-                                            <p class="mb-0">Rating:</p>
-                                            <div class="rating ms-auto my-auto">
-                                                <i class="material-icons text-lg">grade</i>
-                                                <i class="material-icons text-lg">grade</i>
-                                                <i class="material-icons text-lg">grade</i>
-                                                <i class="material-icons text-lg">grade</i>
-                                                <i class="material-icons text-lg">grade</i>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <hr class="horizontal dark">
-                                        </li>
-                                        <li class="d-flex">
-                                            <p class="mb-0">Members:</p>
-                                            <div class="avatar-group ms-auto">
-                                                <a href="javascript:;" class="avatar avatar-lg avatar-xs rounded-circle"
-                                                    data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                                    title="Martin Doe">
-                                                    <img alt="Image placeholder"
-                                                        src="{{ asset('assets') }}/img/team-4.jpg">
-                                                </a>
-                                                <a href="javascript:;" class="avatar avatar-lg avatar-xs rounded-circle"
-                                                    data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                                    title="Romina Hadid">
-                                                    <img alt="Image placeholder"
-                                                        src="{{ asset('assets') }}/img/team-3.jpg">
-                                                </a>
-                                                <a href="javascript:;" class="avatar avatar-lg avatar-xs rounded-circle"
-                                                    data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                                    title="Alexa Tompson">
-                                                    <img alt="Image placeholder"
-                                                        src="{{ asset('assets') }}/img/team-1.jpg">
-                                                </a>
-                                                <a href="javascript:;" class="avatar avatar-lg avatar-xs rounded-circle"
-                                                    data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                                    title="Alexandra Smith">
-                                                    <img alt="Image placeholder"
-                                                        src="{{ asset('assets') }}/img/team-5.jpg">
-                                                </a>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="card mt-4 card-plain">
-                                <div class="card-body p-3">
-                                    <div class="d-flex">
-                                        <div class="avatar avatar-lg">
-                                            <img alt="Image placeholder"
-                                                src="{{ asset('assets') }}/img/small-logos/logo-slack.svg">
-                                        </div>
-                                        <div class="ms-2 my-auto">
-                                            <h6 class="mb-0">Slack Meet</h6>
-                                            <p class="text-xs mb-0">11:00 AM</p>
-                                        </div>
-                                    </div>
-                                    <p class="mt-3"> You have an upcoming meet for Marketing Planning</p>
-                                    <p class="mb-0"><b>Meeting ID:</b> 902-128-281</p>
-                                    <hr class="horizontal dark">
-                                    <div class="d-flex">
-                                        <button type="button" class="btn btn-sm bg-gradient-dark mb-0">
-                                            Join
-                                        </button>
-                                        <div class="avatar-group ms-auto">
-                                            <a href="javascript:;" class="avatar avatar-lg avatar-xs rounded-circle"
-                                                data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                                title="Alexa Tompson">
-                                                <img alt="Image placeholder" src="{{ asset('assets') }}/img/team-1.jpg">
-                                            </a>
-                                            <a href="javascript:;" class="avatar avatar-lg avatar-xs rounded-circle"
-                                                data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                                title="Romina Hadid">
-                                                <img alt="Image placeholder" src="{{ asset('assets') }}/img/team-2.jpg">
-                                            </a>
-                                            <a href="javascript:;" class="avatar avatar-lg avatar-xs rounded-circle"
-                                                data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                                title="Alexander Smith">
-                                                <img alt="Image placeholder" src="{{ asset('assets') }}/img/team-3.jpg">
-                                            </a>
-                                            <a href="javascript:;" class="avatar avatar-lg avatar-xs rounded-circle"
-                                                data-bs-toggle="tooltip" data-bs-placement="bottom" title="Martin Doe">
-                                                <img alt="Image placeholder"
-                                                    src="{{ asset('assets') }}/img/ivana-squares.jpg">
-                                            </a>
+                        <div class="col-12 col-md-6">
+                            <div class="card border shadow-none h-100">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center">
+                                        <img src="{{ asset('assets') }}/img/team-2.jpg" class="avatar avatar-lg rounded-circle me-3" alt="employee">
+                                        <div>
+                                            <h6 class="mb-1">Tran Duc Huy</h6>
+                                            <p class="text-sm mb-1 text-muted">Ky su IT, phong Cong nghe</p>
+                                            <span class="badge bg-gradient-warning">Dang onboarding</span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="card mt-4 card-plain">
-                                <div class="card-body p-3">
-                                    <div class="d-flex">
-                                        <div class="avatar avatar-lg">
-                                            <img alt="Image placeholder"
-                                                src="{{ asset('assets') }}/img/small-logos/logo-invision.svg">
-                                        </div>
-                                        <div class="ms-2 my-auto">
-                                            <h6 class="mb-0">Invision</h6>
-                                            <p class="text-xs mb-0">4:50 PM</p>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="card border shadow-none h-100">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center">
+                                        <img src="{{ asset('assets') }}/img/team-3.jpg" class="avatar avatar-lg rounded-circle me-3" alt="employee">
+                                        <div>
+                                            <h6 class="mb-1">Le Thu Ha</h6>
+                                            <p class="text-sm mb-1 text-muted">Ke toan tong hop, phong Tai chinh</p>
+                                            <span class="badge bg-gradient-info">Cho cap tai khoan</span>
                                         </div>
                                     </div>
-                                    <p class="mt-3"> You have an upcoming video call for <a href="javascript:;"
-                                            class="text-primary">Material Design</a> at 5:00 PM.</p>
-                                    <p class="mb-0"><b>Meeting ID:</b> 111-968-981</p>
-                                    <hr class="horizontal dark">
-                                    <div class="d-flex">
-                                        <button type="button" class="btn btn-sm bg-gradient-dark mb-0">
-                                            Join
-                                        </button>
-                                        <div class="avatar-group ms-auto">
-                                            <a href="javascript:;" class="avatar avatar-lg avatar-xs rounded-circle"
-                                                data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                                title="Alexa Tompson">
-                                                <img alt="Image placeholder" src="{{ asset('assets') }}/img/team-1.jpg">
-                                            </a>
-                                            <a href="javascript:;" class="avatar avatar-lg avatar-xs rounded-circle"
-                                                data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                                title="Romina Hadid">
-                                                <img alt="Image placeholder" src="{{ asset('assets') }}/img/team-2.jpg">
-                                            </a>
-                                            <a href="javascript:;" class="avatar avatar-lg avatar-xs rounded-circle"
-                                                data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                                title="Alexander Smith">
-                                                <img alt="Image placeholder" src="{{ asset('assets') }}/img/team-3.jpg">
-                                            </a>
-                                            <a href="javascript:;" class="avatar avatar-lg avatar-xs rounded-circle"
-                                                data-bs-toggle="tooltip" data-bs-placement="bottom" title="Martin Doe">
-                                                <img alt="Image placeholder"
-                                                    src="{{ asset('assets') }}/img/ivana-squares.jpg">
-                                            </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="card border shadow-none h-100">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center">
+                                        <img src="{{ asset('assets') }}/img/team-4.jpg" class="avatar avatar-lg rounded-circle me-3" alt="employee">
+                                        <div>
+                                            <h6 class="mb-1">Nguyen Quang Dat</h6>
+                                            <p class="text-sm mb-1 text-muted">Giam sat san xuat, phong Van hanh</p>
+                                            <span class="badge bg-gradient-success">Da hoan tat onboarding</span>
                                         </div>
                                     </div>
                                 </div>
@@ -563,7 +238,100 @@
                 </div>
             </div>
         </div>
+
+        <div class="col-12 col-xl-4">
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-header pb-0">
+                    <h6 class="mb-1">Sinh nhat hom nay</h6>
+                </div>
+                <div class="card-body pt-2">
+                    <div class="d-flex align-items-center mb-3">
+                        <img src="{{ asset('assets') }}/img/marie.jpg" class="avatar rounded-circle me-3" alt="birthday">
+                        <div>
+                            <h6 class="mb-0">Nguyen Thi Mai</h6>
+                            <p class="text-sm mb-0 text-muted">Phong Ke toan</p>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center mb-3">
+                        <img src="{{ asset('assets') }}/img/ivana-square.jpg" class="avatar rounded-circle me-3" alt="birthday">
+                        <div>
+                            <h6 class="mb-0">Tran Hoang Nam</h6>
+                            <p class="text-sm mb-0 text-muted">Phong Kinh doanh</p>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <img src="{{ asset('assets') }}/img/kal-visuals-square.jpg" class="avatar rounded-circle me-3" alt="birthday">
+                        <div>
+                            <h6 class="mb-0">Le Quynh Anh</h6>
+                            <p class="text-sm mb-0 text-muted">Phong Hanh chinh</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-header pb-0">
+                    <h6 class="mb-1">Lich hom nay</h6>
+                </div>
+                <div class="card-body pt-2">
+                    <div class="d-flex mb-3">
+                        <div class="me-3 text-center">
+                            <span class="badge bg-gradient-primary">08:30</span>
+                        </div>
+                        <div>
+                            <h6 class="mb-0">Hop giao ban sang</h6>
+                            <p class="text-sm mb-0 text-muted">Phong Hanh chinh va cac truong bo phan</p>
+                        </div>
+                    </div>
+                    <div class="d-flex mb-3">
+                        <div class="me-3 text-center">
+                            <span class="badge bg-gradient-warning">13:30</span>
+                        </div>
+                        <div>
+                            <h6 class="mb-0">Duyet bang cong tuan</h6>
+                            <p class="text-sm mb-0 text-muted">Bo phan nhan su</p>
+                        </div>
+                    </div>
+                    <div class="d-flex">
+                        <div class="me-3 text-center">
+                            <span class="badge bg-gradient-success">16:00</span>
+                        </div>
+                        <div>
+                            <h6 class="mb-0">Chot du lieu di muon / ve som</h6>
+                            <p class="text-sm mb-0 text-muted">He thong cham cong tu dong</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card shadow-sm border-0">
+                <div class="card-header pb-0">
+                    <h6 class="mb-1">Nhan su noi bat</h6>
+                </div>
+                <div class="card-body pt-2">
+                    <div class="d-flex align-items-center mb-3">
+                        <img src="{{ asset('assets') }}/img/team-5.jpg" class="avatar rounded-circle me-3" alt="featured">
+                        <div>
+                            <h6 class="mb-0">Phong Ke toan</h6>
+                            <p class="text-sm mb-0 text-muted">100% phe duyet cong trong tuan nay</p>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center mb-3">
+                        <img src="{{ asset('assets') }}/img/team-4.jpg" class="avatar rounded-circle me-3" alt="featured">
+                        <div>
+                            <h6 class="mb-0">Phong Van hanh</h6>
+                            <p class="text-sm mb-0 text-muted">Khong co truong hop bo cong</p>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <img src="{{ asset('assets') }}/img/team-3.jpg" class="avatar rounded-circle me-3" alt="featured">
+                        <div>
+                            <h6 class="mb-0">Phong IT</h6>
+                            <p class="text-sm mb-0 text-muted">Da hoan tat cap phat thiet bi cham cong</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    @push('js')
-    <script src="{{ asset('assets') }}/js/plugins/perfect-scrollbar.min.js"></script>
-    @endpush
+</div>
