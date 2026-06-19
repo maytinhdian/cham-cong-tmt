@@ -18,6 +18,9 @@ class Shift extends Model
         'name',
         'start_time',
         'end_time',
+        'break_start_time',
+        'break_end_time',
+        'break_minutes',
         'clock_in_from',
         'clock_in_to',
         'clock_out_from',
@@ -34,6 +37,7 @@ class Shift extends Model
     ];
 
     protected $casts = [
+        'break_minutes' => 'integer',
         'workday_value' => 'decimal:2',
         'requires_clock_in' => 'boolean',
         'requires_clock_out' => 'boolean',

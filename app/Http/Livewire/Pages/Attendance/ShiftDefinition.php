@@ -20,6 +20,12 @@ class ShiftDefinition extends Component
 
     public string $endTime = '17:00';
 
+    public string $breakStartTime = '';
+
+    public string $breakEndTime = '';
+
+    public $breakMinutes = 0;
+
     public string $clockInFrom = '';
 
     public string $clockInTo = '';
@@ -66,6 +72,9 @@ class ShiftDefinition extends Component
         $this->name = '';
         $this->startTime = '08:00';
         $this->endTime = '17:00';
+        $this->breakStartTime = '';
+        $this->breakEndTime = '';
+        $this->breakMinutes = 0;
         $this->clockInFrom = '';
         $this->clockInTo = '';
         $this->clockOutFrom = '';
@@ -94,6 +103,9 @@ class ShiftDefinition extends Component
         $this->name = $shift->name;
         $this->startTime = $this->timeForInput($shift->start_time);
         $this->endTime = $this->timeForInput($shift->end_time);
+        $this->breakStartTime = $this->timeForInput($shift->break_start_time);
+        $this->breakEndTime = $this->timeForInput($shift->break_end_time);
+        $this->breakMinutes = (int) $shift->break_minutes;
         $this->clockInFrom = $this->timeForInput($shift->clock_in_from);
         $this->clockInTo = $this->timeForInput($shift->clock_in_to);
         $this->clockOutFrom = $this->timeForInput($shift->clock_out_from);
@@ -124,6 +136,9 @@ class ShiftDefinition extends Component
             'name' => ['required', 'string', 'max:255'],
             'startTime' => ['required', 'date_format:H:i'],
             'endTime' => ['required', 'date_format:H:i'],
+            'breakStartTime' => ['nullable', 'date_format:H:i'],
+            'breakEndTime' => ['nullable', 'date_format:H:i'],
+            'breakMinutes' => ['required', 'integer', 'min:0', 'max:1440'],
             'clockInFrom' => ['nullable', 'date_format:H:i'],
             'clockInTo' => ['nullable', 'date_format:H:i'],
             'clockOutFrom' => ['nullable', 'date_format:H:i'],
@@ -151,6 +166,9 @@ class ShiftDefinition extends Component
             name: trim($validated['name']),
             startTime: $validated['startTime'],
             endTime: $validated['endTime'],
+            breakStartTime: $validated['breakStartTime'] ?: null,
+            breakEndTime: $validated['breakEndTime'] ?: null,
+            breakMinutes: (int) $validated['breakMinutes'],
             clockInFrom: $validated['clockInFrom'] ?: null,
             clockInTo: $validated['clockInTo'] ?: null,
             clockOutFrom: $validated['clockOutFrom'] ?: null,

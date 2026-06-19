@@ -9,6 +9,9 @@ class ShiftData
         public string $name,
         public string $startTime,
         public string $endTime,
+        public ?string $breakStartTime = null,
+        public ?string $breakEndTime = null,
+        public int $breakMinutes = 0,
         public ?string $clockInFrom = null,
         public ?string $clockInTo = null,
         public ?string $clockOutFrom = null,
@@ -25,6 +28,9 @@ class ShiftData
     ) {
     }
 
+    /**
+     * Convert shift input into database attributes for persistence.
+     */
     public function toArray(): array
     {
         return [
@@ -32,6 +38,9 @@ class ShiftData
             'name' => $this->name,
             'start_time' => $this->startTime,
             'end_time' => $this->endTime,
+            'break_start_time' => $this->breakStartTime,
+            'break_end_time' => $this->breakEndTime,
+            'break_minutes' => $this->breakMinutes,
             'clock_in_from' => $this->clockInFrom,
             'clock_in_to' => $this->clockInTo,
             'clock_out_from' => $this->clockOutFrom,

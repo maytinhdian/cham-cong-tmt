@@ -1,342 +1,473 @@
-<style>
-    .attendance-rules-page .form-control,
-    .attendance-rules-page .form-select {
-        border: 1px solid #cbd5e1 !important;
-        border-radius: 8px !important;
-        background-color: #fff !important;
-        box-shadow: none !important;
-    }
-
-    .attendance-rules-page .form-control:focus,
-    .attendance-rules-page .form-select:focus {
-        border-color: #5e72e4 !important;
-        box-shadow: 0 0 0 0.15rem rgba(94, 114, 228, 0.15) !important;
-    }
-
-    .attendance-rules-page .rule-summary {
-        border-left: 1px solid #e9ecef;
-    }
-
-    @media (max-width: 1199.98px) {
-        .attendance-rules-page .rule-summary {
-            border-left: 0;
-            border-top: 1px solid #e9ecef;
-            margin-top: 1.5rem;
-            padding-top: 1.5rem;
-        }
-    }
-</style>
-
-<div class="container-fluid py-4 attendance-rules-page">
+<div class="container-fluid py-4">
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <div class="card-header p-3 pb-0">
+                <div class="card-header pb-0 p-3">
                     <div class="d-flex flex-column flex-lg-row align-items-lg-center justify-content-between gap-3">
                         <div>
                             <h6 class="mb-1">Quy tắc tính công</h6>
-                            <p class="text-sm mb-0">
-                                Thiết lập cách hệ thống chuyển dữ liệu chấm công thành công chuẩn, công thiếu và công tăng ca.
+                            <p class="text-sm text-secondary mb-0">
+                                Thiết lập quy tắc chuyển log chấm công thành công chuẩn, trạng thái và ký hiệu báo cáo.
                             </p>
                         </div>
-                        <div class="nav-wrapper position-relative end-0">
-                            <ul class="nav nav-pills nav-fill p-1" role="tablist">
-                                <li class="nav-item">
-                                    <a class="nav-link mb-0 px-0 py-1 active" data-bs-toggle="tab"
-                                        href="#standard-work" role="tab" aria-selected="true">
-                                        <i class="material-icons text-lg position-relative">schedule</i>
-                                        <span class="ms-1">Công chuẩn</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link mb-0 px-0 py-1" data-bs-toggle="tab"
-                                        href="#late-early" role="tab" aria-selected="false">
-                                        <i class="material-icons text-lg position-relative">timer</i>
-                                        <span class="ms-1">Trễ / sớm</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link mb-0 px-0 py-1" data-bs-toggle="tab"
-                                        href="#overtime" role="tab" aria-selected="false">
-                                        <i class="material-icons text-lg position-relative">more_time</i>
-                                        <span class="ms-1">Tăng ca</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link mb-0 px-0 py-1" data-bs-toggle="tab"
-                                        href="#leave-rule" role="tab" aria-selected="false">
-                                        <i class="material-icons text-lg position-relative">event_available</i>
-                                        <span class="ms-1">Nghỉ phép</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link mb-0 px-0 py-1" data-bs-toggle="tab"
-                                        href="#lock-rule" role="tab" aria-selected="false">
-                                        <i class="material-icons text-lg position-relative">lock</i>
-                                        <span class="ms-1">Khóa công</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
+                        <button type="button" class="btn bg-gradient-dark mb-0">
+                            Cập nhật quy tắc
+                        </button>
                     </div>
                 </div>
 
-                <div class="card-body p-3 pt-0">
-                    <hr class="horizontal dark mt-0 mb-4">
+                <div class="card-body p-3">
+                    <div class="nav-wrapper position-relative end-0 mb-4">
+                        <ul class="nav nav-pills nav-fill p-1" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link mb-0 px-0 py-1 active" data-bs-toggle="tab" href="#basic-settings" role="tab" aria-selected="true">
+                                    <i class="material-icons text-lg position-relative">settings</i>
+                                    <span class="ms-1">Cơ bản</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link mb-0 px-0 py-1" data-bs-toggle="tab" href="#calculation-settings" role="tab" aria-selected="false">
+                                    <i class="material-icons text-lg position-relative">calculate</i>
+                                    <span class="ms-1">Tính công</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link mb-0 px-0 py-1" data-bs-toggle="tab" href="#statistic-items" role="tab" aria-selected="false">
+                                    <i class="material-icons text-lg position-relative">format_list_bulleted</i>
+                                    <span class="ms-1">Ký hiệu thống kê</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link mb-0 px-0 py-1" data-bs-toggle="tab" href="#weekend-set" role="tab" aria-selected="false">
+                                    <i class="material-icons text-lg position-relative">weekend</i>
+                                    <span class="ms-1">Cuối tuần</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
 
-                    <div class="row">
-                        <div class="col-xl-8">
-                            <div class="tab-content">
-                                <div class="tab-pane fade show active" id="standard-work" role="tabpanel">
-                                    <h6 class="mb-1">Cấu hình công chuẩn</h6>
-                                    <p class="text-sm text-secondary mb-4">Dùng làm nền để tính đủ công, thiếu công và quy đổi phút làm việc.</p>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <label class="form-label">Giờ bắt đầu công chuẩn</label>
-                                            <input type="time" class="form-control" value="08:00">
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" id="basic-settings" role="tabpanel">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="card h-100">
+                                        <div class="card-header pb-0 p-3">
+                                            <h6 class="mb-0">Thông tin đơn vị</h6>
                                         </div>
-                                        <div class="col-md-6 mt-3 mt-md-0">
-                                            <label class="form-label">Giờ kết thúc công chuẩn</label>
-                                            <input type="time" class="form-control" value="17:30">
-                                        </div>
-                                        <div class="col-md-6 mt-3">
-                                            <label class="form-label">Số phút công chuẩn</label>
-                                            <input type="number" class="form-control" value="480">
-                                        </div>
-                                        <div class="col-md-6 mt-3">
-                                            <label class="form-label">Số công quy đổi</label>
-                                            <input type="number" class="form-control" value="1" step="0.1">
-                                        </div>
-                                        <div class="col-md-6 mt-3">
-                                            <label class="form-label">Kiểu tính công</label>
-                                            <select class="form-select">
-                                                <option>Theo phút làm việc thực tế</option>
-                                                <option>Theo đủ ca = 1 công</option>
-                                                <option>Theo tỷ lệ phút chuẩn</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-6 mt-3">
-                                            <label class="form-label">Khoảng làm tròn</label>
-                                            <select class="form-select">
-                                                <option>Không làm tròn</option>
-                                                <option>5 phút</option>
-                                                <option>10 phút</option>
-                                                <option>15 phút</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <ul class="list-group mt-4">
-                                        <li class="list-group-item border-0 px-0">
-                                            <div class="form-check form-switch ps-0">
-                                                <input class="form-check-input ms-auto" type="checkbox" id="roundWorkMinutes" checked>
-                                                <label class="form-check-label text-body ms-3 text-truncate w-80 mb-0" for="roundWorkMinutes">
-                                                    Tự động làm tròn phút công khi tổng hợp bảng công
-                                                </label>
+                                        <div class="card-body p-3">
+                                            <div class="mb-3">
+                                                <label class="form-label">Tên đơn vị</label>
+                                                <input type="text" class="form-control" value="OUR COMPANY">
                                             </div>
-                                        </li>
-                                    </ul>
-                                </div>
-
-                                <div class="tab-pane fade" id="late-early" role="tabpanel">
-                                    <h6 class="mb-1">Đi trễ / Về sớm</h6>
-                                    <p class="text-sm text-secondary mb-4">Cấu hình ngưỡng cảnh báo và cách ghi nhận trễ sớm trong bảng công.</p>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <label class="form-label">Phút đi trễ cho phép</label>
-                                            <input type="number" class="form-control" value="5">
-                                        </div>
-                                        <div class="col-md-6 mt-3 mt-md-0">
-                                            <label class="form-label">Phút về sớm cho phép</label>
-                                            <input type="number" class="form-control" value="5">
-                                        </div>
-                                        <div class="col-md-6 mt-3">
-                                            <label class="form-label">Ngưỡng cảnh báo đi trễ</label>
-                                            <input type="number" class="form-control" value="15">
-                                        </div>
-                                        <div class="col-md-6 mt-3">
-                                            <label class="form-label">Ngưỡng cảnh báo về sớm</label>
-                                            <input type="number" class="form-control" value="15">
-                                        </div>
-                                        <div class="col-md-6 mt-3">
-                                            <label class="form-label">Cách trừ công</label>
-                                            <select class="form-select">
-                                                <option>Trừ theo số phút thực tế</option>
-                                                <option>Trừ theo mức cố định</option>
-                                                <option>Chỉ ghi nhận cảnh báo</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-6 mt-3">
-                                            <label class="form-label">Mức trừ cố định</label>
-                                            <select class="form-select">
-                                                <option>0.25 công</option>
-                                                <option>0.5 công</option>
-                                                <option>1 công</option>
-                                            </select>
+                                            <div class="mb-0">
+                                                <label class="form-label">Tên viết tắt</label>
+                                                <input type="text" class="form-control" value="OUR COMPANY">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="tab-pane fade" id="overtime" role="tabpanel">
-                                    <h6 class="mb-1">Tăng ca</h6>
-                                    <p class="text-sm text-secondary mb-4">Xác định điều kiện tính OT sau ca, cuối tuần và ngày lễ.</p>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <label class="form-label">OT tối thiểu sau ca (phút)</label>
-                                            <input type="number" class="form-control" value="30">
+                                <div class="col-lg-6 mt-4 mt-lg-0">
+                                    <div class="card h-100">
+                                        <div class="card-header pb-0 p-3">
+                                            <h6 class="mb-0">Kỳ công</h6>
                                         </div>
-                                        <div class="col-md-6 mt-3 mt-md-0">
-                                            <label class="form-label">Làm tròn OT</label>
-                                            <select class="form-select">
-                                                <option>15 phút</option>
-                                                <option>30 phút</option>
-                                                <option>Không làm tròn</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-4 mt-3">
-                                            <label class="form-label">Hệ số ngày thường</label>
-                                            <input type="number" class="form-control" value="1.5" step="0.1">
-                                        </div>
-                                        <div class="col-md-4 mt-3">
-                                            <label class="form-label">Hệ số cuối tuần</label>
-                                            <input type="number" class="form-control" value="2" step="0.1">
-                                        </div>
-                                        <div class="col-md-4 mt-3">
-                                            <label class="form-label">Hệ số ngày lễ</label>
-                                            <input type="number" class="form-control" value="3" step="0.1">
+                                        <div class="card-body p-3">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <label class="form-label">Tuần bắt đầu từ</label>
+                                                    <select class="form-control">
+                                                        <option selected>Thứ hai</option>
+                                                        <option>Chủ nhật</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-6 mt-3 mt-md-0">
+                                                    <label class="form-label">Tháng bắt đầu ngày</label>
+                                                    <input type="number" class="form-control" value="1" min="1" max="31">
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <ul class="list-group mt-4">
-                                        <li class="list-group-item border-0 px-0">
-                                            <div class="form-check form-switch ps-0">
-                                                <input class="form-check-input ms-auto" type="checkbox" id="requireOtApproval" checked>
-                                                <label class="form-check-label text-body ms-3 text-truncate w-80 mb-0" for="requireOtApproval">
-                                                    Chỉ tính OT khi có đăng ký hoặc duyệt tăng ca
-                                                </label>
-                                            </div>
-                                        </li>
-                                    </ul>
                                 </div>
 
-                                <div class="tab-pane fade" id="leave-rule" role="tabpanel">
-                                    <h6 class="mb-1">Nghỉ phép</h6>
-                                    <p class="text-sm text-secondary mb-4">Quy định cách nghỉ phép được quy đổi vào bảng công.</p>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <label class="form-label">Nghỉ phép cả ngày quy đổi</label>
-                                            <input type="number" class="form-control" value="1" step="0.1">
+                                <div class="col-lg-6 mt-4">
+                                    <div class="card h-100">
+                                        <div class="card-header pb-0 p-3">
+                                            <h6 class="mb-0">Giới hạn nhận diện ca</h6>
                                         </div>
-                                        <div class="col-md-6 mt-3 mt-md-0">
-                                            <label class="form-label">Nghỉ phép nửa ngày quy đổi</label>
-                                            <input type="number" class="form-control" value="0.5" step="0.1">
-                                        </div>
-                                        <div class="col-md-6 mt-3">
-                                            <label class="form-label">Ngưỡng nửa ngày (phút)</label>
-                                            <input type="number" class="form-control" value="240">
-                                        </div>
-                                        <div class="col-md-6 mt-3">
-                                            <label class="form-label">Loại phép mặc định</label>
-                                            <select class="form-select">
-                                                <option>Phép năm</option>
-                                                <option>Nghỉ không lương</option>
-                                                <option>Nghỉ bù</option>
-                                            </select>
+                                        <div class="card-body p-3">
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <label class="form-label">Dài nhất dưới</label>
+                                                    <input type="number" class="form-control" value="1200">
+                                                    <p class="text-xs text-secondary mt-1 mb-0">phút</p>
+                                                </div>
+                                                <div class="col-md-4 mt-3 mt-md-0">
+                                                    <label class="form-label">Ngắn nhất vượt</label>
+                                                    <input type="number" class="form-control" value="120">
+                                                    <p class="text-xs text-secondary mt-1 mb-0">phút</p>
+                                                </div>
+                                                <div class="col-md-4 mt-3 mt-md-0">
+                                                    <label class="form-label">Lệch ca tối thiểu</label>
+                                                    <input type="number" class="form-control" value="5">
+                                                    <p class="text-xs text-secondary mt-1 mb-0">phút</p>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <ul class="list-group mt-4">
-                                        <li class="list-group-item border-0 px-0">
-                                            <div class="form-check form-switch ps-0">
-                                                <input class="form-check-input ms-auto" type="checkbox" id="approvedLeaveOnly" checked>
-                                                <label class="form-check-label text-body ms-3 text-truncate w-80 mb-0" for="approvedLeaveOnly">
-                                                    Chỉ đưa nghỉ phép đã duyệt vào bảng công
-                                                </label>
-                                            </div>
-                                        </li>
-                                    </ul>
                                 </div>
 
-                                <div class="tab-pane fade" id="lock-rule" role="tabpanel">
-                                    <h6 class="mb-1">Khóa công</h6>
-                                    <p class="text-sm text-secondary mb-4">Kiểm soát thời điểm chốt công và quyền điều chỉnh sau khi khóa.</p>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <label class="form-label">Tự động khóa sau (ngày)</label>
-                                            <input type="number" class="form-control" value="3">
+                                <div class="col-lg-6 mt-4">
+                                    <div class="card h-100">
+                                        <div class="card-header pb-0 p-3">
+                                            <h6 class="mb-0">Ca kéo dài hai ngày</h6>
                                         </div>
-                                        <div class="col-md-6 mt-3 mt-md-0">
-                                            <label class="form-label">Ngày chốt công trong tháng</label>
-                                            <input type="number" class="form-control" value="25">
-                                        </div>
-                                        <div class="col-md-6 mt-3">
-                                            <label class="form-label">Người được mở khóa</label>
-                                            <select class="form-select">
-                                                <option>Quản trị hệ thống</option>
-                                                <option>Trưởng phòng nhân sự</option>
-                                                <option>Quản lý phòng ban</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-6 mt-3">
-                                            <label class="form-label">Thời hạn mở khóa tạm</label>
-                                            <select class="form-select">
-                                                <option>2 giờ</option>
-                                                <option>1 ngày</option>
-                                                <option>3 ngày</option>
-                                            </select>
+                                        <div class="card-body p-3">
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="radio" name="twoDayShift" id="firstDayShift" checked>
+                                                <label class="form-check-label" for="firstDayShift">Tính vào ngày đầu ca</label>
+                                            </div>
+                                            <div class="form-check mb-0">
+                                                <input class="form-check-input" type="radio" name="twoDayShift" id="secondDayShift">
+                                                <label class="form-check-label" for="secondDayShift">Tính vào ngày sau ca</label>
+                                            </div>
                                         </div>
                                     </div>
-                                    <ul class="list-group mt-4">
-                                        <li class="list-group-item border-0 px-0">
-                                            <div class="form-check form-switch ps-0">
-                                                <input class="form-check-input ms-auto" type="checkbox" id="notifyBeforeLock" checked>
-                                                <label class="form-check-label text-body ms-3 text-truncate w-80 mb-0" for="notifyBeforeLock">
-                                                    Gửi cảnh báo trước khi khóa bảng công
-                                                </label>
+                                </div>
+
+                                <div class="col-lg-6 mt-4">
+                                    <div class="card h-100">
+                                        <div class="card-header pb-0 p-3">
+                                            <h6 class="mb-0">Trạng thái ra ngoài</h6>
+                                        </div>
+                                        <div class="card-body p-3">
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="radio" name="outState" id="outIgnore">
+                                                <label class="form-check-label" for="outIgnore">Bỏ qua trạng thái</label>
                                             </div>
-                                        </li>
-                                    </ul>
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="radio" name="outState" id="outAsOut">
+                                                <label class="form-check-label" for="outAsOut">Tính là ra ngoài</label>
+                                            </div>
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="radio" name="outState" id="outBusiness">
+                                                <label class="form-check-label" for="outBusiness">Tính là công tác ngoài</label>
+                                            </div>
+                                            <div class="form-check mb-0">
+                                                <input class="form-check-input" type="radio" name="outState" id="outAudit" checked>
+                                                <label class="form-check-label" for="outAudit">Đưa vào kiểm tra</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6 mt-4">
+                                    <div class="card h-100">
+                                        <div class="card-header pb-0 p-3">
+                                            <h6 class="mb-0">Trạng thái OT</h6>
+                                        </div>
+                                        <div class="card-body p-3">
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="radio" name="otState" id="otIgnore">
+                                                <label class="form-check-label" for="otIgnore">Bỏ qua trạng thái</label>
+                                            </div>
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="radio" name="otState" id="otAsDirect">
+                                                <label class="form-check-label" for="otAsDirect">Tính OT trực tiếp</label>
+                                            </div>
+                                            <div class="form-check mb-0">
+                                                <input class="form-check-input" type="radio" name="otState" id="otAudit" checked>
+                                                <label class="form-check-label" for="otAudit">Đưa vào kiểm tra</label>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="col-xl-4 rule-summary ps-xl-4">
-                            <h6 class="mb-3">Tóm tắt áp dụng</h6>
-                            <ul class="list-group">
-                                <li class="list-group-item border-0 px-0">
-                                    <div class="d-flex align-items-center">
-                                        <span class="badge badge-dot me-3"><i class="bg-success"></i></span>
-                                        <div>
-                                            <h6 class="text-sm mb-0">Công chuẩn</h6>
-                                            <p class="text-xs text-secondary mb-0">480 phút được quy đổi thành 1 công.</p>
+                        <div class="tab-pane fade" id="calculation-settings" role="tabpanel">
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <div class="card h-100">
+                                        <div class="card-header pb-0 p-3">
+                                            <h6 class="mb-0">Công chuẩn</h6>
+                                        </div>
+                                        <div class="card-body p-3">
+                                            <label class="form-label">Một ngày công</label>
+                                            <input type="number" class="form-control" value="420">
+                                            <p class="text-xs text-secondary mt-1 mb-0">phút</p>
                                         </div>
                                     </div>
-                                </li>
-                                <li class="list-group-item border-0 px-0">
-                                    <div class="d-flex align-items-center">
-                                        <span class="badge badge-dot me-3"><i class="bg-warning"></i></span>
-                                        <div>
-                                            <h6 class="text-sm mb-0">Trễ / sớm</h6>
-                                            <p class="text-xs text-secondary mb-0">Có ngưỡng cho phép trước khi ghi nhận vi phạm.</p>
+                                </div>
+                                <div class="col-lg-8 mt-4 mt-lg-0">
+                                    <div class="card h-100">
+                                        <div class="card-header pb-0 p-3">
+                                            <h6 class="mb-0">Ngưỡng trễ / sớm</h6>
+                                        </div>
+                                        <div class="card-body p-3">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <label class="form-label">Chấm vào quá</label>
+                                                    <input type="number" class="form-control" value="10">
+                                                    <p class="text-xs text-secondary mt-1 mb-0">phút thì tính đi trễ</p>
+                                                </div>
+                                                <div class="col-md-6 mt-3 mt-md-0">
+                                                    <label class="form-label">Chấm ra sớm quá</label>
+                                                    <input type="number" class="form-control" value="5">
+                                                    <p class="text-xs text-secondary mt-1 mb-0">phút thì tính về sớm</p>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                </li>
-                                <li class="list-group-item border-0 px-0">
-                                    <div class="d-flex align-items-center">
-                                        <span class="badge badge-dot me-3"><i class="bg-info"></i></span>
-                                        <div>
-                                            <h6 class="text-sm mb-0">Tăng ca</h6>
-                                            <p class="text-xs text-secondary mb-0">Tính theo hệ số ngày thường, cuối tuần và ngày lễ.</p>
+                                </div>
+
+                                <div class="col-lg-6 mt-4">
+                                    <div class="card h-100">
+                                        <div class="card-header pb-0 p-3">
+                                            <h6 class="mb-0">Thiếu chấm công</h6>
+                                        </div>
+                                        <div class="card-body p-3">
+                                            <div class="form-check mb-3">
+                                                <input class="form-check-input" type="checkbox" id="noInEnabled" checked>
+                                                <label class="form-check-label" for="noInEnabled">Không có giờ vào</label>
+                                            </div>
+                                            <div class="row mb-4">
+                                                <div class="col-md-7">
+                                                    <label class="form-label">Tính là</label>
+                                                    <select class="form-control">
+                                                        <option selected>Đi trễ</option>
+                                                        <option>Vắng</option>
+                                                        <option>Thiếu log</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-5 mt-3 mt-md-0">
+                                                    <label class="form-label">Số phút</label>
+                                                    <input type="number" class="form-control" value="60">
+                                                </div>
+                                            </div>
+                                            <div class="form-check mb-3">
+                                                <input class="form-check-input" type="checkbox" id="noOutEnabled" checked>
+                                                <label class="form-check-label" for="noOutEnabled">Không có giờ ra</label>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-7">
+                                                    <label class="form-label">Tính là</label>
+                                                    <select class="form-control">
+                                                        <option selected>Về sớm</option>
+                                                        <option>Vắng</option>
+                                                        <option>Thiếu log</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-5 mt-3 mt-md-0">
+                                                    <label class="form-label">Số phút</label>
+                                                    <input type="number" class="form-control" value="60">
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                </li>
-                                <li class="list-group-item border-0 px-0">
-                                    <div class="d-flex align-items-center">
-                                        <span class="badge badge-dot me-3"><i class="bg-dark"></i></span>
-                                        <div>
-                                            <h6 class="text-sm mb-0">Khóa công</h6>
-                                            <p class="text-xs text-secondary mb-0">Giảm rủi ro chỉnh sửa bảng công sau kỳ chốt.</p>
+                                </div>
+
+                                <div class="col-lg-6 mt-4">
+                                    <div class="card h-100">
+                                        <div class="card-header pb-0 p-3">
+                                            <h6 class="mb-0">Ngưỡng tính vắng</h6>
+                                        </div>
+                                        <div class="card-body p-3">
+                                            <div class="form-check mb-3">
+                                                <input class="form-check-input" type="checkbox" id="lateAbsent">
+                                                <label class="form-check-label" for="lateAbsent">Trễ vượt quá thì tính vắng</label>
+                                            </div>
+                                            <div class="mb-4">
+                                                <label class="form-label">Ngưỡng trễ</label>
+                                                <input type="number" class="form-control" value="100">
+                                                <p class="text-xs text-secondary mt-1 mb-0">phút</p>
+                                            </div>
+                                            <div class="form-check mb-3">
+                                                <input class="form-check-input" type="checkbox" id="earlyAbsent">
+                                                <label class="form-check-label" for="earlyAbsent">Về sớm vượt quá thì tính vắng</label>
+                                            </div>
+                                            <div>
+                                                <label class="form-label">Ngưỡng về sớm</label>
+                                                <input type="number" class="form-control" value="100">
+                                                <p class="text-xs text-secondary mt-1 mb-0">phút</p>
+                                            </div>
                                         </div>
                                     </div>
-                                </li>
-                            </ul>
+                                </div>
+
+                                <div class="col-12 mt-4">
+                                    <div class="card">
+                                        <div class="card-header pb-0 p-3">
+                                            <h6 class="mb-0">Quy tắc tính tăng ca</h6>
+                                        </div>
+                                        <div class="card-body p-3">
+                                            <div class="row">
+                                                <div class="col-lg-4">
+                                                    <h6 class="text-sm mb-3">Ra ngoài trong ca</h6>
+                                                    <div class="form-check mb-3">
+                                                        <input class="form-check-input" type="checkbox" id="leaveAsOt" checked>
+                                                        <label class="form-check-label" for="leaveAsOt">Khoảng ra ngoài tính là OT</label>
+                                                    </div>
+                                                    <label class="form-label">Tối thiểu tính OT</label>
+                                                    <input type="number" class="form-control" value="60">
+                                                    <p class="text-xs text-secondary mt-1 mb-3">phút</p>
+                                                    <label class="form-label">Khoảng này tính OT</label>
+                                                    <input type="number" class="form-control" value="60">
+                                                    <p class="text-xs text-secondary mt-1 mb-0">phút</p>
+                                                </div>
+                                                <div class="col-lg-4 mt-4 mt-lg-0">
+                                                    <h6 class="text-sm mb-3">Trước giờ vào</h6>
+                                                    <div class="form-check mb-3">
+                                                        <input class="form-check-input" type="checkbox" id="checkInIntervalOt">
+                                                        <label class="form-check-label" for="checkInIntervalOt">Khoảng chấm vào tính là OT</label>
+                                                    </div>
+                                                    <label class="form-label">Khoảng này tính OT</label>
+                                                    <input type="number" class="form-control" value="60">
+                                                    <p class="text-xs text-secondary mt-1 mb-3">phút</p>
+                                                    <div class="form-check mb-3">
+                                                        <input class="form-check-input" type="checkbox" id="longestBeforeIn">
+                                                        <label class="form-check-label" for="longestBeforeIn">Giới hạn OT trước giờ vào</label>
+                                                    </div>
+                                                    <label class="form-label">Tối đa trước giờ vào</label>
+                                                    <input type="number" class="form-control" value="60">
+                                                    <p class="text-xs text-secondary mt-1 mb-0">phút</p>
+                                                </div>
+                                                <div class="col-lg-4 mt-4 mt-lg-0">
+                                                    <h6 class="text-sm mb-3">Sau giờ ra</h6>
+                                                    <div class="form-check mb-3">
+                                                        <input class="form-check-input" type="checkbox" id="longestAfterOut">
+                                                        <label class="form-check-label" for="longestAfterOut">Giới hạn OT sau giờ ra</label>
+                                                    </div>
+                                                    <label class="form-label">Tối đa sau giờ ra</label>
+                                                    <input type="number" class="form-control" value="60">
+                                                    <p class="text-xs text-secondary mt-1 mb-3">phút</p>
+                                                    <div class="form-check mb-3">
+                                                        <input class="form-check-input" type="checkbox" id="longestOvertime">
+                                                        <label class="form-check-label" for="longestOvertime">Giới hạn OT tổng</label>
+                                                    </div>
+                                                    <label class="form-label">Tối đa OT</label>
+                                                    <input type="number" class="form-control" value="120">
+                                                    <p class="text-xs text-secondary mt-1 mb-0">phút</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade" id="statistic-items" role="tabpanel">
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <label class="form-label">Danh sách trạng thái</label>
+                                    <select class="form-control" size="14">
+                                        @foreach ($statisticItems as $item)
+                                            <option @selected($loop->first)>{{ $item }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="col-lg-8 mt-4 mt-lg-0">
+                                    <div class="card h-100">
+                                        <div class="card-header pb-0 p-3">
+                                            <h6 class="mb-0">Quy tắc thống kê</h6>
+                                        </div>
+                                        <div class="card-body p-3">
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <label class="form-label">Đơn vị tối thiểu</label>
+                                                    <input type="number" class="form-control" value="0.50" step="0.01">
+                                                </div>
+                                                <div class="col-md-4 mt-3 mt-md-0">
+                                                    <label class="form-label">Đơn vị</label>
+                                                    <select class="form-control">
+                                                        <option selected>Ngày công</option>
+                                                        <option>Giờ</option>
+                                                        <option>Phút</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-4 mt-3 mt-md-0">
+                                                    <label class="form-label">Ký hiệu báo cáo</label>
+                                                    <input type="text" class="form-control" value="G">
+                                                </div>
+                                            </div>
+
+                                            <div class="row mt-4">
+                                                <div class="col-md-6">
+                                                    <h6 class="text-sm mb-3">Kiểm soát làm tròn</h6>
+                                                    <div class="form-check mb-2">
+                                                        <input class="form-check-input" type="radio" name="roundControl" id="roundDown">
+                                                        <label class="form-check-label" for="roundDown">Làm tròn xuống</label>
+                                                    </div>
+                                                    <div class="form-check mb-2">
+                                                        <input class="form-check-input" type="radio" name="roundControl" id="roundOff" checked>
+                                                        <label class="form-check-label" for="roundOff">Làm tròn gần nhất</label>
+                                                    </div>
+                                                    <div class="form-check mb-0">
+                                                        <input class="form-check-input" type="radio" name="roundControl" id="roundUp">
+                                                        <label class="form-check-label" for="roundUp">Làm tròn lên</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 mt-4 mt-md-0">
+                                                    <h6 class="text-sm mb-3">Tùy chọn cộng dồn</h6>
+                                                    <div class="form-check mb-2">
+                                                        <input class="form-check-input" type="checkbox" id="accByTimes">
+                                                        <label class="form-check-label" for="accByTimes">Cộng theo số lần</label>
+                                                    </div>
+                                                    <div class="form-check mb-2">
+                                                        <input class="form-check-input" type="checkbox" id="roundAtAcc" checked>
+                                                        <label class="form-check-label" for="roundAtAcc">Làm tròn khi cộng dồn</label>
+                                                    </div>
+                                                    <div class="form-check mb-0">
+                                                        <input class="form-check-input" type="checkbox" id="groupByTimePeriods">
+                                                        <label class="form-check-label" for="groupByTimePeriods">Nhóm theo khoảng thời gian</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade" id="weekend-set" role="tabpanel">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <h6 class="mb-3">Chọn ngày cuối tuần</h6>
+                                    <div class="row">
+                                        @foreach ($weekdays as $key => $label)
+                                            <div class="col-md-6">
+                                                <div class="form-check mb-3">
+                                                    <input class="form-check-input" type="checkbox" id="weekend-{{ $key }}" @checked(in_array($key, ['saturday', 'sunday'], true))>
+                                                    <label class="form-check-label" for="weekend-{{ $key }}">{{ $label }}</label>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6 mt-4 mt-lg-0">
+                                    <div class="card h-100">
+                                        <div class="card-header pb-0 p-3">
+                                            <h6 class="mb-0">Hiển thị cuối tuần</h6>
+                                        </div>
+                                        <div class="card-body p-3">
+                                            <div class="form-check mb-3">
+                                                <input class="form-check-input" type="checkbox" id="weekendCountAsOt">
+                                                <label class="form-check-label" for="weekendCountAsOt">Cuối tuần tính là OT</label>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label" for="weekendSymbol">Ký hiệu cuối tuần trong báo cáo</label>
+                                                <input id="weekendSymbol" type="text" class="form-control" value="W">
+                                            </div>
+                                            <div class="mb-0">
+                                                <label class="form-label" for="weekendColor">Màu cuối tuần trong báo cáo</label>
+                                                <input id="weekendColor" type="color" class="form-control p-1" style="width: 64px; height: 42px;" value="#ff0000">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 

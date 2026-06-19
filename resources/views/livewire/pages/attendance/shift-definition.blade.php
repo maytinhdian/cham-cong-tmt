@@ -74,6 +74,14 @@
                                                     <p class="text-xs text-secondary mb-0">
                                                         Trễ {{ $shift->max_late_minutes }} phút, sớm {{ $shift->max_early_leave_minutes }} phút
                                                     </p>
+                                                    <p class="text-xs text-secondary mb-0">
+                                                        Nghỉ trưa:
+                                                        @if ($shift->break_start_time && $shift->break_end_time)
+                                                            {{ substr($shift->break_start_time, 0, 5) }} - {{ substr($shift->break_end_time, 0, 5) }}
+                                                        @else
+                                                            Chưa khai báo
+                                                        @endif
+                                                    </p>
                                                 </td>
                                                 <td>
                                                     <p class="text-xs mb-0">
@@ -169,6 +177,30 @@
                                                     <label class="form-label" for="endTime">Giờ ra <span class="text-danger">*</span></label>
                                                     <input id="endTime" type="time" class="form-control" wire:model.defer="endTime">
                                                     @error('endTime') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <div class="mb-3">
+                                                    <label class="form-label" for="breakStartTime">Nghỉ trưa từ</label>
+                                                    <input id="breakStartTime" type="time" class="form-control" wire:model.defer="breakStartTime">
+                                                    @error('breakStartTime') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="mb-3">
+                                                    <label class="form-label" for="breakEndTime">Nghỉ trưa đến</label>
+                                                    <input id="breakEndTime" type="time" class="form-control" wire:model.defer="breakEndTime">
+                                                    @error('breakEndTime') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="mb-3">
+                                                    <label class="form-label" for="breakMinutes">Số phút nghỉ trưa</label>
+                                                    <input id="breakMinutes" type="number" class="form-control" wire:model.defer="breakMinutes">
+                                                    @error('breakMinutes') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
                                                 </div>
                                             </div>
                                         </div>
