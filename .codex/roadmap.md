@@ -47,8 +47,9 @@
 - [x] Raw log processing action and service
 - [x] LogFilter
 - [x] LogPairing
-- [ ] Missing log detection
-- [ ] Leave, holiday, and weekend rule handling
+- [x] Missing log detection
+- [x] Weekend and holiday rule handling
+- [ ] Leave rule handling
 
 ## Phase 5 - Calculation
 

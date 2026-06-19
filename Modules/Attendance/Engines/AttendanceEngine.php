@@ -5,8 +5,10 @@ namespace Modules\Attendance\Engines;
 use Carbon\Carbon;
 use Carbon\CarbonInterface;
 use Illuminate\Support\Collection;
+use Modules\Attendance\DTOs\AttendanceDayContext;
 use Modules\Attendance\Models\DailyAttendanceResult;
 use Modules\Attendance\Models\RawAttendanceLog;
+use Modules\Attendance\Services\AttendanceDayResolver;
 use Modules\Schedule\Models\EmployeeSchedule;
 use Modules\Shift\Models\Shift;
 use Modules\User\Models\Employee;
@@ -19,6 +21,7 @@ class AttendanceEngine
     public function __construct(
         private readonly LogFilter $logFilter,
         private readonly LogPairing $logPairing,
+        private readonly AttendanceDayResolver $dayResolver,
         private readonly ShiftMatcher $shiftMatcher,
         private readonly WorkHourCalculator $workHourCalculator,
         private readonly LateCalculator $lateCalculator,
@@ -32,6 +35,7 @@ class AttendanceEngine
     public function processEmployeeDay(Employee $employee, CarbonInterface|string $workDate): DailyAttendanceResult
     {
         $date = is_string($workDate) ? Carbon::parse($workDate)->startOfDay() : $workDate->copy()->startOfDay();
+        $dayContext = $this->dayResolver->resolve($date);
         $schedule = $this->shiftMatcher->match($employee, $date);
         $shift = $schedule?->shift;
         $rawLogs = $this->rawLogsForDay($employee, $date, $shift);
@@ -40,9 +44,10 @@ class AttendanceEngine
 
         $clockIn = $pairing->clockIn;
         $clockOut = $pairing->clockOut;
-        $missingLogCount = $this->missingLogCount($clockIn, $clockOut, $shift);
-        $lateMinutes = $this->lateCalculator->calculateLate($clockIn, $shift, $date);
-        $earlyLeaveMinutes = $this->lateCalculator->calculateEarlyLeave($clockOut, $shift, $date);
+        $workMinutes = $this->workHourCalculator->calculate($clockIn, $clockOut);
+        $missingLogCount = $this->missingLogCount($clockIn, $clockOut, $shift, $dayContext, $schedule);
+        $lateMinutes = $this->lateMinutes($clockIn, $shift, $date, $dayContext, $schedule);
+        $earlyLeaveMinutes = $this->earlyLeaveMinutes($clockOut, $shift, $date, $dayContext, $schedule);
 
         $dailyResult = DailyAttendanceResult::query()->updateOrCreate(
             [
@@ -54,13 +59,13 @@ class AttendanceEngine
                 'shift_id' => $shift?->id,
                 'clock_in_at' => $clockIn,
                 'clock_out_at' => $clockOut,
-                'work_minutes' => $this->workHourCalculator->calculate($clockIn, $clockOut),
+                'work_minutes' => $workMinutes,
                 'late_minutes' => $lateMinutes,
                 'early_leave_minutes' => $earlyLeaveMinutes,
-                'overtime_minutes' => $this->overtimeCalculator->calculate($clockOut, $shift, $date),
+                'overtime_minutes' => $this->overtimeMinutes($clockIn, $clockOut, $shift, $date, $dayContext, $workMinutes),
                 'missing_log_count' => $missingLogCount,
-                'status' => $this->statusFor($schedule, $shift, $rawLogs, $missingLogCount, $lateMinutes, $earlyLeaveMinutes),
-                'note' => $this->noteFor($schedule, $shift, $rawLogs, $missingLogCount),
+                'status' => $this->statusFor($schedule, $shift, $rawLogs, $missingLogCount, $lateMinutes, $earlyLeaveMinutes, $dayContext),
+                'note' => $this->noteFor($schedule, $shift, $rawLogs, $missingLogCount, $dayContext),
             ]
         );
 
@@ -96,12 +101,77 @@ class AttendanceEngine
     /**
      * Count required punches that are missing for the matched shift.
      */
-    private function missingLogCount(mixed $clockIn, mixed $clockOut, ?Shift $shift): int
-    {
+    private function missingLogCount(
+        mixed $clockIn,
+        mixed $clockOut,
+        ?Shift $shift,
+        AttendanceDayContext $dayContext,
+        ?EmployeeSchedule $schedule
+    ): int {
+        if ($dayContext->isSpecialDay() && ! $schedule) {
+            return 0;
+        }
+
         $requiresClockIn = $shift?->requires_clock_in ?? true;
         $requiresClockOut = $shift?->requires_clock_out ?? true;
 
         return (int) ($requiresClockIn && ! $clockIn) + (int) ($requiresClockOut && ! $clockOut);
+    }
+
+    /**
+     * Calculate late minutes with special-day awareness.
+     */
+    private function lateMinutes(
+        ?CarbonInterface $clockIn,
+        ?Shift $shift,
+        CarbonInterface $workDate,
+        AttendanceDayContext $dayContext,
+        ?EmployeeSchedule $schedule
+    ): int {
+        if ($dayContext->isSpecialDay() && ! $schedule) {
+            return 0;
+        }
+
+        return $this->lateCalculator->calculateLate($clockIn, $shift, $workDate);
+    }
+
+    /**
+     * Calculate early-leave minutes with special-day awareness.
+     */
+    private function earlyLeaveMinutes(
+        ?CarbonInterface $clockOut,
+        ?Shift $shift,
+        CarbonInterface $workDate,
+        AttendanceDayContext $dayContext,
+        ?EmployeeSchedule $schedule
+    ): int {
+        if ($dayContext->isSpecialDay() && ! $schedule) {
+            return 0;
+        }
+
+        return $this->lateCalculator->calculateEarlyLeave($clockOut, $shift, $workDate);
+    }
+
+    /**
+     * Calculate overtime, treating special non-working days as overtime-only when no shift is assigned.
+     */
+    private function overtimeMinutes(
+        ?CarbonInterface $clockIn,
+        ?CarbonInterface $clockOut,
+        ?Shift $shift,
+        CarbonInterface $workDate,
+        AttendanceDayContext $dayContext,
+        int $workMinutes
+    ): int {
+        if ($shift) {
+            return $this->overtimeCalculator->calculate($clockOut, $shift, $workDate);
+        }
+
+        if ($dayContext->isSpecialDay() && $clockIn && $clockOut) {
+            return $workMinutes;
+        }
+
+        return 0;
     }
 
     /**
@@ -113,13 +183,30 @@ class AttendanceEngine
         Collection $rawLogs,
         int $missingLogCount,
         int $lateMinutes,
-        int $earlyLeaveMinutes
+        int $earlyLeaveMinutes,
+        AttendanceDayContext $dayContext
     ): string {
         if (! $schedule || ! $shift) {
+            if ($dayContext->dayType === 'holiday') {
+                return 'holiday';
+            }
+
+            if ($dayContext->dayType === 'weekend') {
+                return 'weekend';
+            }
+
             return 'no_schedule';
         }
 
         if ($rawLogs->isEmpty()) {
+            if ($dayContext->dayType === 'holiday') {
+                return 'holiday';
+            }
+
+            if ($dayContext->dayType === 'weekend') {
+                return 'weekend';
+            }
+
             return 'absent';
         }
 
@@ -129,8 +216,25 @@ class AttendanceEngine
     /**
      * Build a short audit note explaining the daily processing outcome.
      */
-    private function noteFor(?EmployeeSchedule $schedule, ?Shift $shift, Collection $rawLogs, int $missingLogCount): ?string
-    {
+    private function noteFor(
+        ?EmployeeSchedule $schedule,
+        ?Shift $shift,
+        Collection $rawLogs,
+        int $missingLogCount,
+        AttendanceDayContext $dayContext
+    ): ?string {
+        if ($dayContext->dayType === 'holiday' && ! $schedule) {
+            return $rawLogs->isEmpty()
+                ? 'Ngày nghỉ lễ theo lịch công ty.'
+                : 'Chấm công trong ngày nghỉ lễ.';
+        }
+
+        if ($dayContext->dayType === 'weekend' && ! $schedule) {
+            return $rawLogs->isEmpty()
+                ? 'Ngày cuối tuần theo cấu hình hệ thống.'
+                : 'Chấm công trong ngày cuối tuần.';
+        }
+
         if (! $schedule || ! $shift) {
             return $rawLogs->isEmpty()
                 ? 'Chưa có lịch/ca làm để xử lý ngày công.'

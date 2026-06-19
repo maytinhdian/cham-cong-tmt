@@ -109,6 +109,8 @@
                                                 <option value="complete">Hợp lệ</option>
                                                 <option value="exception">Cần kiểm tra</option>
                                                 <option value="absent">Vắng</option>
+                                                <option value="weekend">Cuối tuần</option>
+                                                <option value="holiday">Nghỉ lễ</option>
                                                 <option value="no_schedule">Chưa có lịch</option>
                                             </select>
                                         </div>
@@ -165,6 +167,10 @@
                                                                 <span class="badge bg-gradient-warning">Cần kiểm tra</span>
                                                             @elseif ($result->status === 'absent')
                                                                 <span class="badge bg-gradient-danger">Vắng</span>
+                                                            @elseif ($result->status === 'weekend')
+                                                                <span class="badge bg-gradient-info">Cuối tuần</span>
+                                                            @elseif ($result->status === 'holiday')
+                                                                <span class="badge bg-gradient-primary">Nghỉ lễ</span>
                                                             @else
                                                                 <span class="badge bg-gradient-secondary">Chưa có lịch</span>
                                                             @endif

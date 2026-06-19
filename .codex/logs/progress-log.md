@@ -79,6 +79,10 @@ Recommended next feature after this note:
   - `Modules/Attendance/Engines/LogFilter`.
   - `Modules/Attendance/Engines/LogPairing`.
   - `Modules/Attendance/DTOs/LogPairingResult`.
+- Added attendance day context handling:
+  - `Modules/Attendance/DTOs/AttendanceDayContext`.
+  - `Modules/Attendance/Services/AttendanceDayResolver`.
+  - Weekend and holiday statuses in attendance processing and daily timesheet UI.
 - Added device user mapping foundation:
   - `attendance_device_user_maps` table.
   - `Modules/Device` mapping model, DTO, service, and save action.

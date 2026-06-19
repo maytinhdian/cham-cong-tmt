@@ -34,6 +34,8 @@ class DailyTimesheetService
             'adjusted' => (clone $query)->where('status', 'adjusted')->count(),
             'exception' => (clone $query)->where('status', 'exception')->count(),
             'absent' => (clone $query)->where('status', 'absent')->count(),
+            'weekend' => (clone $query)->where('status', 'weekend')->count(),
+            'holiday' => (clone $query)->where('status', 'holiday')->count(),
             'missing_logs' => (int) (clone $query)->sum('missing_log_count'),
             'work_minutes' => (int) (clone $query)->sum('work_minutes'),
             'late_minutes' => (int) (clone $query)->sum('late_minutes'),
