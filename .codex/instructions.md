@@ -8,7 +8,7 @@ The project is moving toward a modular backend under `Modules/` while keeping th
 
 ## Current Priorities
 
-1. Read `.codex/progress-log.md` before continuing HR or attendance work.
+1. Read `.codex/logs/progress-log.md` before continuing HR or attendance work.
 2. Keep the UI consistent with the existing Material Dashboard template.
 3. Organize backend code by business modules.
 4. Start backend work from database, models, and core CRUD before complex attendance calculations.

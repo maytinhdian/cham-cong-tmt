@@ -7,12 +7,16 @@ Read these project notes before making changes:
 - [.codex/coding-standards.md](.codex/coding-standards.md)
 - [.codex/ui-rules.md](.codex/ui-rules.md)
 - [.codex/workflow.md](.codex/workflow.md)
-- [.codex/progress-log.md](.codex/progress-log.md)
+- [.codex/logs/progress-log.md](.codex/progress-log.md)
 
-This project is a Laravel 11 + Livewire 3 HR and attendance system.
+## Documentation Rules
 
-Backend code is moving toward PSR-4 modules under `Modules/`.
+After completing a significant task:
 
-Frontend work should follow the existing Material Dashboard 2 Pro / Bootstrap style.
+1. Update logs/progress-log.md
+2. Record architecture decisions in logs/decisions.md
+3. Record unresolved problems in logs/known-issues.md
+4. Update roadmap.md if a phase is completed
 
-Before continuing attendance features, read `.codex/progress-log.md` to avoid drifting away from the agreed business flow.
+Documentation is part of the task.
+A task is not considered complete until documentation is updated.
