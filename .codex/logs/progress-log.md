@@ -88,6 +88,11 @@ Recommended next feature after this note:
   - `Modules/Leave` approved leave model, DTO, service, and save action.
   - Employee-specific leave day detection in attendance processing.
   - `leave` status in attendance processing and timesheet screens.
+- Added detailed attendance value calculation:
+  - `BreakCalculator` to deduct configured shift breaks from gross work minutes.
+  - `AttendanceCalculator` to convert work minutes into payable attendance value.
+  - Shared attendance-value and break-minute storage on daily attendance results.
+  - Daily timesheet review and log processing screens now show break minutes and attendance value.
 - Added device user mapping foundation:
   - `attendance_device_user_maps` table.
   - `Modules/Device` mapping model, DTO, service, and save action.

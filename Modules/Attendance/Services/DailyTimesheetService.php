@@ -39,6 +39,8 @@ class DailyTimesheetService
             'holiday' => (clone $query)->where('status', 'holiday')->count(),
             'missing_logs' => (int) (clone $query)->sum('missing_log_count'),
             'work_minutes' => (int) (clone $query)->sum('work_minutes'),
+            'break_minutes' => (int) (clone $query)->sum('break_minutes'),
+            'attendance_value' => round((float) (clone $query)->sum('attendance_value'), 2),
             'late_minutes' => (int) (clone $query)->sum('late_minutes'),
             'overtime_minutes' => (int) (clone $query)->sum('overtime_minutes'),
         ];

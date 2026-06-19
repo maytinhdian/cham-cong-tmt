@@ -22,6 +22,8 @@ class DailyAttendanceResult extends Model
         'clock_in_at',
         'clock_out_at',
         'work_minutes',
+        'break_minutes',
+        'attendance_value',
         'late_minutes',
         'early_leave_minutes',
         'overtime_minutes',
@@ -34,6 +36,8 @@ class DailyAttendanceResult extends Model
         'work_date' => 'date',
         'clock_in_at' => 'datetime',
         'clock_out_at' => 'datetime',
+        'break_minutes' => 'integer',
+        'attendance_value' => 'decimal:2',
     ];
 
     /**

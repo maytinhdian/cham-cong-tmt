@@ -127,6 +127,8 @@
                                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Ca</th>
                                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Vào/Ra</th>
                                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Công</th>
+                                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Nghỉ</th>
+                                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Công tính</th>
                                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Lỗi</th>
                                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Trạng thái</th>
                                                 </tr>
@@ -158,6 +160,14 @@
                                                             <p class="text-xs text-secondary mb-0">Thiếu log: {{ $result->missing_log_count }}</p>
                                                         </td>
                                                         <td>
+                                                            <p class="text-sm mb-0">{{ $result->break_minutes ?? 0 }} phút</p>
+                                                            <p class="text-xs text-secondary mb-0">{{ number_format(($result->break_minutes ?? 0) / 60, 1) }} giờ</p>
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-sm mb-0">{{ number_format((float) $result->attendance_value, 2) }}</p>
+                                                            <p class="text-xs text-secondary mb-0">Công quy đổi</p>
+                                                        </td>
+                                                        <td>
                                                             <p class="text-sm mb-0">Trễ: {{ $result->late_minutes }} phút</p>
                                                             <p class="text-xs text-secondary mb-0">Về sớm: {{ $result->early_leave_minutes }} phút</p>
                                                         </td>
@@ -184,7 +194,7 @@
                                                     </tr>
                                                 @empty
                                                     <tr>
-                                                        <td colspan="7" class="text-center py-4">
+                                                        <td colspan="9" class="text-center py-4">
                                                             <p class="text-sm text-secondary mb-0">Chưa có kết quả chấm công ngày trong bộ lọc này.</p>
                                                         </td>
                                                     </tr>

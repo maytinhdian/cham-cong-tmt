@@ -23,6 +23,8 @@ class AttendanceEngine
         private readonly LogPairing $logPairing,
         private readonly AttendanceDayResolver $dayResolver,
         private readonly ShiftMatcher $shiftMatcher,
+        private readonly BreakCalculator $breakCalculator,
+        private readonly AttendanceCalculator $attendanceCalculator,
         private readonly WorkHourCalculator $workHourCalculator,
         private readonly LateCalculator $lateCalculator,
         private readonly OvertimeCalculator $overtimeCalculator,
@@ -45,10 +47,13 @@ class AttendanceEngine
         $clockIn = $pairing->clockIn;
         $clockOut = $pairing->clockOut;
         $isApprovedLeave = $dayContext->dayType === 'leave';
-        $workMinutes = $isApprovedLeave ? 0 : $this->workHourCalculator->calculate($clockIn, $clockOut);
+        $grossWorkMinutes = $isApprovedLeave ? 0 : $this->workHourCalculator->calculate($clockIn, $clockOut);
+        $breakMinutes = $isApprovedLeave ? 0 : $this->breakCalculator->calculate($clockIn, $clockOut, $shift, $date);
+        $workMinutes = max(0, $grossWorkMinutes - $breakMinutes);
         $missingLogCount = $this->missingLogCount($clockIn, $clockOut, $shift, $dayContext, $schedule);
         $lateMinutes = $this->lateMinutes($clockIn, $shift, $date, $dayContext, $schedule);
         $earlyLeaveMinutes = $this->earlyLeaveMinutes($clockOut, $shift, $date, $dayContext, $schedule);
+        $attendanceValue = $this->attendanceCalculator->calculate($shift, $dayContext, $workMinutes);
 
         $dailyResult = DailyAttendanceResult::query()->updateOrCreate(
             [
@@ -61,6 +66,8 @@ class AttendanceEngine
                 'clock_in_at' => $clockIn,
                 'clock_out_at' => $clockOut,
                 'work_minutes' => $workMinutes,
+                'break_minutes' => $breakMinutes,
+                'attendance_value' => $attendanceValue,
                 'late_minutes' => $isApprovedLeave ? 0 : $lateMinutes,
                 'early_leave_minutes' => $isApprovedLeave ? 0 : $earlyLeaveMinutes,
                 'overtime_minutes' => $this->overtimeMinutes($clockIn, $clockOut, $shift, $date, $dayContext, $workMinutes),

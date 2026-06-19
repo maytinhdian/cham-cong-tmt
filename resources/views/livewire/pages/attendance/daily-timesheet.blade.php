@@ -88,6 +88,24 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-lg-3 mt-4">
+                            <div class="card h-100">
+                                <div class="card-body p-3">
+                                    <p class="text-sm text-secondary mb-1">Tổng giờ nghỉ</p>
+                                    <h6 class="mb-0">{{ number_format($summary['break_minutes'] / 60, 1) }} giờ</h6>
+                                    <p class="text-sm mb-0">Đã trừ từ giờ làm thực tế</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 mt-4">
+                            <div class="card h-100">
+                                <div class="card-body p-3">
+                                    <p class="text-sm text-secondary mb-1">Tổng công tính</p>
+                                    <h6 class="mb-0">{{ number_format($summary['attendance_value'], 2) }}</h6>
+                                    <p class="text-sm mb-0">Theo rule ca, phép, lễ</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     @if ($adjustingResult)
@@ -203,6 +221,8 @@
                                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Ca làm</th>
                                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Giờ vào/ra</th>
                                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Công</th>
+                                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Nghỉ</th>
+                                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Công tính</th>
                                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Trễ/sớm</th>
                                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">OT</th>
                                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Trạng thái</th>
@@ -239,6 +259,14 @@
                                                         <td>
                                                             <p class="text-sm mb-0">{{ $result->work_minutes }} phút</p>
                                                             <p class="text-xs text-secondary mb-0">{{ number_format($result->work_minutes / 60, 1) }} giờ</p>
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-sm mb-0">{{ $result->break_minutes ?? 0 }} phút</p>
+                                                            <p class="text-xs text-secondary mb-0">{{ number_format(($result->break_minutes ?? 0) / 60, 1) }} giờ</p>
+                                                        </td>
+                                                        <td>
+                                                            <p class="text-sm mb-0">{{ number_format((float) $result->attendance_value, 2) }}</p>
+                                                            <p class="text-xs text-secondary mb-0">Công quy đổi</p>
                                                         </td>
                                                         <td>
                                                             <p class="text-sm mb-0">Trễ {{ $result->late_minutes }} phút</p>
@@ -285,7 +313,7 @@
                                                     </tr>
                                                 @empty
                                                     <tr>
-                                                        <td colspan="9" class="text-center py-4">
+                                                        <td colspan="11" class="text-center py-4">
                                                             <p class="text-sm text-secondary mb-0">
                                                                 Chưa có dữ liệu bảng công ngày trong bộ lọc này. Hãy chạy xử lý log trước nếu đã có log chấm công.
                                                             </p>

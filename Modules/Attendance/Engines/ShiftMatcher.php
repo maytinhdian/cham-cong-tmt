@@ -16,7 +16,7 @@ class ShiftMatcher
         $date = is_string($workDate) ? $workDate : $workDate->toDateString();
 
         return EmployeeSchedule::query()
-            ->with('shift')
+            ->with(['shift.breaks'])
             ->where('employee_id', $employee->id)
             ->whereDate('work_date', $date)
             ->first();

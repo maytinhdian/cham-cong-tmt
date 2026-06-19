@@ -69,3 +69,17 @@ Leave is employee-specific, while weekends and holidays are calendar-wide; the a
 Result:
 
 Added `approved_leaves` and wired `leave` status handling into the attendance engine and timesheet views.
+
+## 2026-06-19
+
+Decision:
+
+Daily attendance results should store both raw worked minutes and derived attendance value, with break minutes deducted from work time using shift break rules.
+
+Reason:
+
+Payroll review needs the raw time span, the net worked span, and the payable attendance figure side by side so manual corrections and automated processing follow the same rule set.
+
+Result:
+
+Added break deduction and attendance-value calculation to the attendance engine, daily timesheet adjustment service, and daily/process log UI.

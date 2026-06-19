@@ -56,8 +56,8 @@
 - [x] WorkHourCalculator
 - [x] LateCalculator
 - [x] OvertimeCalculator
-- [ ] BreakCalculator
-- [ ] AttendanceCalculator
+- [x] BreakCalculator
+- [x] AttendanceCalculator
 
 ## Phase 6 - Timesheet
 
