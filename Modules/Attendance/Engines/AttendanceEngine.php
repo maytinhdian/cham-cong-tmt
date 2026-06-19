@@ -35,7 +35,7 @@ class AttendanceEngine
     public function processEmployeeDay(Employee $employee, CarbonInterface|string $workDate): DailyAttendanceResult
     {
         $date = is_string($workDate) ? Carbon::parse($workDate)->startOfDay() : $workDate->copy()->startOfDay();
-        $dayContext = $this->dayResolver->resolve($date);
+        $dayContext = $this->dayResolver->resolve($employee, $date);
         $schedule = $this->shiftMatcher->match($employee, $date);
         $shift = $schedule?->shift;
         $rawLogs = $this->rawLogsForDay($employee, $date, $shift);
@@ -44,7 +44,8 @@ class AttendanceEngine
 
         $clockIn = $pairing->clockIn;
         $clockOut = $pairing->clockOut;
-        $workMinutes = $this->workHourCalculator->calculate($clockIn, $clockOut);
+        $isApprovedLeave = $dayContext->dayType === 'leave';
+        $workMinutes = $isApprovedLeave ? 0 : $this->workHourCalculator->calculate($clockIn, $clockOut);
         $missingLogCount = $this->missingLogCount($clockIn, $clockOut, $shift, $dayContext, $schedule);
         $lateMinutes = $this->lateMinutes($clockIn, $shift, $date, $dayContext, $schedule);
         $earlyLeaveMinutes = $this->earlyLeaveMinutes($clockOut, $shift, $date, $dayContext, $schedule);
@@ -60,8 +61,8 @@ class AttendanceEngine
                 'clock_in_at' => $clockIn,
                 'clock_out_at' => $clockOut,
                 'work_minutes' => $workMinutes,
-                'late_minutes' => $lateMinutes,
-                'early_leave_minutes' => $earlyLeaveMinutes,
+                'late_minutes' => $isApprovedLeave ? 0 : $lateMinutes,
+                'early_leave_minutes' => $isApprovedLeave ? 0 : $earlyLeaveMinutes,
                 'overtime_minutes' => $this->overtimeMinutes($clockIn, $clockOut, $shift, $date, $dayContext, $workMinutes),
                 'missing_log_count' => $missingLogCount,
                 'status' => $this->statusFor($schedule, $shift, $rawLogs, $missingLogCount, $lateMinutes, $earlyLeaveMinutes, $dayContext),
@@ -108,6 +109,10 @@ class AttendanceEngine
         AttendanceDayContext $dayContext,
         ?EmployeeSchedule $schedule
     ): int {
+        if ($dayContext->dayType === 'leave') {
+            return 0;
+        }
+
         if ($dayContext->isSpecialDay() && ! $schedule) {
             return 0;
         }
@@ -128,6 +133,10 @@ class AttendanceEngine
         AttendanceDayContext $dayContext,
         ?EmployeeSchedule $schedule
     ): int {
+        if ($dayContext->dayType === 'leave') {
+            return 0;
+        }
+
         if ($dayContext->isSpecialDay() && ! $schedule) {
             return 0;
         }
@@ -145,6 +154,10 @@ class AttendanceEngine
         AttendanceDayContext $dayContext,
         ?EmployeeSchedule $schedule
     ): int {
+        if ($dayContext->dayType === 'leave') {
+            return 0;
+        }
+
         if ($dayContext->isSpecialDay() && ! $schedule) {
             return 0;
         }
@@ -163,6 +176,10 @@ class AttendanceEngine
         AttendanceDayContext $dayContext,
         int $workMinutes
     ): int {
+        if ($dayContext->dayType === 'leave') {
+            return 0;
+        }
+
         if ($shift) {
             return $this->overtimeCalculator->calculate($clockOut, $shift, $workDate);
         }
@@ -186,6 +203,10 @@ class AttendanceEngine
         int $earlyLeaveMinutes,
         AttendanceDayContext $dayContext
     ): string {
+        if ($dayContext->dayType === 'leave') {
+            return 'leave';
+        }
+
         if (! $schedule || ! $shift) {
             if ($dayContext->dayType === 'holiday') {
                 return 'holiday';
@@ -199,6 +220,10 @@ class AttendanceEngine
         }
 
         if ($rawLogs->isEmpty()) {
+            if ($dayContext->dayType === 'leave') {
+                return 'leave';
+            }
+
             if ($dayContext->dayType === 'holiday') {
                 return 'holiday';
             }
@@ -227,6 +252,12 @@ class AttendanceEngine
             return $rawLogs->isEmpty()
                 ? 'Ngày nghỉ lễ theo lịch công ty.'
                 : 'Chấm công trong ngày nghỉ lễ.';
+        }
+
+        if ($dayContext->dayType === 'leave') {
+            return $dayContext->leave?->leave_type
+                ? 'Ngày nghỉ phép đã được duyệt: '.$dayContext->leave->leave_type.'.'
+                : 'Ngày nghỉ phép đã được duyệt.';
         }
 
         if ($dayContext->dayType === 'weekend' && ! $schedule) {

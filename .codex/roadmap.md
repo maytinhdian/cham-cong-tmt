@@ -49,7 +49,7 @@
 - [x] LogPairing
 - [x] Missing log detection
 - [x] Weekend and holiday rule handling
-- [ ] Leave rule handling
+- [x] Leave rule handling
 
 ## Phase 5 - Calculation
 

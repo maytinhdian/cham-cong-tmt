@@ -3,12 +3,14 @@
 namespace Modules\Attendance\DTOs;
 
 use Modules\Schedule\Models\HolidayCalendar;
+use Modules\Leave\Models\ApprovedLeave;
 
 readonly class AttendanceDayContext
 {
     public function __construct(
         public string $dayType,
         public ?HolidayCalendar $holiday = null,
+        public ?ApprovedLeave $leave = null,
     ) {
     }
 
@@ -17,6 +19,6 @@ readonly class AttendanceDayContext
      */
     public function isSpecialDay(): bool
     {
-        return in_array($this->dayType, ['weekend', 'holiday'], true);
+        return in_array($this->dayType, ['weekend', 'holiday', 'leave'], true);
     }
 }

@@ -83,6 +83,11 @@ Recommended next feature after this note:
   - `Modules/Attendance/DTOs/AttendanceDayContext`.
   - `Modules/Attendance/Services/AttendanceDayResolver`.
   - Weekend and holiday statuses in attendance processing and daily timesheet UI.
+- Added leave handling foundation:
+  - `approved_leaves` table.
+  - `Modules/Leave` approved leave model, DTO, service, and save action.
+  - Employee-specific leave day detection in attendance processing.
+  - `leave` status in attendance processing and timesheet screens.
 - Added device user mapping foundation:
   - `attendance_device_user_maps` table.
   - `Modules/Device` mapping model, DTO, service, and save action.

@@ -55,3 +55,17 @@ The attendance engine needs calendar awareness so it can avoid marking non-worki
 Result:
 
 Added `AttendanceDayResolver`, `AttendanceDayContext`, and `weekend` / `holiday` display states in the attendance pages.
+
+## 2026-06-19
+
+Decision:
+
+Approved leave should be evaluated per employee before holiday/weekend checks and should suppress normal late/early/absence penalties for that day.
+
+Reason:
+
+Leave is employee-specific, while weekends and holidays are calendar-wide; the attendance engine needs that priority order to avoid false exceptions.
+
+Result:
+
+Added `approved_leaves` and wired `leave` status handling into the attendance engine and timesheet views.
