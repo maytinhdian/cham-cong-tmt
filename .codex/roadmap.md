@@ -45,8 +45,8 @@
 - [x] Attendance engine foundation
 - [x] ShiftMatcher
 - [x] Raw log processing action and service
-- [ ] LogFilter
-- [ ] LogPairing
+- [x] LogFilter
+- [x] LogPairing
 - [ ] Missing log detection
 - [ ] Leave, holiday, and weekend rule handling
 

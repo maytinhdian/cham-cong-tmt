@@ -17,6 +17,8 @@ class AttendanceEngine
      * Prepare calculators used to turn raw logs into daily attendance results.
      */
     public function __construct(
+        private readonly LogFilter $logFilter,
+        private readonly LogPairing $logPairing,
         private readonly ShiftMatcher $shiftMatcher,
         private readonly WorkHourCalculator $workHourCalculator,
         private readonly LateCalculator $lateCalculator,
@@ -33,9 +35,11 @@ class AttendanceEngine
         $schedule = $this->shiftMatcher->match($employee, $date);
         $shift = $schedule?->shift;
         $rawLogs = $this->rawLogsForDay($employee, $date, $shift);
+        $filteredLogs = $this->logFilter->filter($rawLogs, $shift, $date);
+        $pairing = $this->logPairing->pair($filteredLogs);
 
-        $clockIn = $rawLogs->first()?->punch_time;
-        $clockOut = $rawLogs->count() > 1 ? $rawLogs->last()?->punch_time : null;
+        $clockIn = $pairing->clockIn;
+        $clockOut = $pairing->clockOut;
         $missingLogCount = $this->missingLogCount($clockIn, $clockOut, $shift);
         $lateMinutes = $this->lateCalculator->calculateLate($clockIn, $shift, $date);
         $earlyLeaveMinutes = $this->lateCalculator->calculateEarlyLeave($clockOut, $shift, $date);

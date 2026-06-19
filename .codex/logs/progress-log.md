@@ -75,6 +75,10 @@ Recommended next feature after this note:
   - `shift_breaks` table.
   - `shift_rules` table.
   - `Modules/Shift` break and rule models, DTOs, services, and seeded records.
+- Added attendance engine log filtering and pairing:
+  - `Modules/Attendance/Engines/LogFilter`.
+  - `Modules/Attendance/Engines/LogPairing`.
+  - `Modules/Attendance/DTOs/LogPairingResult`.
 - Added device user mapping foundation:
   - `attendance_device_user_maps` table.
   - `Modules/Device` mapping model, DTO, service, and save action.

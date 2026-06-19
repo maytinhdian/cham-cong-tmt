@@ -27,3 +27,17 @@ The current shift form and attendance engine already depend on the legacy shift 
 Result:
 
 Added `shift_breaks` and `shift_rules` tables, plus models and seed data under `Modules/Shift`.
+
+## 2026-06-19
+
+Decision:
+
+Raw attendance logs are now filtered and paired before daily result calculation.
+
+Reason:
+
+The first engine pass should stop relying on raw first/last log selection so later processing can grow around a stable pairing step.
+
+Result:
+
+Added `LogFilter`, `LogPairing`, and `LogPairingResult` under `Modules/Attendance`.
