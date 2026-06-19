@@ -43,8 +43,27 @@ class Shift extends Model
         'requires_clock_out' => 'boolean',
     ];
 
+    /**
+     * List employee schedules that reference this shift.
+     */
     public function schedules(): HasMany
     {
         return $this->hasMany(EmployeeSchedule::class);
+    }
+
+    /**
+     * List the break windows configured for this shift.
+     */
+    public function breaks(): HasMany
+    {
+        return $this->hasMany(ShiftBreak::class);
+    }
+
+    /**
+     * List the attendance rules configured for this shift.
+     */
+    public function rules(): HasMany
+    {
+        return $this->hasMany(ShiftRule::class);
     }
 }

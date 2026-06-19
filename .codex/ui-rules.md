@@ -1,6 +1,3 @@
-# UI Rules
-
-# UI_RULES.md
 
 # User Interface Standards
 
@@ -16,290 +13,37 @@ Phần mềm chấm công là ứng dụng nghiệp vụ.
 * Dễ nhập liệu
 * Tối ưu cho nhân sự và kế toán
 
-Không sử dụng quá nhiều màu sắc.
-
----
-
-# Color Palette
-
-## Primary
-
-Màu thương hiệu.
-
-```css
-#2563EB
-```
-
-Sử dụng cho:
-
-* Menu đang chọn
-* Nút chính
-* Link
-* Tab đang active
-
----
-
-## Success
-
-```css
-#16A34A
-```
-
-Sử dụng cho:
-
-* Đúng giờ
-* Hoàn thành
-* Đã duyệt
-* Hoạt động
-
----
-
-## Warning
-
-```css
-#F59E0B
-```
-
-Sử dụng cho:
-
-* Đi trễ
-* Chờ duyệt
-* Sắp hết hạn
-
----
-
-## Danger
-
-```css
-#DC2626
-```
-
-Sử dụng cho:
-
-* Nghỉ không phép
-* Lỗi
-* Xóa dữ liệu
-* Khóa tài khoản
-
----
-
-## Info
-
-```css
-#0891B2
-```
-
-Sử dụng cho:
-
-* Thông báo
-* Ghi chú
-* Hướng dẫn
-
----
-
-# Neutral Colors
-
-## Background
-
-```css
-#F8FAFC
-```
-
-## Card
-
-```css
-#FFFFFF
-```
-
-## Border
-
-```css
-#E5E7EB
-```
-
-## Text Primary
-
-```css
-#111827
-```
-
-## Text Secondary
-
-```css
-#6B7280
-```
-
----
-
-# Attendance Status Colors
-
-## Đúng giờ
-
-Green
-
-```css
-#16A34A
-```
-
----
-
-## Đi trễ
-
-Orange
-
-```css
-#F59E0B
-```
-
----
-
-## Về sớm
-
-Yellow
-
-```css
-#EAB308
-```
-
----
-
-## Thiếu công
-
-Red
-
-```css
-#DC2626
-```
-
----
-
-## Nghỉ phép
-
-Blue
-
-```css
-#2563EB
-```
-
----
-
-## Nghỉ lễ
-
-Purple
-
-```css
-#7C3AED
-```
-
----
-
-# Buttons
-
-## Primary Button
-
-Background
-
-```css
-#2563EB
-```
-
-Text
-
-```css
-#FFFFFF
-```
-
----
-
-## Secondary Button
-
-Background
-
-```css
-#FFFFFF
-```
-
-Border
-
-```css
-#D1D5DB
-```
-
----
-
-## Danger Button
-
-Background
-
-```css
-#DC2626
-```
-
-Text
-
-```css
-#FFFFFF
-```
-
----
-
-# Tables
-
-## Header
-
-```css
-#F3F4F6
-```
-
-## Row Hover
-
-```css
-#F9FAFB
-```
-
-## Alternate Row
-
-```css
-#FCFCFC
-```
-
----
-
-# Dashboard Cards
-
-## Nhân viên
-
-Blue
-
-```css
-#2563EB
-```
-
-## Chấm công
-
-Green
-
-```css
-#16A34A
-```
-
-## Tăng ca
-
-Orange
-
-```css
-#F59E0B
-```
-
-## Nghỉ phép
-
-Purple
-
-```css
-#7C3AED
-```
-
----
+Không sử dụng quá nhiều màu sắc
+
+## Color Palette
+
+### Core Brand Colors
+
+* Primary / dark navy: `#344767`
+* Primary action / blue: `#2563EB`
+* Success / active: `#16A34A`
+* Warning / pending: `#F59E0B`
+* Danger / error: `#DC2626`
+* Info / notice: `#0891B2`
+
+### Dashboard Accent Colors
+
+* Accent blue: `#17c1e8`
+* Accent green: `#82d616`
+* Accent orange: `#fb8c00`
+* Accent red: `#ea0606`
+* Accent pink: `#e91e63`
+
+### Neutral Colors
+
+* Page background: `#F8FAFC`
+* Card background: `#FFFFFF`
+* Border: `#E5E7EB`
+* Input border: `#D1D5DB`
+* Primary text: `#111827`
+* Secondary text: `#6B7280`
+* Muted chart text: `#9ca2b7`
+* Light text on dark surfaces: `#F8F9FA`
 
 ## Forbidden
 
@@ -310,13 +54,6 @@ Không sử dụng:
 * Shadow đậm
 * Nhiều hơn 6 màu chính trên cùng màn hình
 
-Ưu tiên giao diện giống:
-
-* ERPNext
-* Odoo
-* HRM phổ thông
-* Dashboard quản trị doanh nghiệp
-
 ## Visual System
 
 Use the existing Material Dashboard 2 Pro / Bootstrap visual language.
@@ -324,18 +61,6 @@ Use the existing Material Dashboard 2 Pro / Bootstrap visual language.
 ## Design Tokens
 
 Use these values as the default UI contract unless an existing template component already defines a stronger local style.
-
-### Colors
-
-* Primary action: `bg-gradient-dark` for main save/create buttons.
-* Secondary action: `btn-outline-secondary` or `bg-gradient-light`.
-* Positive state: `bg-gradient-success`.
-* Informational state: `bg-gradient-info`.
-* Warning state: `bg-gradient-warning`.
-* Error/destructive state: `text-danger`, `bg-gradient-danger`, or `btn-outline-danger`.
-* Neutral text: `text-secondary`, `text-muted`, `text-dark`.
-* Page background: prefer `bg-gray-100` or `bg-gray-200` only when the surrounding layout already uses it.
-* Do not introduce random brand colors per page. Reuse template gradients first.
 
 ### Border Radius
 
@@ -410,16 +135,14 @@ Use these values as the default UI contract unless an existing template componen
 
 Prefer:
 
-* `card`
-* `table-responsive`
-* `table align-items-center mb-0`
-* `text-uppercase text-secondary text-xxs font-weight-bolder opacity-7` for table headers
-* `badge`, `badge-sm`, `badge-dot`, `bg-gradient-*`
-* `nav nav-pills nav-fill p-1` for grouped settings
-* `form-check form-switch` for on/off settings
-* Material icons where the template already uses them
+* Use the palette above as the default color contract.
+* Use `card`, `table-responsive`, and `table align-items-center mb-0` for standard content blocks.
+* Use `badge`, `badge-sm`, `badge-dot`, and `bg-gradient-*` for status and emphasis.
+* Use `nav nav-pills nav-fill p-1` for grouped settings.
+* Use `form-check form-switch` for on/off settings.
+* Use Material icons where the template already uses them.
 
-## Tables
+## Table Reference
 
 Follow the table style from:
 

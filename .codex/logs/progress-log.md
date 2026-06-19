@@ -71,6 +71,10 @@ Recommended next feature after this note:
   - `raw_attendance_logs` table.
   - `Modules/Attendance` raw log model, DTO, service, and save action.
   - Real raw log page with manual entry, date/device/employee/status filters, ignore, and delete.
+- Added shift break and shift rule foundation:
+  - `shift_breaks` table.
+  - `shift_rules` table.
+  - `Modules/Shift` break and rule models, DTOs, services, and seeded records.
 - Added device user mapping foundation:
   - `attendance_device_user_maps` table.
   - `Modules/Device` mapping model, DTO, service, and save action.

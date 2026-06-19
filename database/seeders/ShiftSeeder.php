@@ -4,9 +4,14 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Modules\Shift\Models\Shift;
+use Modules\Shift\Models\ShiftBreak;
+use Modules\Shift\Models\ShiftRule;
 
 class ShiftSeeder extends Seeder
 {
+    /**
+     * Seed standard shifts together with their break and rule records.
+     */
     public function run(): void
     {
         $shifts = [
@@ -70,7 +75,7 @@ class ShiftSeeder extends Seeder
         ];
 
         foreach ($shifts as $shift) {
-            Shift::query()->updateOrCreate(
+            $shiftModel = Shift::query()->updateOrCreate(
                 ['code' => $shift['code']],
                 $shift + [
                     'requires_clock_in' => true,
@@ -78,6 +83,39 @@ class ShiftSeeder extends Seeder
                     'status' => 'active',
                 ]
             );
+
+            ShiftBreak::query()->updateOrCreate(
+                ['shift_id' => $shiftModel->id, 'name' => 'Lunch break'],
+                [
+                    'start_time' => $shift['break_start_time'],
+                    'end_time' => $shift['break_end_time'],
+                    'break_minutes' => $shift['break_minutes'],
+                    'is_paid' => true,
+                    'status' => 'active',
+                    'description' => 'Bá»¯a nghá»‰ trÆ°a tiÃªu chuáº©n cho ca lÃ m viá»‡c.',
+                ]
+            );
+
+            $rules = [
+                ['late_grace_minutes', (string) $shift['max_late_minutes'], 'integer', 10],
+                ['early_leave_grace_minutes', (string) $shift['max_early_leave_minutes'], 'integer', 20],
+                ['standard_work_minutes', (string) $shift['standard_work_minutes'], 'integer', 30],
+                ['requires_clock_in', $shiftModel->requires_clock_in ? '1' : '0', 'boolean', 40],
+                ['requires_clock_out', $shiftModel->requires_clock_out ? '1' : '0', 'boolean', 50],
+            ];
+
+            foreach ($rules as [$ruleKey, $ruleValue, $ruleType, $sortOrder]) {
+                ShiftRule::query()->updateOrCreate(
+                    ['shift_id' => $shiftModel->id, 'rule_key' => $ruleKey],
+                    [
+                        'rule_value' => $ruleValue,
+                        'rule_type' => $ruleType,
+                        'sort_order' => $sortOrder,
+                        'status' => 'active',
+                        'description' => 'Quy táº¯c khá»›i táº¡o cho ca lÃ m viá»‡c.',
+                    ]
+                );
+            }
         }
     }
 }
