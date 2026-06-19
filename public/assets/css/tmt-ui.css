@@ -1,0 +1,10 @@
+/*
+ * TMT UI overrides.
+ * Keep this file small and loaded after the Material Dashboard stylesheet.
+ */
+
+.form-control,
+.form-select {
+    border: 1px solid #D1D5DB;
+    border-radius: 6px;
+}
