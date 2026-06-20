@@ -97,3 +97,17 @@ None for this change.
 Priority:
 
 None
+
+## 2026-06-21 Break Time As Overtime
+
+Problem:
+
+No new unresolved problem was found while adding the per-shift break-as-overtime rule.
+
+Impact:
+
+None for this change.
+
+Priority:
+
+None

@@ -84,6 +84,9 @@
                                                         @else
                                                             Chưa khai báo
                                                         @endif
+                                                        @if ($shift->break_as_overtime_enabled)
+                                                            <span class="badge badge-sm bg-gradient-warning ms-1">Nghỉ tính OT</span>
+                                                        @endif
                                                     </p>
                                                     <p class="text-xs text-secondary mb-0">
                                                         OT:
@@ -228,13 +231,21 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-12">
-                                                        <div class="mb-0">
+                                                        <div class="mb-3">
                                                             <label class="form-label" for="breakMinutes">Số phút nghỉ giữa ca</label>
                                                             <input id="breakMinutes" type="number" class="form-control" wire:model.defer="breakMinutes">
                                                             @error('breakMinutes') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
                                                         </div>
                                                     </div>
                                                 </div>
+
+                                                <div class="form-check form-switch ps-0 d-flex align-items-center mb-0">
+                                                    <input class="form-check-input ms-0 me-2" type="checkbox" id="breakAsOvertimeEnabled" wire:model.live="breakAsOvertimeEnabled">
+                                                    <label class="form-check-label text-body text-sm" for="breakAsOvertimeEnabled">
+                                                        Tính nghỉ giữa ca là tăng ca
+                                                    </label>
+                                                </div>
+                                                @error('breakAsOvertimeEnabled') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
                                             </div>
                                         </div>
 

@@ -17,7 +17,8 @@ class OvertimeCalculator
         ?CarbonInterface $clockOut,
         ?Shift $shift,
         CarbonInterface $workDate,
-        ?AttendanceRuleContext $ruleContext = null
+        ?AttendanceRuleContext $ruleContext = null,
+        int $breakMinutes = 0
     ): int {
         if (! $shift) {
             return 0;
@@ -32,8 +33,9 @@ class OvertimeCalculator
 
         $beforeShiftMinutes = $this->beforeShiftMinutes($clockIn, $shiftStart, $shift);
         $afterShiftMinutes = $this->afterShiftMinutes($clockOut, $shiftEnd, $shift);
+        $breakOvertimeMinutes = $shift->break_as_overtime_enabled ? max(0, $breakMinutes) : 0;
 
-        return $this->applyRuleLimits($beforeShiftMinutes + $afterShiftMinutes, $ruleContext);
+        return $this->applyRuleLimits($beforeShiftMinutes + $afterShiftMinutes + $breakOvertimeMinutes, $ruleContext);
     }
 
     /**

@@ -91,4 +91,32 @@ class OvertimeCalculatorTest extends TestCase
 
         $this->assertSame(0, $minutes);
     }
+
+    /**
+     * It can count deducted break minutes as overtime for shifts that enable the rule.
+     */
+    public function test_it_counts_break_minutes_as_overtime_when_enabled(): void
+    {
+        $calculator = new OvertimeCalculator();
+        $shift = new Shift([
+            'start_time' => '08:00:00',
+            'end_time' => '17:00:00',
+            'break_as_overtime_enabled' => true,
+            'overtime_before_shift_enabled' => false,
+            'overtime_before_shift_min_minutes' => 0,
+            'overtime_after_shift_enabled' => false,
+            'overtime_after_shift_min_minutes' => 0,
+        ]);
+
+        $minutes = $calculator->calculate(
+            Carbon::parse('2026-06-20 08:00:00'),
+            Carbon::parse('2026-06-20 17:00:00'),
+            $shift,
+            Carbon::parse('2026-06-20'),
+            null,
+            60
+        );
+
+        $this->assertSame(60, $minutes);
+    }
 }

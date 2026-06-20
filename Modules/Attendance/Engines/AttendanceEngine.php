@@ -74,7 +74,7 @@ class AttendanceEngine
                 'attendance_value' => $attendanceValue,
                 'late_minutes' => $isApprovedLeave ? 0 : $lateMinutes,
                 'early_leave_minutes' => $isApprovedLeave ? 0 : $earlyLeaveMinutes,
-                'overtime_minutes' => $this->overtimeMinutes($clockIn, $clockOut, $shift, $date, $dayContext, $workMinutes, $ruleContext),
+                'overtime_minutes' => $this->overtimeMinutes($clockIn, $clockOut, $shift, $date, $dayContext, $workMinutes, $breakMinutes, $ruleContext),
                 'missing_log_count' => $missingLogCount,
                 'status' => $this->statusFor($schedule, $shift, $rawLogs, $missingLogCount, $lateMinutes, $earlyLeaveMinutes, $dayContext, $clockIn, $clockOut, $ruleContext),
                 'note' => $this->noteFor($schedule, $shift, $rawLogs, $missingLogCount, $dayContext, $clockIn, $clockOut, $ruleContext),
@@ -201,6 +201,7 @@ class AttendanceEngine
         CarbonInterface $workDate,
         AttendanceDayContext $dayContext,
         int $workMinutes,
+        int $breakMinutes,
         AttendanceRuleContext $ruleContext
     ): int {
         if ($dayContext->dayType === 'leave') {
@@ -208,7 +209,7 @@ class AttendanceEngine
         }
 
         if ($shift) {
-            return $this->overtimeCalculator->calculate($clockIn, $clockOut, $shift, $workDate, $ruleContext);
+            return $this->overtimeCalculator->calculate($clockIn, $clockOut, $shift, $workDate, $ruleContext, $breakMinutes);
         }
 
         if ($dayContext->dayType === 'weekend' && ! $ruleContext->weekendCountAsOt) {

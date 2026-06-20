@@ -150,6 +150,10 @@ Recommended next feature after this note:
   - Switch on and focus states use Material Dashboard Primary `#e91e63`.
   - `.codex/ui-rules.md` now documents this as the required switch control standard.
 - Updated `.codex/ui-rules.md` icon guidance from the Material Dashboard foundation icons page.
+- Added an optional per-shift rule to count deducted middle-break minutes as overtime:
+  - Shift definitions now store `break_as_overtime_enabled`.
+  - The shift form shows `Tính nghỉ giữa ca là tăng ca` in the middle-break section.
+  - Attendance processing and manual daily adjustments add break minutes to OT when the rule is enabled.
 
 ## Documentation Rule For Code Changes
 

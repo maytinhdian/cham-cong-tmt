@@ -21,6 +21,7 @@ class Shift extends Model
         'break_start_time',
         'break_end_time',
         'break_minutes',
+        'break_as_overtime_enabled',
         'clock_in_from',
         'clock_in_to',
         'clock_out_from',
@@ -42,6 +43,7 @@ class Shift extends Model
 
     protected $casts = [
         'break_minutes' => 'integer',
+        'break_as_overtime_enabled' => 'boolean',
         'workday_value' => 'decimal:2',
         'requires_clock_in' => 'boolean',
         'requires_clock_out' => 'boolean',

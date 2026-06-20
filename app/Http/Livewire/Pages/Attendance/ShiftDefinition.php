@@ -26,6 +26,8 @@ class ShiftDefinition extends Component
 
     public $breakMinutes = 0;
 
+    public bool $breakAsOvertimeEnabled = false;
+
     public string $clockInFrom = '';
 
     public string $clockInTo = '';
@@ -88,6 +90,7 @@ class ShiftDefinition extends Component
         $this->breakStartTime = '';
         $this->breakEndTime = '';
         $this->breakMinutes = 0;
+        $this->breakAsOvertimeEnabled = false;
         $this->clockInFrom = '';
         $this->clockInTo = '';
         $this->clockOutFrom = '';
@@ -124,6 +127,7 @@ class ShiftDefinition extends Component
         $this->breakStartTime = $this->timeForInput($shift->break_start_time);
         $this->breakEndTime = $this->timeForInput($shift->break_end_time);
         $this->breakMinutes = (int) $shift->break_minutes;
+        $this->breakAsOvertimeEnabled = (bool) $shift->break_as_overtime_enabled;
         $this->clockInFrom = $this->timeForInput($shift->clock_in_from);
         $this->clockInTo = $this->timeForInput($shift->clock_in_to);
         $this->clockOutFrom = $this->timeForInput($shift->clock_out_from);
@@ -162,6 +166,7 @@ class ShiftDefinition extends Component
             'breakStartTime' => ['nullable', 'date_format:H:i'],
             'breakEndTime' => ['nullable', 'date_format:H:i'],
             'breakMinutes' => ['required', 'integer', 'min:0', 'max:1440'],
+            'breakAsOvertimeEnabled' => ['boolean'],
             'clockInFrom' => ['nullable', 'date_format:H:i'],
             'clockInTo' => ['nullable', 'date_format:H:i'],
             'clockOutFrom' => ['nullable', 'date_format:H:i'],
@@ -195,6 +200,7 @@ class ShiftDefinition extends Component
             breakStartTime: $validated['breakStartTime'] ?: null,
             breakEndTime: $validated['breakEndTime'] ?: null,
             breakMinutes: (int) $validated['breakMinutes'],
+            breakAsOvertimeEnabled: (bool) $validated['breakAsOvertimeEnabled'],
             clockInFrom: $validated['clockInFrom'] ?: null,
             clockInTo: $validated['clockInTo'] ?: null,
             clockOutFrom: $validated['clockOutFrom'] ?: null,

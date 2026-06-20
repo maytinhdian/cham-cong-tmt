@@ -209,3 +209,17 @@ The template examples use Google Material Design icons by default and provide Fo
 Result:
 
 `.codex/ui-rules.md` now prefers Material Icons / Material Icons Round, allows Font Awesome as a fallback, limits Nucleo to existing template/sidebar areas, and discourages Bootstrap Glyphicons for new UI.
+
+## 2026-06-21
+
+Decision:
+
+Counting middle-break time as overtime should be a per-shift rule, not a global default.
+
+Reason:
+
+The rule is unusual and should not change historical or ordinary shift calculations unless HR explicitly enables it for a specific shift.
+
+Result:
+
+Added `break_as_overtime_enabled` to `shifts`; the shift definition form exposes the switch in the middle-break section, and overtime calculation adds deducted break minutes to OT only when the matched shift enables the rule.
