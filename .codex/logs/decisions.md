@@ -83,3 +83,17 @@ Payroll review needs the raw time span, the net worked span, and the payable att
 Result:
 
 Added break deduction and attendance-value calculation to the attendance engine, daily timesheet adjustment service, and daily/process log UI.
+
+## 2026-06-20
+
+Decision:
+
+Global attendance settings are stored in a dedicated `attendance_rules` key-value table, separate from per-shift `shift_rules`.
+
+Reason:
+
+The attendance settings screen controls company-wide defaults such as workday minutes, late/early thresholds, missing-log behavior, overtime limits, statistics display, and weekend display. These values should not be tied to one shift definition.
+
+Result:
+
+Added `attendance_rules` plus `Modules/Attendance` model, DTO, service, and save action; the Livewire settings screen now persists and reloads those values.

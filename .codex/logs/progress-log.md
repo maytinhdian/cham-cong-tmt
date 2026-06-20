@@ -109,6 +109,10 @@ Recommended next feature after this note:
   - `daily_timesheet_adjustments` table for manual correction history.
   - Adjustment DTO, model, service, and action under `Modules/Attendance`.
   - Daily timesheet UI can open an adjustment form for one row, update clock-in/out, require a reason, and write Core `activity_logs`.
+- Added persistent attendance rule settings:
+  - `attendance_rules` table for global calculation/settings key-value rules.
+  - `Modules/Attendance` rule model, DTO, service, and save action.
+  - Attendance settings page now loads saved values, validates inputs, saves rule changes, and syncs selected weekend days.
 
 ## Documentation Rule For Code Changes
 
