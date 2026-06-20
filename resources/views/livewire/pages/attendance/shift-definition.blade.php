@@ -48,9 +48,9 @@
                                             <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Thao tác</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody wire:key="shift-table-{{ $tableRefreshKey }}">
                                         @forelse ($shifts as $shift)
-                                            <tr wire:key="shift-row-{{ $shift->id }}">
+                                            <tr wire:key="shift-row-{{ $shift->id }}-{{ $shift->status }}-{{ $tableRefreshKey }}">
                                                 <td>
                                                     <div class="d-flex px-2 py-1">
                                                         <div>
@@ -106,7 +106,7 @@
                                                         </span>
                                                     </span>
                                                 </td>
-                                                <td class="align-middle">
+                                                <td class="align-middle" wire:key="shift-status-{{ $shift->id }}-{{ $shift->status }}-{{ $tableRefreshKey }}">
                                                     @if ($shift->status === 'active')
                                                         <span class="badge badge-sm bg-gradient-success">Đang dùng</span>
                                                     @else
@@ -150,7 +150,7 @@
                                     </div>
                                 </div>
 
-                                <form wire:submit="saveShift">
+                                <form wire:submit.prevent="saveShift" wire:key="shift-form-{{ $editingShiftId ?? 'new' }}">
                                     <div class="card-body p-3">
                                         <div class="mb-3">
                                             <label class="form-label" for="shiftName">Tên ca <span class="text-danger">*</span></label>
@@ -273,19 +273,14 @@
                                             </div>
                                         </div>
 
-                                        <div class="row">
-                                            <div class="col-6">
-                                                <div class="form-check form-switch ps-0 mb-3">
-                                                    <input id="requiresClockIn" class="form-check-input ms-auto" type="checkbox" wire:model.defer="requiresClockIn">
-                                                    <label class="form-check-label text-body text-sm ms-3 mb-0" for="requiresClockIn">Bắt buộc vào</label>
-                                                </div>
-                                            </div>
-                                            <div class="col-6">
-                                                <div class="form-check form-switch ps-0 mb-3">
-                                                    <input id="requiresClockOut" class="form-check-input ms-auto" type="checkbox" wire:model.defer="requiresClockOut">
-                                                    <label class="form-check-label text-body text-sm ms-3 mb-0" for="requiresClockOut">Bắt buộc ra</label>
-                                                </div>
-                                            </div>
+                                        <div class="mb-3">
+                                            <label class="form-label" for="attendanceRequirement">Yêu cầu chấm công</label>
+                                            <select id="attendanceRequirement" class="form-control" wire:model.defer="attendanceRequirement">
+                                                <option value="both">Bắt buộc đủ vào và ra</option>
+                                                <option value="one">Chỉ cần một lần chấm</option>
+                                                <option value="none">Không yêu cầu chấm công</option>
+                                            </select>
+                                            @error('attendanceRequirement') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
                                         </div>
 
                                         <div class="mb-3">
@@ -309,7 +304,7 @@
 
                                         <div class="mb-0">
                                             <label class="form-label" for="status">Trạng thái</label>
-                                            <select id="status" class="form-control" wire:model.defer="status">
+                                            <select id="status" class="form-control" wire:model.live="status">
                                                 <option value="active">Đang dùng</option>
                                                 <option value="inactive">Tạm ngưng</option>
                                             </select>

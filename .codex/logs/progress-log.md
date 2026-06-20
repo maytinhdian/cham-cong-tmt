@@ -113,6 +113,15 @@ Recommended next feature after this note:
   - `attendance_rules` table for global calculation/settings key-value rules.
   - `Modules/Attendance` rule model, DTO, service, and save action.
   - Attendance settings page now loads saved values, validates inputs, saves rule changes, and syncs selected weekend days.
+- Fixed shift status refresh on the shift definition table:
+  - Added a table refresh key so Livewire rebuilds the table after status-changing actions.
+  - Keyed shift rows and status cells by `shift_id`, `status`, and refresh key.
+  - Kept the table as badge-only for status display.
+  - Status changes are handled from the edit form and reflected back into the table.
+- Changed shift punch requirement configuration:
+  - Replaced separate required-in/required-out switches with one business mode selector.
+  - Modes are `Bắt buộc đủ vào và ra`, `Chỉ cần một lần chấm`, and `Không yêu cầu chấm công`.
+  - Attendance processing treats the one-punch mode as valid when either clock-in or clock-out exists.
 
 ## Documentation Rule For Code Changes
 

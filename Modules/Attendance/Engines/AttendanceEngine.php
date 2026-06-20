@@ -6,9 +6,11 @@ use Carbon\Carbon;
 use Carbon\CarbonInterface;
 use Illuminate\Support\Collection;
 use Modules\Attendance\DTOs\AttendanceDayContext;
+use Modules\Attendance\DTOs\AttendanceRuleContext;
 use Modules\Attendance\Models\DailyAttendanceResult;
 use Modules\Attendance\Models\RawAttendanceLog;
 use Modules\Attendance\Services\AttendanceDayResolver;
+use Modules\Attendance\Services\AttendanceRuleService;
 use Modules\Schedule\Models\EmployeeSchedule;
 use Modules\Shift\Models\Shift;
 use Modules\User\Models\Employee;
@@ -28,6 +30,7 @@ class AttendanceEngine
         private readonly WorkHourCalculator $workHourCalculator,
         private readonly LateCalculator $lateCalculator,
         private readonly OvertimeCalculator $overtimeCalculator,
+        private readonly AttendanceRuleService $attendanceRuleService,
     ) {
     }
 
@@ -37,6 +40,7 @@ class AttendanceEngine
     public function processEmployeeDay(Employee $employee, CarbonInterface|string $workDate): DailyAttendanceResult
     {
         $date = is_string($workDate) ? Carbon::parse($workDate)->startOfDay() : $workDate->copy()->startOfDay();
+        $ruleContext = $this->attendanceRuleService->context();
         $dayContext = $this->dayResolver->resolve($employee, $date);
         $schedule = $this->shiftMatcher->match($employee, $date);
         $shift = $schedule?->shift;
@@ -50,10 +54,10 @@ class AttendanceEngine
         $grossWorkMinutes = $isApprovedLeave ? 0 : $this->workHourCalculator->calculate($clockIn, $clockOut);
         $breakMinutes = $isApprovedLeave ? 0 : $this->breakCalculator->calculate($clockIn, $clockOut, $shift, $date);
         $workMinutes = max(0, $grossWorkMinutes - $breakMinutes);
-        $missingLogCount = $this->missingLogCount($clockIn, $clockOut, $shift, $dayContext, $schedule);
-        $lateMinutes = $this->lateMinutes($clockIn, $shift, $date, $dayContext, $schedule);
-        $earlyLeaveMinutes = $this->earlyLeaveMinutes($clockOut, $shift, $date, $dayContext, $schedule);
-        $attendanceValue = $this->attendanceCalculator->calculate($shift, $dayContext, $workMinutes);
+        $missingLogCount = $this->missingLogCount($clockIn, $clockOut, $shift, $dayContext, $schedule, $ruleContext);
+        $lateMinutes = $this->lateMinutes($clockIn, $shift, $date, $dayContext, $schedule, $ruleContext);
+        $earlyLeaveMinutes = $this->earlyLeaveMinutes($clockOut, $shift, $date, $dayContext, $schedule, $ruleContext);
+        $attendanceValue = $this->attendanceCalculator->calculate($shift, $dayContext, $workMinutes, $ruleContext);
 
         $dailyResult = DailyAttendanceResult::query()->updateOrCreate(
             [
@@ -70,10 +74,10 @@ class AttendanceEngine
                 'attendance_value' => $attendanceValue,
                 'late_minutes' => $isApprovedLeave ? 0 : $lateMinutes,
                 'early_leave_minutes' => $isApprovedLeave ? 0 : $earlyLeaveMinutes,
-                'overtime_minutes' => $this->overtimeMinutes($clockIn, $clockOut, $shift, $date, $dayContext, $workMinutes),
+                'overtime_minutes' => $this->overtimeMinutes($clockIn, $clockOut, $shift, $date, $dayContext, $workMinutes, $ruleContext),
                 'missing_log_count' => $missingLogCount,
-                'status' => $this->statusFor($schedule, $shift, $rawLogs, $missingLogCount, $lateMinutes, $earlyLeaveMinutes, $dayContext),
-                'note' => $this->noteFor($schedule, $shift, $rawLogs, $missingLogCount, $dayContext),
+                'status' => $this->statusFor($schedule, $shift, $rawLogs, $missingLogCount, $lateMinutes, $earlyLeaveMinutes, $dayContext, $clockIn, $clockOut, $ruleContext),
+                'note' => $this->noteFor($schedule, $shift, $rawLogs, $missingLogCount, $dayContext, $clockIn, $clockOut, $ruleContext),
             ]
         );
 
@@ -114,7 +118,8 @@ class AttendanceEngine
         mixed $clockOut,
         ?Shift $shift,
         AttendanceDayContext $dayContext,
-        ?EmployeeSchedule $schedule
+        ?EmployeeSchedule $schedule,
+        AttendanceRuleContext $ruleContext
     ): int {
         if ($dayContext->dayType === 'leave') {
             return 0;
@@ -124,8 +129,12 @@ class AttendanceEngine
             return 0;
         }
 
-        $requiresClockIn = $shift?->requires_clock_in ?? true;
-        $requiresClockOut = $shift?->requires_clock_out ?? true;
+        $requiresClockIn = ($shift?->requires_clock_in ?? true) && $ruleContext->noInEnabled;
+        $requiresClockOut = ($shift?->requires_clock_out ?? true) && $ruleContext->noOutEnabled;
+
+        if ($requiresClockIn && ! $requiresClockOut) {
+            return (! $clockIn && ! $clockOut) ? 1 : 0;
+        }
 
         return (int) ($requiresClockIn && ! $clockIn) + (int) ($requiresClockOut && ! $clockOut);
     }
@@ -138,7 +147,8 @@ class AttendanceEngine
         ?Shift $shift,
         CarbonInterface $workDate,
         AttendanceDayContext $dayContext,
-        ?EmployeeSchedule $schedule
+        ?EmployeeSchedule $schedule,
+        AttendanceRuleContext $ruleContext
     ): int {
         if ($dayContext->dayType === 'leave') {
             return 0;
@@ -148,7 +158,11 @@ class AttendanceEngine
             return 0;
         }
 
-        return $this->lateCalculator->calculateLate($clockIn, $shift, $workDate);
+        if (! $clockIn && $shift && $ruleContext->noInEnabled && $ruleContext->noInPolicy === 'late') {
+            return $ruleContext->noInMinutes;
+        }
+
+        return $this->lateCalculator->calculateLate($clockIn, $shift, $workDate, $ruleContext);
     }
 
     /**
@@ -159,7 +173,8 @@ class AttendanceEngine
         ?Shift $shift,
         CarbonInterface $workDate,
         AttendanceDayContext $dayContext,
-        ?EmployeeSchedule $schedule
+        ?EmployeeSchedule $schedule,
+        AttendanceRuleContext $ruleContext
     ): int {
         if ($dayContext->dayType === 'leave') {
             return 0;
@@ -169,7 +184,11 @@ class AttendanceEngine
             return 0;
         }
 
-        return $this->lateCalculator->calculateEarlyLeave($clockOut, $shift, $workDate);
+        if (! $clockOut && $shift && $ruleContext->noOutEnabled && $ruleContext->noOutPolicy === 'early') {
+            return $ruleContext->noOutMinutes;
+        }
+
+        return $this->lateCalculator->calculateEarlyLeave($clockOut, $shift, $workDate, $ruleContext);
     }
 
     /**
@@ -181,18 +200,23 @@ class AttendanceEngine
         ?Shift $shift,
         CarbonInterface $workDate,
         AttendanceDayContext $dayContext,
-        int $workMinutes
+        int $workMinutes,
+        AttendanceRuleContext $ruleContext
     ): int {
         if ($dayContext->dayType === 'leave') {
             return 0;
         }
 
         if ($shift) {
-            return $this->overtimeCalculator->calculate($clockOut, $shift, $workDate);
+            return $this->overtimeCalculator->calculate($clockOut, $shift, $workDate, $ruleContext);
+        }
+
+        if ($dayContext->dayType === 'weekend' && ! $ruleContext->weekendCountAsOt) {
+            return 0;
         }
 
         if ($dayContext->isSpecialDay() && $clockIn && $clockOut) {
-            return $workMinutes;
+            return $this->overtimeCalculator->applyRuleLimits($workMinutes, $ruleContext);
         }
 
         return 0;
@@ -208,7 +232,10 @@ class AttendanceEngine
         int $missingLogCount,
         int $lateMinutes,
         int $earlyLeaveMinutes,
-        AttendanceDayContext $dayContext
+        AttendanceDayContext $dayContext,
+        ?CarbonInterface $clockIn,
+        ?CarbonInterface $clockOut,
+        AttendanceRuleContext $ruleContext
     ): string {
         if ($dayContext->dayType === 'leave') {
             return 'leave';
@@ -242,6 +269,10 @@ class AttendanceEngine
             return 'absent';
         }
 
+        if ($this->shouldMarkAbsent($clockIn, $clockOut, $lateMinutes, $earlyLeaveMinutes, $ruleContext)) {
+            return 'absent';
+        }
+
         return $missingLogCount > 0 || $lateMinutes > 0 || $earlyLeaveMinutes > 0 ? 'exception' : 'complete';
     }
 
@@ -253,7 +284,10 @@ class AttendanceEngine
         ?Shift $shift,
         Collection $rawLogs,
         int $missingLogCount,
-        AttendanceDayContext $dayContext
+        AttendanceDayContext $dayContext,
+        ?CarbonInterface $clockIn,
+        ?CarbonInterface $clockOut,
+        AttendanceRuleContext $ruleContext
     ): ?string {
         if ($dayContext->dayType === 'holiday' && ! $schedule) {
             return $rawLogs->isEmpty()
@@ -284,6 +318,14 @@ class AttendanceEngine
         }
 
         if ($missingLogCount > 0) {
+            if (! $clockIn && $ruleContext->noInEnabled) {
+                return $this->missingLogNote('giờ vào', $ruleContext->noInPolicy, $ruleContext->noInMinutes);
+            }
+
+            if (! $clockOut && $ruleContext->noOutEnabled) {
+                return $this->missingLogNote('giờ ra', $ruleContext->noOutPolicy, $ruleContext->noOutMinutes);
+            }
+
             return 'Thiếu log vào hoặc log ra theo cấu hình ca.';
         }
 
@@ -296,5 +338,43 @@ class AttendanceEngine
     private function isOvernightShift(Shift $shift): bool
     {
         return Carbon::parse((string) $shift->end_time)->lessThanOrEqualTo(Carbon::parse((string) $shift->start_time));
+    }
+
+    /**
+     * Determine whether rule thresholds should convert an exception into absence.
+     */
+    private function shouldMarkAbsent(
+        ?CarbonInterface $clockIn,
+        ?CarbonInterface $clockOut,
+        int $lateMinutes,
+        int $earlyLeaveMinutes,
+        AttendanceRuleContext $ruleContext
+    ): bool {
+        if (! $clockIn && $ruleContext->noInEnabled && $ruleContext->noInPolicy === 'absent') {
+            return true;
+        }
+
+        if (! $clockOut && $ruleContext->noOutEnabled && $ruleContext->noOutPolicy === 'absent') {
+            return true;
+        }
+
+        if ($ruleContext->lateAbsentEnabled && $lateMinutes >= $ruleContext->lateAbsentMinutes) {
+            return true;
+        }
+
+        return $ruleContext->earlyAbsentEnabled && $earlyLeaveMinutes >= $ruleContext->earlyAbsentMinutes;
+    }
+
+    /**
+     * Explain how a saved rule handled a missing punch.
+     */
+    private function missingLogNote(string $missingLabel, string $policy, int $minutes): string
+    {
+        return match ($policy) {
+            'late' => 'Thiếu '.$missingLabel.', đã tính '.$minutes.' phút đi trễ theo quy tắc.',
+            'early' => 'Thiếu '.$missingLabel.', đã tính '.$minutes.' phút về sớm theo quy tắc.',
+            'absent' => 'Thiếu '.$missingLabel.', đã chuyển thành vắng theo quy tắc.',
+            default => 'Thiếu '.$missingLabel.', chỉ ghi nhận là thiếu log theo quy tắc.',
+        };
     }
 }

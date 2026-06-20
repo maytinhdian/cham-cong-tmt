@@ -97,3 +97,17 @@ The attendance settings screen controls company-wide defaults such as workday mi
 Result:
 
 Added `attendance_rules` plus `Modules/Attendance` model, DTO, service, and save action; the Livewire settings screen now persists and reloads those values.
+
+## 2026-06-20
+
+Decision:
+
+Attendance processing reads saved global rules through a typed `AttendanceRuleContext` instead of reading raw key-value rows directly inside calculators.
+
+Reason:
+
+The engine needs stable typed values while the settings table remains flexible for UI and report settings. Keeping the key-value conversion in `AttendanceRuleService` prevents calculators from depending on database storage details.
+
+Result:
+
+`AttendanceEngine`, `LateCalculator`, `OvertimeCalculator`, `AttendanceCalculator`, and manual daily adjustment now use saved rule values for core calculation behavior.

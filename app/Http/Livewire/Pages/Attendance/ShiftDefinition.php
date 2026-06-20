@@ -46,9 +46,13 @@ class ShiftDefinition extends Component
 
     public bool $requiresClockOut = true;
 
+    public string $attendanceRequirement = 'both';
+
     public string $displayColor = '#2563EB';
 
     public string $status = 'active';
+
+    public int $tableRefreshKey = 0;
 
     public string $description = '';
 
@@ -58,6 +62,7 @@ class ShiftDefinition extends Component
     public function mount(): void
     {
         $this->resetForm();
+        $this->refreshShiftTable();
     }
 
     /**
@@ -85,6 +90,7 @@ class ShiftDefinition extends Component
         $this->standardWorkMinutes = 480;
         $this->requiresClockIn = true;
         $this->requiresClockOut = true;
+        $this->attendanceRequirement = 'both';
         $this->displayColor = '#2563EB';
         $this->status = 'active';
         $this->description = '';
@@ -116,6 +122,7 @@ class ShiftDefinition extends Component
         $this->standardWorkMinutes = (int) $shift->standard_work_minutes;
         $this->requiresClockIn = (bool) $shift->requires_clock_in;
         $this->requiresClockOut = (bool) $shift->requires_clock_out;
+        $this->attendanceRequirement = $this->attendanceRequirementForShift($shift);
         $this->displayColor = $shift->display_color ?: '#2563EB';
         $this->status = $shift->status;
         $this->description = $shift->description ?? '';
@@ -147,8 +154,7 @@ class ShiftDefinition extends Component
             'maxEarlyLeaveMinutes' => ['required', 'integer', 'min:0', 'max:1440'],
             'workdayValue' => ['required', 'numeric', 'min:0', 'max:3'],
             'standardWorkMinutes' => ['required', 'integer', 'min:0', 'max:1440'],
-            'requiresClockIn' => ['boolean'],
-            'requiresClockOut' => ['boolean'],
+            'attendanceRequirement' => ['required', Rule::in(['both', 'one', 'none'])],
             'displayColor' => ['required', 'string', 'regex:/^#[0-9A-Fa-f]{6}$/'],
             'status' => ['required', Rule::in(['active', 'inactive'])],
             'description' => ['nullable', 'string', 'max:1000'],
@@ -177,8 +183,8 @@ class ShiftDefinition extends Component
             maxEarlyLeaveMinutes: (int) $validated['maxEarlyLeaveMinutes'],
             workdayValue: (float) $validated['workdayValue'],
             standardWorkMinutes: (int) $validated['standardWorkMinutes'],
-            requiresClockIn: (bool) $validated['requiresClockIn'],
-            requiresClockOut: (bool) $validated['requiresClockOut'],
+            requiresClockIn: $this->requiresClockInForRequirement($validated['attendanceRequirement']),
+            requiresClockOut: $this->requiresClockOutForRequirement($validated['attendanceRequirement']),
             displayColor: $validated['displayColor'],
             status: $validated['status'],
             description: $validated['description'] ?: null,
@@ -193,6 +199,7 @@ class ShiftDefinition extends Component
         }
 
         $this->resetForm();
+        $this->refreshShiftTable();
     }
 
     /**
@@ -215,6 +222,7 @@ class ShiftDefinition extends Component
         }
 
         session()->flash('success', 'Đã xóa ca làm việc.');
+        $this->refreshShiftTable();
     }
 
     /**
@@ -233,5 +241,45 @@ class ShiftDefinition extends Component
     private function timeForInput(?string $time): string
     {
         return $time ? substr($time, 0, 5) : '';
+    }
+
+    /**
+     * Convert stored punch requirements into the form's business mode.
+     */
+    private function attendanceRequirementForShift(Shift $shift): string
+    {
+        if (! $shift->requires_clock_in && ! $shift->requires_clock_out) {
+            return 'none';
+        }
+
+        if ($shift->requires_clock_in && ! $shift->requires_clock_out) {
+            return 'one';
+        }
+
+        return 'both';
+    }
+
+    /**
+     * Map the selected requirement mode to the stored clock-in flag.
+     */
+    private function requiresClockInForRequirement(string $attendanceRequirement): bool
+    {
+        return in_array($attendanceRequirement, ['both', 'one'], true);
+    }
+
+    /**
+     * Map the selected requirement mode to the stored clock-out flag.
+     */
+    private function requiresClockOutForRequirement(string $attendanceRequirement): bool
+    {
+        return $attendanceRequirement === 'both';
+    }
+
+    /**
+     * Force Livewire to rebuild the table DOM after status-changing actions.
+     */
+    private function refreshShiftTable(): void
+    {
+        $this->tableRefreshKey++;
     }
 }

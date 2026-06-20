@@ -28,6 +28,7 @@ class DailyTimesheetAdjustmentService
         private readonly AttendanceDayResolver $dayResolver,
         private readonly LateCalculator $lateCalculator,
         private readonly OvertimeCalculator $overtimeCalculator,
+        private readonly AttendanceRuleService $attendanceRuleService,
         private readonly ActivityLogger $activityLogger,
     ) {
     }
@@ -50,6 +51,7 @@ class DailyTimesheetAdjustmentService
             $shift = $dailyResult->shift;
             $employee = Employee::query()->findOrFail($dailyResult->employee_id);
             $dayContext = $this->dayResolver->resolve($employee, $dailyResult->work_date);
+            $ruleContext = $this->attendanceRuleService->context();
             $breakMinutes = $this->breakCalculator->calculate($clockInAt, $clockOutAt, $shift, $dailyResult->work_date);
             $workMinutes = max(0, $this->workHourCalculator->calculate($clockInAt, $clockOutAt) - $breakMinutes);
 
@@ -58,10 +60,10 @@ class DailyTimesheetAdjustmentService
                 'clock_out_at' => $clockOutAt?->toDateTimeString(),
                 'work_minutes' => $workMinutes,
                 'break_minutes' => $breakMinutes,
-                'attendance_value' => $this->attendanceCalculator->calculate($shift, $dayContext, $workMinutes),
-                'late_minutes' => $this->lateCalculator->calculateLate($clockInAt, $shift, $dailyResult->work_date),
-                'early_leave_minutes' => $this->lateCalculator->calculateEarlyLeave($clockOutAt, $shift, $dailyResult->work_date),
-                'overtime_minutes' => $this->overtimeCalculator->calculate($clockOutAt, $shift, $dailyResult->work_date),
+                'attendance_value' => $this->attendanceCalculator->calculate($shift, $dayContext, $workMinutes, $ruleContext),
+                'late_minutes' => $this->lateCalculator->calculateLate($clockInAt, $shift, $dailyResult->work_date, $ruleContext),
+                'early_leave_minutes' => $this->lateCalculator->calculateEarlyLeave($clockOutAt, $shift, $dailyResult->work_date, $ruleContext),
+                'overtime_minutes' => $this->overtimeCalculator->calculate($clockOutAt, $shift, $dailyResult->work_date, $ruleContext),
                 'missing_log_count' => $missingLogCount,
                 'status' => $missingLogCount > 0 ? 'exception' : 'adjusted',
                 'note' => $data->note ?: $dailyResult->note,

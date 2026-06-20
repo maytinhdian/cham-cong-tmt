@@ -3,6 +3,7 @@
 namespace Modules\Attendance\Engines;
 
 use Modules\Attendance\DTOs\AttendanceDayContext;
+use Modules\Attendance\DTOs\AttendanceRuleContext;
 use Modules\Shift\Models\Shift;
 
 class AttendanceCalculator
@@ -10,8 +11,12 @@ class AttendanceCalculator
     /**
      * Convert net worked minutes and day context into a payable attendance value.
      */
-    public function calculate(?Shift $shift, AttendanceDayContext $dayContext, int $netWorkMinutes): float
-    {
+    public function calculate(
+        ?Shift $shift,
+        AttendanceDayContext $dayContext,
+        int $netWorkMinutes,
+        ?AttendanceRuleContext $ruleContext = null
+    ): float {
         if ($dayContext->dayType === 'leave') {
             return (float) ($dayContext->leave?->workday_value ?? 0);
         }
@@ -24,7 +29,7 @@ class AttendanceCalculator
             return 0.0;
         }
 
-        $standardMinutes = max(1, (int) $shift->standard_work_minutes);
+        $standardMinutes = max(1, $ruleContext?->standardWorkMinutes ?? (int) $shift->standard_work_minutes);
         $targetValue = (float) $shift->workday_value;
         $ratio = min(1, $netWorkMinutes / $standardMinutes);
 

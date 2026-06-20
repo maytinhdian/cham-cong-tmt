@@ -18,11 +18,11 @@ High
 
 Problem:
 
-The attendance settings screen now persists global rules, but the processing engines do not yet consume every saved rule.
+The attendance engine now consumes the core calculation rules, but some saved settings remain UI/report-oriented or are not fully wired yet.
 
 Impact:
 
-Saved settings are available in `attendance_rules`, but some calculation behavior may still follow existing hard-coded or shift-level logic until the engine is wired to these global rules.
+Rules for company display, reporting symbols, rounding/statistical aggregation, out-state policy, OT-state policy, two-day shift policy, and detailed before/after shift OT interval controls still need dedicated report or engine handling.
 
 Priority:
 
