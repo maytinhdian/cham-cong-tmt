@@ -32,6 +32,8 @@ class Shift extends Model
         'requires_clock_in',
         'requires_clock_out',
         'overtime_before_shift_enabled',
+        'overtime_before_shift_min_minutes',
+        'overtime_after_shift_enabled',
         'overtime_after_shift_min_minutes',
         'display_color',
         'status',
@@ -44,6 +46,8 @@ class Shift extends Model
         'requires_clock_in' => 'boolean',
         'requires_clock_out' => 'boolean',
         'overtime_before_shift_enabled' => 'boolean',
+        'overtime_before_shift_min_minutes' => 'integer',
+        'overtime_after_shift_enabled' => 'boolean',
         'overtime_after_shift_min_minutes' => 'integer',
     ];
 

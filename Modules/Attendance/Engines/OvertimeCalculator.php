@@ -77,7 +77,10 @@ class OvertimeCalculator
             return 0;
         }
 
-        return (int) $clockIn->diffInMinutes($shiftStart);
+        $beforeShiftMinutes = (int) $clockIn->diffInMinutes($shiftStart);
+        $thresholdMinutes = (int) $shift->overtime_before_shift_min_minutes;
+
+        return $beforeShiftMinutes < $thresholdMinutes ? 0 : $beforeShiftMinutes;
     }
 
     /**
@@ -85,7 +88,7 @@ class OvertimeCalculator
      */
     private function afterShiftMinutes(?CarbonInterface $clockOut, CarbonInterface $shiftEnd, Shift $shift): int
     {
-        if (! $clockOut) {
+        if (! $clockOut || ! $shift->overtime_after_shift_enabled) {
             return 0;
         }
 

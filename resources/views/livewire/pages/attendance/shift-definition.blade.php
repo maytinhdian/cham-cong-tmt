@@ -87,8 +87,16 @@
                                                     </p>
                                                     <p class="text-xs text-secondary mb-0">
                                                         OT:
-                                                        {{ $shift->overtime_before_shift_enabled ? 'Trước ca' : 'Không trước ca' }},
-                                                        sau ca từ {{ $shift->overtime_after_shift_min_minutes }} phút
+                                                        @if ($shift->overtime_before_shift_enabled)
+                                                            Tr&#432;&#7899;c ca t&#7915; {{ $shift->overtime_before_shift_min_minutes }} ph&#250;t,
+                                                        @else
+                                                            Kh&#244;ng tr&#432;&#7899;c ca,
+                                                        @endif
+                                                        @if ($shift->overtime_after_shift_enabled)
+                                                            sau ca t&#7915; {{ $shift->overtime_after_shift_min_minutes }} ph&#250;t
+                                                        @else
+                                                            kh&#244;ng sau ca
+                                                        @endif
                                                     </p>
                                                 </td>
                                                 <td>
@@ -161,157 +169,213 @@
                                 <form wire:submit.prevent="saveShift" wire:key="shift-form-{{ $editingShiftId ?? 'new' }}">
                                     <div class="card-body p-3">
                                         <div class="mb-3">
-                                            <label class="form-label" for="shiftName">Tên ca <span class="text-danger">*</span></label>
-                                            <input id="shiftName" type="text" class="form-control" wire:model.defer="name">
-                                            @error('name') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
+                                            <label class="form-label d-block mb-2">Thông tin ca</label>
+                                            <div class="border rounded-3 p-2">
+                                                <div class="mb-3">
+                                                    <label class="form-label" for="shiftName">Tên ca <span class="text-danger">*</span></label>
+                                                    <input id="shiftName" type="text" class="form-control" wire:model.defer="name">
+                                                    @error('name') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <label class="form-label" for="shiftCode">Mã ca <span class="text-danger">*</span></label>
+                                                    <input id="shiftCode" type="text" class="form-control text-uppercase" wire:model.defer="code">
+                                                    @error('code') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <div class="mb-3">
+                                                            <label class="form-label" for="startTime">Giờ vào <span class="text-danger">*</span></label>
+                                                            <input id="startTime" type="text" class="form-control js-shift-time-picker" wire:model.live="startTime" placeholder="HH:mm" autocomplete="off" data-time-required="true">
+                                                            @error('startTime') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="mb-3">
+                                                            <label class="form-label" for="endTime">Giờ ra <span class="text-danger">*</span></label>
+                                                            <input id="endTime" type="text" class="form-control js-shift-time-picker" wire:model.live="endTime" placeholder="HH:mm" autocomplete="off" data-time-required="true">
+                                                            @error('endTime') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <p class="text-xs text-secondary mt-n2 mb-3">Chọn giờ theo định dạng 24h, ví dụ 08:00 hoặc 22:30.</p>
+
+                                                @if ($isOvernightShift)
+                                                    <div class="alert alert-info text-white text-xs py-2 px-3 mb-0" role="alert">
+                                                        Ca này qua ngày: giờ ra được tính vào ngày hôm sau.
+                                                    </div>
+                                                @endif
+                                            </div>
                                         </div>
 
                                         <div class="mb-3">
-                                            <label class="form-label" for="shiftCode">Mã ca <span class="text-danger">*</span></label>
-                                            <input id="shiftCode" type="text" class="form-control text-uppercase" wire:model.defer="code">
-                                            @error('code') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="col-6">
-                                                <div class="mb-3">
-                                                    <label class="form-label" for="startTime">Giờ vào <span class="text-danger">*</span></label>
-                                                    <input id="startTime" type="text" class="form-control js-shift-time-picker" wire:model.live="startTime" placeholder="HH:mm" autocomplete="off" data-time-required="true">
-                                                    @error('startTime') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
-                                                </div>
-                                            </div>
-                                            <div class="col-6">
-                                                <div class="mb-3">
-                                                    <label class="form-label" for="endTime">Giờ ra <span class="text-danger">*</span></label>
-                                                    <input id="endTime" type="text" class="form-control js-shift-time-picker" wire:model.live="endTime" placeholder="HH:mm" autocomplete="off" data-time-required="true">
-                                                    @error('endTime') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <p class="text-xs text-secondary mt-n2 mb-3">Chọn giờ theo định dạng 24h, ví dụ 08:00 hoặc 22:30.</p>
-
-                                        @if ($isOvernightShift)
-                                            <div class="alert alert-info text-white text-xs py-2 px-3 mb-3" role="alert">
-                                                Ca này qua ngày: giờ ra được tính vào ngày hôm sau.
-                                            </div>
-                                        @endif
-
-                                        <div class="row">
-                                            <div class="col-6">
-                                                <div class="mb-3">
-                                                    <label class="form-label" for="breakStartTime">Nghỉ giữa ca từ</label>
-                                                    <input id="breakStartTime" type="text" class="form-control js-shift-time-picker" wire:model.defer="breakStartTime" placeholder="--:--" autocomplete="off">
-                                                    @error('breakStartTime') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
-                                                </div>
-                                            </div>
-                                            <div class="col-6">
-                                                <div class="mb-3">
-                                                    <label class="form-label" for="breakEndTime">Nghỉ giữa ca đến</label>
-                                                    <input id="breakEndTime" type="text" class="form-control js-shift-time-picker" wire:model.defer="breakEndTime" placeholder="--:--" autocomplete="off">
-                                                    @error('breakEndTime') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
-                                                </div>
-                                            </div>
-                                            <div class="col-12">
-                                                <div class="mb-3">
-                                                    <label class="form-label" for="breakMinutes">Số phút nghỉ giữa ca</label>
-                                                    <input id="breakMinutes" type="number" class="form-control" wire:model.defer="breakMinutes">
-                                                    @error('breakMinutes') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="col-6">
-                                                <div class="mb-3">
-                                                    <label class="form-label" for="clockInFrom">Chấm vào từ</label>
-                                                    <input id="clockInFrom" type="text" class="form-control js-shift-time-picker" wire:model.defer="clockInFrom" placeholder="--:--" autocomplete="off">
-                                                    @error('clockInFrom') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
-                                                </div>
-                                            </div>
-                                            <div class="col-6">
-                                                <div class="mb-3">
-                                                    <label class="form-label" for="clockInTo">Chấm vào đến</label>
-                                                    <input id="clockInTo" type="text" class="form-control js-shift-time-picker" wire:model.defer="clockInTo" placeholder="--:--" autocomplete="off">
-                                                    @error('clockInTo') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="col-6">
-                                                <div class="mb-3">
-                                                    <label class="form-label" for="clockOutFrom">Chấm ra từ</label>
-                                                    <input id="clockOutFrom" type="text" class="form-control js-shift-time-picker" wire:model.defer="clockOutFrom" placeholder="--:--" autocomplete="off">
-                                                    @error('clockOutFrom') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
-                                                </div>
-                                            </div>
-                                            <div class="col-6">
-                                                <div class="mb-3">
-                                                    <label class="form-label" for="clockOutTo">Chấm ra đến</label>
-                                                    <input id="clockOutTo" type="text" class="form-control js-shift-time-picker" wire:model.defer="clockOutTo" placeholder="--:--" autocomplete="off">
-                                                    @error('clockOutTo') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="col-6">
-                                                <div class="mb-3">
-                                                    <label class="form-label" for="maxLateMinutes">Trễ tối đa</label>
-                                                    <input id="maxLateMinutes" type="number" class="form-control" wire:model.defer="maxLateMinutes">
-                                                    @error('maxLateMinutes') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
-                                                </div>
-                                            </div>
-                                            <div class="col-6">
-                                                <div class="mb-3">
-                                                    <label class="form-label" for="maxEarlyLeaveMinutes">Sớm tối đa</label>
-                                                    <input id="maxEarlyLeaveMinutes" type="number" class="form-control" wire:model.defer="maxEarlyLeaveMinutes">
-                                                    @error('maxEarlyLeaveMinutes') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="col-6">
-                                                <div class="mb-3">
-                                                    <label class="form-label" for="workdayValue">Số công</label>
-                                                    <input id="workdayValue" type="number" class="form-control" wire:model.defer="workdayValue" step="0.1">
-                                                    @error('workdayValue') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
-                                                </div>
-                                            </div>
-                                            <div class="col-6">
-                                                <div class="mb-3">
-                                                    <label class="form-label" for="standardWorkMinutes">Phút chuẩn</label>
-                                                    <input id="standardWorkMinutes" type="number" class="form-control" wire:model.defer="standardWorkMinutes">
-                                                    @error('standardWorkMinutes') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
+                                            <label class="form-label d-block mb-2">Nghỉ giữa ca</label>
+                                            <div class="border rounded-3 p-2">
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <div class="mb-3">
+                                                            <label class="form-label" for="breakStartTime">Nghỉ giữa ca từ</label>
+                                                            <input id="breakStartTime" type="text" class="form-control js-shift-time-picker" wire:model.defer="breakStartTime" placeholder="--:--" autocomplete="off">
+                                                            @error('breakStartTime') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="mb-3">
+                                                            <label class="form-label" for="breakEndTime">Nghỉ giữa ca đến</label>
+                                                            <input id="breakEndTime" type="text" class="form-control js-shift-time-picker" wire:model.defer="breakEndTime" placeholder="--:--" autocomplete="off">
+                                                            @error('breakEndTime') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <div class="mb-0">
+                                                            <label class="form-label" for="breakMinutes">Số phút nghỉ giữa ca</label>
+                                                            <input id="breakMinutes" type="number" class="form-control" wire:model.defer="breakMinutes">
+                                                            @error('breakMinutes') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
 
                                         <div class="mb-3">
-                                            <label class="form-label" for="attendanceRequirement">Yêu cầu chấm công</label>
-                                            <select id="attendanceRequirement" class="form-control" wire:model.defer="attendanceRequirement">
-                                                <option value="both">Bắt buộc đủ vào và ra</option>
-                                                <option value="one">Chỉ cần một lần chấm</option>
-                                                <option value="none">Không yêu cầu chấm công</option>
-                                            </select>
+                                            <label class="form-label d-block mb-2">Quy tắc xác định công</label>
+                                            <div class="border rounded-3 p-2">
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <div class="mb-3">
+                                                            <label class="form-label" for="clockInFrom">Chấm vào từ</label>
+                                                            <input id="clockInFrom" type="text" class="form-control js-shift-time-picker" wire:model.defer="clockInFrom" placeholder="--:--" autocomplete="off">
+                                                            @error('clockInFrom') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="mb-3">
+                                                            <label class="form-label" for="clockInTo">Chấm vào đến</label>
+                                                            <input id="clockInTo" type="text" class="form-control js-shift-time-picker" wire:model.defer="clockInTo" placeholder="--:--" autocomplete="off">
+                                                            @error('clockInTo') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <div class="mb-3">
+                                                            <label class="form-label" for="clockOutFrom">Chấm ra từ</label>
+                                                            <input id="clockOutFrom" type="text" class="form-control js-shift-time-picker" wire:model.defer="clockOutFrom" placeholder="--:--" autocomplete="off">
+                                                            @error('clockOutFrom') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="mb-3">
+                                                            <label class="form-label" for="clockOutTo">Chấm ra đến</label>
+                                                            <input id="clockOutTo" type="text" class="form-control js-shift-time-picker" wire:model.defer="clockOutTo" placeholder="--:--" autocomplete="off">
+                                                            @error('clockOutTo') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <div class="mb-3">
+                                                            <label class="form-label" for="maxLateMinutes">Trễ tối đa</label>
+                                                            <input id="maxLateMinutes" type="number" class="form-control" wire:model.defer="maxLateMinutes">
+                                                            @error('maxLateMinutes') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="mb-3">
+                                                            <label class="form-label" for="maxEarlyLeaveMinutes">Sớm tối đa</label>
+                                                            <input id="maxEarlyLeaveMinutes" type="number" class="form-control" wire:model.defer="maxEarlyLeaveMinutes">
+                                                            @error('maxEarlyLeaveMinutes') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <div class="mb-0">
+                                                            <label class="form-label" for="workdayValue">Số công</label>
+                                                            <input id="workdayValue" type="number" class="form-control" wire:model.defer="workdayValue" step="0.1">
+                                                            @error('workdayValue') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="mb-0">
+                                                            <label class="form-label" for="standardWorkMinutes">Phút chuẩn</label>
+                                                            <input id="standardWorkMinutes" type="number" class="form-control" wire:model.defer="standardWorkMinutes">
+                                                            @error('standardWorkMinutes') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label class="form-label d-block mb-2">Yêu cầu chấm công</label>
+                                            <div class="border rounded-3 p-2">
+                                                <div class="form-check form-switch ps-0 d-flex align-items-center mb-2">
+                                                    <input class="form-check-input ms-0 me-2" type="radio" id="attendanceRequirementBoth" name="attendanceRequirement" value="both" wire:model.live="attendanceRequirement">
+                                                    <label class="form-check-label text-body text-sm" for="attendanceRequirementBoth">
+                                                        Bắt buộc đủ vào và ra
+                                                    </label>
+                                                </div>
+                                                <div class="form-check form-switch ps-0 d-flex align-items-center mb-2">
+                                                    <input class="form-check-input ms-0 me-2" type="radio" id="attendanceRequirementOne" name="attendanceRequirement" value="one" wire:model.live="attendanceRequirement">
+                                                    <label class="form-check-label text-body text-sm" for="attendanceRequirementOne">
+                                                        Chỉ cần một lần chấm
+                                                    </label>
+                                                </div>
+                                                <div class="form-check form-switch ps-0 d-flex align-items-center mb-0">
+                                                    <input class="form-check-input ms-0 me-2" type="radio" id="attendanceRequirementNone" name="attendanceRequirement" value="none" wire:model.live="attendanceRequirement">
+                                                    <label class="form-check-label text-body text-sm" for="attendanceRequirementNone">
+                                                        Không yêu cầu chấm công
+                                                    </label>
+                                                </div>
+                                            </div>
                                             @error('attendanceRequirement') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
                                         </div>
 
                                         <div class="mb-3">
-                                            <div class="form-check form-switch ps-0 d-flex align-items-center">
-                                                <input class="form-check-input ms-0 me-2" type="checkbox" id="overtimeBeforeShiftEnabled" wire:model.defer="overtimeBeforeShiftEnabled">
-                                                <label class="form-check-label text-body text-sm" for="overtimeBeforeShiftEnabled">
-                                                    Tính tăng ca trước giờ làm việc
-                                                </label>
+                                            <label class="form-label d-block mb-2">Quy t&#7855;c t&#259;ng ca</label>
+                                            <div class="border rounded-3 p-2">
+                                                <div class="d-flex align-items-center justify-content-between gap-2 flex-wrap mb-2">
+                                                    <div class="form-check form-switch ps-0 d-flex align-items-center mb-0">
+                                                        <input class="form-check-input ms-0 me-2" type="checkbox" id="overtimeBeforeShiftEnabled" wire:model.live="overtimeBeforeShiftEnabled">
+                                                        <label class="form-check-label text-body text-sm" for="overtimeBeforeShiftEnabled">
+                                                            T&#237;nh t&#259;ng ca tr&#432;&#7899;c gi&#7901; l&#224;m vi&#7879;c
+                                                        </label>
+                                                    </div>
+
+                                                    @if ($overtimeBeforeShiftEnabled)
+                                                        <div class="d-flex align-items-center gap-2" style="max-width: 140px;">
+                                                            <input id="overtimeBeforeShiftMinMinutes" type="number" class="form-control form-control-sm" wire:model.defer="overtimeBeforeShiftMinMinutes" min="0">
+                                                            <label class="form-label text-sm mb-0" for="overtimeBeforeShiftMinMinutes">Ph&#250;t</label>
+                                                        </div>
+                                                    @endif
+                                                </div>
+
+                                                <div class="d-flex align-items-center justify-content-between gap-2 flex-wrap">
+                                                    <div class="form-check form-switch ps-0 d-flex align-items-center mb-0">
+                                                        <input class="form-check-input ms-0 me-2" type="checkbox" id="overtimeAfterShiftEnabled" wire:model.live="overtimeAfterShiftEnabled">
+                                                        <label class="form-check-label text-body text-sm" for="overtimeAfterShiftEnabled">
+                                                            T&#237;nh t&#259;ng ca sau gi&#7901; l&#224;m vi&#7879;c
+                                                        </label>
+                                                    </div>
+
+                                                    @if ($overtimeAfterShiftEnabled)
+                                                        <div class="d-flex align-items-center gap-2" style="max-width: 140px;">
+                                                            <input id="overtimeAfterShiftMinMinutes" type="number" class="form-control form-control-sm" wire:model.defer="overtimeAfterShiftMinMinutes" min="0">
+                                                            <label class="form-label text-sm mb-0" for="overtimeAfterShiftMinMinutes">Ph&#250;t</label>
+                                                        </div>
+                                                    @endif
+                                                </div>
+
+                                                <p class="text-xs text-secondary mb-0 mt-2">V&#237; d&#7909; nh&#7853;p 30: &#7903; l&#7841;i d&#432;&#7899;i 30 ph&#250;t kh&#244;ng t&#237;nh OT; t&#7915; 30 ph&#250;t tr&#7903; l&#234;n m&#7899;i t&#237;nh.</p>
                                             </div>
                                             @error('overtimeBeforeShiftEnabled') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
-                                        </div>
-
-                                        <div class="mb-3">
-                                            <label class="form-label" for="overtimeAfterShiftMinMinutes">Sau giờ ra bao nhiêu phút mới tính tăng ca</label>
-                                            <input id="overtimeAfterShiftMinMinutes" type="number" class="form-control" wire:model.defer="overtimeAfterShiftMinMinutes" min="0">
-                                            <p class="text-xs text-secondary mb-0 mt-1">Ví dụ nhập 30: ở lại dưới 30 phút không tính OT; từ 30 phút trở lên mới tính.</p>
+                                            @error('overtimeBeforeShiftMinMinutes') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
+                                            @error('overtimeAfterShiftEnabled') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
                                             @error('overtimeAfterShiftMinMinutes') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
                                         </div>
 

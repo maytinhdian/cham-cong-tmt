@@ -139,3 +139,31 @@ Different shifts can have different overtime policies. Day shifts, night shifts,
 Result:
 
 The `shifts` table stores `overtime_before_shift_enabled` and `overtime_after_shift_min_minutes`; shift definition UI saves both values, and attendance processing uses them when calculating daily overtime minutes.
+
+## 2026-06-21
+
+Decision:
+
+Per-shift overtime before and after work should both be controlled by explicit switch state and minute threshold fields.
+
+Reason:
+
+The shift definition form needs a consistent UI: enabling a switch reveals the relevant minute input, and disabling a switch should stop that overtime direction from being calculated.
+
+Result:
+
+Added `overtime_before_shift_min_minutes` and `overtime_after_shift_enabled` to `shifts`; the shift form now shows compact `Phút` inputs only when each overtime switch is on, and `OvertimeCalculator` respects both switch states.
+
+## 2026-06-21
+
+Decision:
+
+The shift punch requirement control should be shown as one grouped set of switch-style radio options.
+
+Reason:
+
+The three punch requirement modes are mutually exclusive business choices, so the UI should make the grouping visible while preventing multiple selections.
+
+Result:
+
+The shift definition form now uses three grouped radio inputs styled with the existing switch classes and bound to the existing `attendanceRequirement` value.

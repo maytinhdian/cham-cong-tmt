@@ -27,3 +27,31 @@ Rules for company display, reporting symbols, rounding/statistical aggregation, 
 Priority:
 
 Medium
+
+## 2026-06-21 Shift Overtime UI
+
+Problem:
+
+No new unresolved problem was found while updating the per-shift overtime switch UI.
+
+Impact:
+
+None for this change.
+
+Priority:
+
+None
+
+## 2026-06-21 Shift Punch Requirement UI
+
+Problem:
+
+No new unresolved problem was found while grouping the punch requirement switch options.
+
+Impact:
+
+None for this change.
+
+Priority:
+
+None

@@ -132,6 +132,17 @@ Recommended next feature after this note:
   - Shift definitions now store how many minutes after shift end must pass before after-shift overtime is counted.
   - Attendance overtime calculation now includes enabled before-shift overtime and applies the per-shift after-shift threshold.
   - Shift log filtering now keeps early punches when before-shift overtime is enabled.
+- Updated the shift definition overtime UI:
+  - Overtime before shift and overtime after shift now use matching switch rows.
+  - Each switch reveals a compact minute input labeled `Phút` only when enabled.
+  - Shift records now store a before-shift overtime minute threshold and an explicit after-shift overtime enabled flag.
+  - Attendance overtime calculation respects the new before/after switch states and minute thresholds.
+- Updated the shift punch requirement UI:
+  - Replaced the dropdown with a grouped switch-style radio set.
+  - The three modes remain mutually exclusive: full in/out, one punch, or no punch requirement.
+- Refined the shift overtime UI by grouping the before/after overtime switches inside a titled bordered section.
+- Grouped the shift name, code, main in/out times, and middle-break fields into titled bordered sections in the shift form.
+- Grouped punch windows, late/early thresholds, workday value, and standard minutes into a `Quy tắc xác định công` section.
 
 ## Documentation Rule For Code Changes
 

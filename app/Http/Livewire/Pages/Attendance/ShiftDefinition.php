@@ -50,6 +50,10 @@ class ShiftDefinition extends Component
 
     public bool $overtimeBeforeShiftEnabled = false;
 
+    public $overtimeBeforeShiftMinMinutes = 0;
+
+    public bool $overtimeAfterShiftEnabled = false;
+
     public $overtimeAfterShiftMinMinutes = 0;
 
     public string $displayColor = '#2563EB';
@@ -96,6 +100,8 @@ class ShiftDefinition extends Component
         $this->requiresClockOut = true;
         $this->attendanceRequirement = 'both';
         $this->overtimeBeforeShiftEnabled = false;
+        $this->overtimeBeforeShiftMinMinutes = 0;
+        $this->overtimeAfterShiftEnabled = false;
         $this->overtimeAfterShiftMinMinutes = 0;
         $this->displayColor = '#2563EB';
         $this->status = 'active';
@@ -130,6 +136,8 @@ class ShiftDefinition extends Component
         $this->requiresClockOut = (bool) $shift->requires_clock_out;
         $this->attendanceRequirement = $this->attendanceRequirementForShift($shift);
         $this->overtimeBeforeShiftEnabled = (bool) $shift->overtime_before_shift_enabled;
+        $this->overtimeBeforeShiftMinMinutes = (int) $shift->overtime_before_shift_min_minutes;
+        $this->overtimeAfterShiftEnabled = (bool) $shift->overtime_after_shift_enabled;
         $this->overtimeAfterShiftMinMinutes = (int) $shift->overtime_after_shift_min_minutes;
         $this->displayColor = $shift->display_color ?: '#2563EB';
         $this->status = $shift->status;
@@ -164,7 +172,9 @@ class ShiftDefinition extends Component
             'standardWorkMinutes' => ['required', 'integer', 'min:0', 'max:1440'],
             'attendanceRequirement' => ['required', Rule::in(['both', 'one', 'none'])],
             'overtimeBeforeShiftEnabled' => ['boolean'],
-            'overtimeAfterShiftMinMinutes' => ['required', 'integer', 'min:0', 'max:1440'],
+            'overtimeBeforeShiftMinMinutes' => ['required_if:overtimeBeforeShiftEnabled,true', 'integer', 'min:0', 'max:1440'],
+            'overtimeAfterShiftEnabled' => ['boolean'],
+            'overtimeAfterShiftMinMinutes' => ['required_if:overtimeAfterShiftEnabled,true', 'integer', 'min:0', 'max:1440'],
             'displayColor' => ['required', 'string', 'regex:/^#[0-9A-Fa-f]{6}$/'],
             'status' => ['required', Rule::in(['active', 'inactive'])],
             'description' => ['nullable', 'string', 'max:1000'],
@@ -196,7 +206,13 @@ class ShiftDefinition extends Component
             requiresClockIn: $this->requiresClockInForRequirement($validated['attendanceRequirement']),
             requiresClockOut: $this->requiresClockOutForRequirement($validated['attendanceRequirement']),
             overtimeBeforeShiftEnabled: (bool) $validated['overtimeBeforeShiftEnabled'],
-            overtimeAfterShiftMinMinutes: (int) $validated['overtimeAfterShiftMinMinutes'],
+            overtimeBeforeShiftMinMinutes: (bool) $validated['overtimeBeforeShiftEnabled']
+                ? (int) $validated['overtimeBeforeShiftMinMinutes']
+                : 0,
+            overtimeAfterShiftEnabled: (bool) $validated['overtimeAfterShiftEnabled'],
+            overtimeAfterShiftMinMinutes: (bool) $validated['overtimeAfterShiftEnabled']
+                ? (int) $validated['overtimeAfterShiftMinMinutes']
+                : 0,
             displayColor: $validated['displayColor'],
             status: $validated['status'],
             description: $validated['description'] ?: null,

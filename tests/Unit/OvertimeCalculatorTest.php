@@ -19,6 +19,8 @@ class OvertimeCalculatorTest extends TestCase
             'start_time' => '08:00:00',
             'end_time' => '17:00:00',
             'overtime_before_shift_enabled' => true,
+            'overtime_before_shift_min_minutes' => 0,
+            'overtime_after_shift_enabled' => false,
             'overtime_after_shift_min_minutes' => 0,
         ]);
 
@@ -42,6 +44,8 @@ class OvertimeCalculatorTest extends TestCase
             'start_time' => '08:00:00',
             'end_time' => '17:00:00',
             'overtime_before_shift_enabled' => false,
+            'overtime_before_shift_min_minutes' => 0,
+            'overtime_after_shift_enabled' => true,
             'overtime_after_shift_min_minutes' => 30,
         ]);
 
@@ -61,5 +65,30 @@ class OvertimeCalculatorTest extends TestCase
 
         $this->assertSame(0, $underThreshold);
         $this->assertSame(30, $atThreshold);
+    }
+
+    /**
+     * It ignores overtime after shift end when the shift switch is disabled.
+     */
+    public function test_it_ignores_after_shift_overtime_when_disabled(): void
+    {
+        $calculator = new OvertimeCalculator();
+        $shift = new Shift([
+            'start_time' => '08:00:00',
+            'end_time' => '17:00:00',
+            'overtime_before_shift_enabled' => false,
+            'overtime_before_shift_min_minutes' => 0,
+            'overtime_after_shift_enabled' => false,
+            'overtime_after_shift_min_minutes' => 30,
+        ]);
+
+        $minutes = $calculator->calculate(
+            Carbon::parse('2026-06-20 08:00:00'),
+            Carbon::parse('2026-06-20 18:00:00'),
+            $shift,
+            Carbon::parse('2026-06-20')
+        );
+
+        $this->assertSame(0, $minutes);
     }
 }
