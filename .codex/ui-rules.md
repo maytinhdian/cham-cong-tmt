@@ -17,40 +17,66 @@ Không sử dụng quá nhiều màu sắc
 
 ## Color Palette
 
-### Core Brand Colors
+Use the Material Dashboard foundation colors from:
 
-* Primary / dark navy: `#344767`
-* Primary action / blue: `#2563EB`
-* Success / active: `#16A34A`
-* Warning / pending: `#F59E0B`
-* Danger / error: `#DC2626`
-* Info / notice: `#0891B2`
+```text
+public/documentation/foundation/colors.html
+```
 
-### Dashboard Accent Colors
+### Template Semantic Colors
 
-* Accent blue: `#17c1e8`
-* Accent green: `#82d616`
-* Accent orange: `#fb8c00`
-* Accent red: `#ea0606`
-* Accent pink: `#e91e63`
+These are the default colors for Bootstrap/Material Dashboard utility classes and should be preferred over custom hex values:
 
-### Neutral Colors
+* Primary: `#e91e63`
+  * Use with `text-primary`, `bg-primary`, `bg-gradient-primary`, `badge bg-gradient-primary`, `shadow-primary`.
+  * Best for important template accents, selected states, and standout positive actions.
+* Secondary: `#7b809a`
+  * Use with `text-secondary`, `bg-secondary`, `bg-gradient-secondary`.
+  * Best for muted labels, helper text, inactive states, and secondary badges.
+* Info: `#03a9f4`
+  * Use with `text-info`, `bg-info`, `bg-gradient-info`.
+  * Best for notices, informational badges, and non-critical guidance.
+* Success: `#4caf50`
+  * Use with `text-success`, `bg-success`, `bg-gradient-success`.
+  * Best for active, completed, connected, approved, or valid states.
+* Danger: `#f44335`
+  * Use with `text-danger`, `bg-danger`, `bg-gradient-danger`.
+  * Best for errors, destructive actions, failed checks, or blocked states.
+* Warning: `#fb8c00`
+  * Use with `text-warning`, `bg-warning`, `bg-gradient-warning`.
+  * Best for pending, attention-needed, warning, or review states.
 
-* Page background: `#F8FAFC`
-* Card background: `#FFFFFF`
-* Border: `#E5E7EB`
-* Input border: `#D1D5DB`
-* Primary text: `#111827`
-* Secondary text: `#6B7280`
-* Muted chart text: `#9ca2b7`
-* Light text on dark surfaces: `#F8F9FA`
+### Template Neutral Colors
+
+Use the documented gray scale for backgrounds, borders, dividers, muted text, and table structure:
+
+* Gray 100: `#f8f9fa`
+* Gray 200: `#e9ecef`
+* Gray 300: `#dee2e6`
+* Gray 400: `#ced4da`
+* Gray 500: `#adb5bd`
+* Gray 600: `#6c757d`
+* Gray 700: `#495057`
+* Gray 800: `#343a40`
+* Gray 900: `#212529`
+
+### Project Usage Mapping
+
+* Page background: prefer `#f8f9fa` / `bg-gray-100` where available.
+* Card background: `#ffffff` via `card` defaults.
+* Border/divider: prefer `#dee2e6` or Bootstrap border utilities.
+* Input border: prefer `#ced4da` or the existing project-wide form override.
+* Primary body text: prefer `#212529` or template text defaults.
+* Secondary/helper text: prefer `text-secondary` / `#7b809a` before custom gray values.
+* Dark navigation and dark buttons may continue to use Material Dashboard `#344767` through `bg-gradient-dark`, `text-dark`, or template defaults.
+* Do not introduce new brand colors unless a feature has a clear business reason and no documented semantic color fits.
 
 ## Forbidden
 
 Không sử dụng:
 
 * Màu neon
-* Gradient
+* Custom gradient outside the Material Dashboard `bg-gradient-*` utilities
 * Shadow đậm
 * Nhiều hơn 6 màu chính trên cùng màn hình
 
@@ -104,6 +130,16 @@ Use these values as the default UI contract unless an existing template componen
 * Required marker: `<span class="text-danger">*</span>`.
 * Keep forms in cards and group fields with rows/columns.
 
+### Switch Controls
+
+* Use `form-check form-switch` for on/off controls.
+* Switches use the global `public/assets/css/tmt-ui.css` override:
+  * Off state: Secondary `#7b809a`.
+  * On state: Primary `#e91e63`.
+  * Focus ring: Primary with low opacity.
+* Do not add inline colors or one-off classes for switch on/off states.
+* For mutually exclusive switch-like choices, use radio inputs styled with `form-check form-switch`, the same `name`, and distinct `value` attributes.
+
 ### Tables
 
 * Use compact Material Dashboard tables.
@@ -114,9 +150,24 @@ Use these values as the default UI contract unless an existing template componen
 
 ### Icons
 
-* Prefer Material icons with `material-icons` or `material-icons-round`.
-* Use Nucleo icons only where the existing sidebar/template section already uses them.
-* Do not mix unrelated icon styles in the same component area.
+Use the Material Dashboard icon guidance from:
+
+```text
+public/documentation/foundation/icons.html
+```
+
+* Prefer Google Material Design icons for app UI, because the dashboard examples use them by default.
+* Use the consistent `<i>` element pattern shown in the docs:
+  * Material Icons: `<i class="material-icons">face</i>`.
+  * Material Icons Round: `<i class="material-icons-round">add</i>` when the surrounding template already uses the round set.
+* Use Material icons for form actions, table actions, navigation actions, status hints, and compact command buttons.
+* Use Font Awesome only when a needed icon is not available in Material Icons or the page already uses Font Awesome in that component area.
+  * Font Awesome markup should follow the documented pattern, for example `<i class="fas fa-heart"></i>`.
+  * Do not add a new Font Awesome stylesheet or script unless the layout does not already load it.
+* Use Nucleo icons only where the existing Material Dashboard sidebar/template section already uses Nucleo classes such as `ni ni-*`.
+* Avoid Bootstrap Glyphicons for new UI unless maintaining legacy markup that already uses them.
+* Do not mix unrelated icon styles in the same component area. A toolbar, menu, table action group, or status row should use one icon family.
+* Icon-only controls need a `title`, tooltip, or accessible label. Prefer icon + short text for primary actions.
 
 ### Vietnamese UI Text
 
@@ -139,7 +190,7 @@ Prefer:
 * Use `card`, `table-responsive`, and `table align-items-center mb-0` for standard content blocks.
 * Use `badge`, `badge-sm`, `badge-dot`, and `bg-gradient-*` for status and emphasis.
 * Use `nav nav-pills nav-fill p-1` for grouped settings.
-* Use `form-check form-switch` for on/off settings.
+* Use `form-check form-switch` for on/off settings and rely on the global switch colors.
 * Use Material icons where the template already uses them.
 
 ## Table Reference

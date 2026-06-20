@@ -143,6 +143,13 @@ Recommended next feature after this note:
 - Refined the shift overtime UI by grouping the before/after overtime switches inside a titled bordered section.
 - Grouped the shift name, code, main in/out times, and middle-break fields into titled bordered sections in the shift form.
 - Grouped punch windows, late/early thresholds, workday value, and standard minutes into a `Quy tắc xác định công` section.
+- Grouped display color, description, and status into a `Hiển thị và trạng thái` section.
+- Updated `.codex/ui-rules.md` so the project color contract follows the Material Dashboard foundation colors page.
+- Added global switch color overrides:
+  - Switch off state uses Material Dashboard Secondary `#7b809a`.
+  - Switch on and focus states use Material Dashboard Primary `#e91e63`.
+  - `.codex/ui-rules.md` now documents this as the required switch control standard.
+- Updated `.codex/ui-rules.md` icon guidance from the Material Dashboard foundation icons page.
 
 ## Documentation Rule For Code Changes
 

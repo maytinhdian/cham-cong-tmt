@@ -380,31 +380,36 @@
                                         </div>
 
                                         <div class="mb-3">
-                                            <label class="form-label" for="displayColor">Màu hiển thị</label>
-                                            <div class="d-flex align-items-center gap-3">
-                                                <input id="displayColorPicker"
-                                                    type="color"
-                                                    class="form-control p-1"
-                                                    style="width: 48px; height: 40px;"
-                                                    wire:model.live="displayColor">
-                                                <input id="displayColor" type="text" class="form-control" wire:model.live.debounce.300ms="displayColor">
+                                            <label class="form-label d-block mb-2">Hiển thị và trạng thái</label>
+                                            <div class="border rounded-3 p-2">
+                                                <div class="mb-3">
+                                                    <label class="form-label" for="displayColor">Màu hiển thị</label>
+                                                    <div class="d-flex align-items-center gap-3">
+                                                        <input id="displayColorPicker"
+                                                            type="color"
+                                                            class="form-control p-1"
+                                                            style="width: 48px; height: 40px;"
+                                                            wire:model.live="displayColor">
+                                                        <input id="displayColor" type="text" class="form-control" wire:model.live.debounce.300ms="displayColor">
+                                                    </div>
+                                                    @error('displayColor') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <label class="form-label" for="description">Mô tả</label>
+                                                    <textarea id="description" class="form-control" rows="3" wire:model.defer="description"></textarea>
+                                                    @error('description') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
+                                                </div>
+
+                                                <div class="mb-0">
+                                                    <label class="form-label" for="status">Trạng thái</label>
+                                                    <select id="status" class="form-control" wire:model.live="status">
+                                                        <option value="active">Đang dùng</option>
+                                                        <option value="inactive">Tạm ngưng</option>
+                                                    </select>
+                                                    @error('status') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
+                                                </div>
                                             </div>
-                                            @error('displayColor') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
-                                        </div>
-
-                                        <div class="mb-3">
-                                            <label class="form-label" for="description">Mô tả</label>
-                                            <textarea id="description" class="form-control" rows="3" wire:model.defer="description"></textarea>
-                                            @error('description') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
-                                        </div>
-
-                                        <div class="mb-0">
-                                            <label class="form-label" for="status">Trạng thái</label>
-                                            <select id="status" class="form-control" wire:model.live="status">
-                                                <option value="active">Đang dùng</option>
-                                                <option value="inactive">Tạm ngưng</option>
-                                            </select>
-                                            @error('status') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
                                         </div>
 
                                         <div class="d-flex justify-content-end gap-2 mt-4">

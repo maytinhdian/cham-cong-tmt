@@ -55,3 +55,45 @@ None for this change.
 Priority:
 
 None
+
+## 2026-06-21 UI Color Rules
+
+Problem:
+
+No new unresolved problem was found while aligning `.codex/ui-rules.md` with the Material Dashboard colors documentation.
+
+Impact:
+
+None for this change.
+
+Priority:
+
+None
+
+## 2026-06-21 Switch Color Standard
+
+Problem:
+
+No new unresolved problem was found while applying the global switch color standard.
+
+Impact:
+
+None for this change.
+
+Priority:
+
+None
+
+## 2026-06-21 Icon Rules
+
+Problem:
+
+No new unresolved problem was found while aligning icon guidance with the Material Dashboard icons documentation.
+
+Impact:
+
+None for this change.
+
+Priority:
+
+None

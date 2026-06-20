@@ -167,3 +167,45 @@ The three punch requirement modes are mutually exclusive business choices, so th
 Result:
 
 The shift definition form now uses three grouped radio inputs styled with the existing switch classes and bound to the existing `attendanceRequirement` value.
+
+## 2026-06-21
+
+Decision:
+
+The project UI color contract should follow the Material Dashboard foundation colors documentation.
+
+Reason:
+
+The bundled template already defines semantic utility classes and documented colors, so custom color values should not compete with the template palette.
+
+Result:
+
+`.codex/ui-rules.md` now points to `public/documentation/foundation/colors.html`, lists the documented semantic colors and gray scale, and allows only template `bg-gradient-*` gradients.
+
+## 2026-06-21
+
+Decision:
+
+Switch controls should use the documented Primary and Secondary colors for on/off states.
+
+Reason:
+
+Switches appear across attendance configuration screens and should not depend on per-page custom styling. A global override keeps current and future switch controls visually consistent.
+
+Result:
+
+`public/assets/css/tmt-ui.css` now colors `.form-switch .form-check-input` off state with Secondary `#7b809a`, checked state with Primary `#e91e63`, and focus state with a subtle Primary ring. `.codex/ui-rules.md` documents the standard for both checkbox switches and mutually exclusive radio switches.
+
+## 2026-06-21
+
+Decision:
+
+Icon usage should follow the Material Dashboard foundation icons documentation.
+
+Reason:
+
+The template examples use Google Material Design icons by default and provide Font Awesome as an optional expanded set. Keeping that priority prevents mixed icon styles in the same UI.
+
+Result:
+
+`.codex/ui-rules.md` now prefers Material Icons / Material Icons Round, allows Font Awesome as a fallback, limits Nucleo to existing template/sidebar areas, and discourages Bootstrap Glyphicons for new UI.
