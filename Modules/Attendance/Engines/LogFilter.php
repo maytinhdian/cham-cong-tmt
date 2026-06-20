@@ -38,14 +38,31 @@ class LogFilter
      */
     private function shiftWindow(CarbonInterface $workDate, Shift $shift): array
     {
-        $start = Carbon::parse($workDate->toDateString().' '.substr((string) ($shift->clock_in_from ?: $shift->start_time), 0, 8));
+        $start = $this->windowStart($workDate, $shift);
+        $shiftStart = Carbon::parse($workDate->toDateString().' '.substr((string) $shift->start_time, 0, 8));
         $end = Carbon::parse($workDate->toDateString().' '.substr((string) ($shift->clock_out_to ?: $shift->end_time), 0, 8));
 
-        if ($end->lessThanOrEqualTo($start)) {
+        if ($end->lessThanOrEqualTo($shiftStart)) {
             $end->addDay();
         }
 
         return [$start, $end];
+    }
+
+    /**
+     * Build the earliest punch time that can belong to the shift.
+     */
+    private function windowStart(CarbonInterface $workDate, Shift $shift): Carbon
+    {
+        if ($shift->clock_in_from) {
+            return Carbon::parse($workDate->toDateString().' '.substr((string) $shift->clock_in_from, 0, 8));
+        }
+
+        if ($shift->overtime_before_shift_enabled) {
+            return $workDate->copy()->startOfDay();
+        }
+
+        return Carbon::parse($workDate->toDateString().' '.substr((string) $shift->start_time, 0, 8));
     }
 
     /**

@@ -48,6 +48,10 @@ class ShiftDefinition extends Component
 
     public string $attendanceRequirement = 'both';
 
+    public bool $overtimeBeforeShiftEnabled = false;
+
+    public $overtimeAfterShiftMinMinutes = 0;
+
     public string $displayColor = '#2563EB';
 
     public string $status = 'active';
@@ -91,6 +95,8 @@ class ShiftDefinition extends Component
         $this->requiresClockIn = true;
         $this->requiresClockOut = true;
         $this->attendanceRequirement = 'both';
+        $this->overtimeBeforeShiftEnabled = false;
+        $this->overtimeAfterShiftMinMinutes = 0;
         $this->displayColor = '#2563EB';
         $this->status = 'active';
         $this->description = '';
@@ -123,6 +129,8 @@ class ShiftDefinition extends Component
         $this->requiresClockIn = (bool) $shift->requires_clock_in;
         $this->requiresClockOut = (bool) $shift->requires_clock_out;
         $this->attendanceRequirement = $this->attendanceRequirementForShift($shift);
+        $this->overtimeBeforeShiftEnabled = (bool) $shift->overtime_before_shift_enabled;
+        $this->overtimeAfterShiftMinMinutes = (int) $shift->overtime_after_shift_min_minutes;
         $this->displayColor = $shift->display_color ?: '#2563EB';
         $this->status = $shift->status;
         $this->description = $shift->description ?? '';
@@ -155,6 +163,8 @@ class ShiftDefinition extends Component
             'workdayValue' => ['required', 'numeric', 'min:0', 'max:3'],
             'standardWorkMinutes' => ['required', 'integer', 'min:0', 'max:1440'],
             'attendanceRequirement' => ['required', Rule::in(['both', 'one', 'none'])],
+            'overtimeBeforeShiftEnabled' => ['boolean'],
+            'overtimeAfterShiftMinMinutes' => ['required', 'integer', 'min:0', 'max:1440'],
             'displayColor' => ['required', 'string', 'regex:/^#[0-9A-Fa-f]{6}$/'],
             'status' => ['required', Rule::in(['active', 'inactive'])],
             'description' => ['nullable', 'string', 'max:1000'],
@@ -185,6 +195,8 @@ class ShiftDefinition extends Component
             standardWorkMinutes: (int) $validated['standardWorkMinutes'],
             requiresClockIn: $this->requiresClockInForRequirement($validated['attendanceRequirement']),
             requiresClockOut: $this->requiresClockOutForRequirement($validated['attendanceRequirement']),
+            overtimeBeforeShiftEnabled: (bool) $validated['overtimeBeforeShiftEnabled'],
+            overtimeAfterShiftMinMinutes: (int) $validated['overtimeAfterShiftMinMinutes'],
             displayColor: $validated['displayColor'],
             status: $validated['status'],
             description: $validated['description'] ?: null,
@@ -232,6 +244,7 @@ class ShiftDefinition extends Component
     {
         return view('livewire.pages.attendance.shift-definition', [
             'shifts' => Shift::query()->withCount('schedules')->orderBy('start_time')->orderBy('code')->get(),
+            'isOvernightShift' => $this->isOvernightTimeRange($this->startTime, $this->endTime),
         ]);
     }
 
@@ -241,6 +254,14 @@ class ShiftDefinition extends Component
     private function timeForInput(?string $time): string
     {
         return $time ? substr($time, 0, 5) : '';
+    }
+
+    /**
+     * Determine whether an input time range crosses into the next calendar day.
+     */
+    private function isOvernightTimeRange(?string $startTime, ?string $endTime): bool
+    {
+        return filled($startTime) && filled($endTime) && substr($endTime, 0, 5) <= substr($startTime, 0, 5);
     }
 
     /**

@@ -208,7 +208,7 @@ class AttendanceEngine
         }
 
         if ($shift) {
-            return $this->overtimeCalculator->calculate($clockOut, $shift, $workDate, $ruleContext);
+            return $this->overtimeCalculator->calculate($clockIn, $clockOut, $shift, $workDate, $ruleContext);
         }
 
         if ($dayContext->dayType === 'weekend' && ! $ruleContext->weekendCountAsOt) {

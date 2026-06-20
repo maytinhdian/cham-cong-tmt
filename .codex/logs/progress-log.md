@@ -122,6 +122,16 @@ Recommended next feature after this note:
   - Replaced separate required-in/required-out switches with one business mode selector.
   - Modes are `Bắt buộc đủ vào và ra`, `Chỉ cần một lần chấm`, and `Không yêu cầu chấm công`.
   - Attendance processing treats the one-punch mode as valid when either clock-in or clock-out exists.
+- Added overnight shift guidance:
+  - Shift definition form now shows a note when `Giờ ra` is less than or equal to `Giờ vào`.
+  - Shift table marks overnight shifts with a `Qua đêm` badge.
+- Renamed shift break labels from lunch-specific wording to `Nghỉ giữa ca` so the form fits both day and night shifts.
+- Changed shift time inputs to bundled Flatpickr time pickers using 24-hour `HH:mm` values in five-minute intervals so users can choose times from a UI control without AM/PM browser rendering.
+- Added per-shift overtime policy settings:
+  - Shift definitions now store whether overtime before the shift is allowed.
+  - Shift definitions now store how many minutes after shift end must pass before after-shift overtime is counted.
+  - Attendance overtime calculation now includes enabled before-shift overtime and applies the per-shift after-shift threshold.
+  - Shift log filtering now keeps early punches when before-shift overtime is enabled.
 
 ## Documentation Rule For Code Changes
 

@@ -111,3 +111,31 @@ The engine needs stable typed values while the settings table remains flexible f
 Result:
 
 `AttendanceEngine`, `LateCalculator`, `OvertimeCalculator`, `AttendanceCalculator`, and manual daily adjustment now use saved rule values for core calculation behavior.
+
+## 2026-06-20
+
+Decision:
+
+Shift definition time fields use the bundled Flatpickr plugin in time-only, 24-hour mode.
+
+Reason:
+
+The shift form needs a clickable time picker that avoids browser AM/PM controls and avoids long manual dropdown lists while still saving `HH:mm` values for Livewire validation and shift services.
+
+Result:
+
+The shift definition page initializes Flatpickr for shift, break, and punch-window time fields with five-minute increments and Livewire value syncing.
+
+## 2026-06-20
+
+Decision:
+
+Overtime-before-shift permission and the after-shift overtime threshold are configured per shift.
+
+Reason:
+
+Different shifts can have different overtime policies. Day shifts, night shifts, and special production shifts should not all inherit the same before/after overtime behavior from a global setting.
+
+Result:
+
+The `shifts` table stores `overtime_before_shift_enabled` and `overtime_after_shift_min_minutes`; shift definition UI saves both values, and attendance processing uses them when calculating daily overtime minutes.

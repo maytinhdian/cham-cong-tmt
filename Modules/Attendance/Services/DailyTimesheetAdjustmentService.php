@@ -63,7 +63,7 @@ class DailyTimesheetAdjustmentService
                 'attendance_value' => $this->attendanceCalculator->calculate($shift, $dayContext, $workMinutes, $ruleContext),
                 'late_minutes' => $this->lateCalculator->calculateLate($clockInAt, $shift, $dailyResult->work_date, $ruleContext),
                 'early_leave_minutes' => $this->lateCalculator->calculateEarlyLeave($clockOutAt, $shift, $dailyResult->work_date, $ruleContext),
-                'overtime_minutes' => $this->overtimeCalculator->calculate($clockOutAt, $shift, $dailyResult->work_date, $ruleContext),
+                'overtime_minutes' => $this->overtimeCalculator->calculate($clockInAt, $clockOutAt, $shift, $dailyResult->work_date, $ruleContext),
                 'missing_log_count' => $missingLogCount,
                 'status' => $missingLogCount > 0 ? 'exception' : 'adjusted',
                 'note' => $data->note ?: $dailyResult->note,

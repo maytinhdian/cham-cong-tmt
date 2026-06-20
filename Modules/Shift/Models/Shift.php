@@ -31,6 +31,8 @@ class Shift extends Model
         'standard_work_minutes',
         'requires_clock_in',
         'requires_clock_out',
+        'overtime_before_shift_enabled',
+        'overtime_after_shift_min_minutes',
         'display_color',
         'status',
         'description',
@@ -41,6 +43,8 @@ class Shift extends Model
         'workday_value' => 'decimal:2',
         'requires_clock_in' => 'boolean',
         'requires_clock_out' => 'boolean',
+        'overtime_before_shift_enabled' => 'boolean',
+        'overtime_after_shift_min_minutes' => 'integer',
     ];
 
     /**
