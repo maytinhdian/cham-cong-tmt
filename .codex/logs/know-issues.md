@@ -111,3 +111,31 @@ None for this change.
 Priority:
 
 None
+
+## 2026-06-21 Work Schedule Shift Color
+
+Problem:
+
+No new unresolved problem was found while rendering saved shift colors in the work schedule page.
+
+Impact:
+
+None for this change.
+
+Priority:
+
+None
+
+## 2026-06-21 Bulk Schedule Assignment
+
+Problem:
+
+No new unresolved problem was found while adding department, multi-employee, and date-range assignment.
+
+Impact:
+
+None for this change.
+
+Priority:
+
+None

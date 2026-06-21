@@ -223,3 +223,31 @@ The rule is unusual and should not change historical or ordinary shift calculati
 Result:
 
 Added `break_as_overtime_enabled` to `shifts`; the shift definition form exposes the switch in the middle-break section, and overtime calculation adds deducted break minutes to OT only when the matched shift enables the rule.
+
+## 2026-06-21
+
+Decision:
+
+Work schedule badges should render the assigned shift's saved display color.
+
+Reason:
+
+Shift color is part of the shift definition and should help users recognize the same shift consistently when assigning or reviewing employee schedules.
+
+Result:
+
+The work schedule grid and declared schedule list now use `shifts.display_color` for assigned shift badges, while unassigned schedule rows keep the secondary template fallback.
+
+## 2026-06-21
+
+Decision:
+
+Bulk work schedule assignment should remain stored as one row per employee per work date.
+
+Reason:
+
+The existing `employee_schedules` unique key on `employee_id` and `work_date` already prevents duplicate daily schedules. Keeping that storage shape lets HR assign a department or many employees over a date range without introducing a separate batch table or changing attendance processing.
+
+Result:
+
+The schedule page now resolves the selected department or employee list, expands the selected date range, and calls the existing assignment action for each employee/date combination.

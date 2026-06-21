@@ -154,6 +154,15 @@ Recommended next feature after this note:
   - Shift definitions now store `break_as_overtime_enabled`.
   - The shift form shows `Tính nghỉ giữa ca là tăng ca` in the middle-break section.
   - Attendance processing and manual daily adjustments add break minutes to OT when the rule is enabled.
+- Updated work schedule color display:
+  - The schedule grid now renders assigned shifts with the saved `shifts.display_color`.
+  - The declared schedule list now shows the shift badge with the same saved shift color.
+  - Schedules without an assigned shift keep the template secondary badge fallback.
+- Updated quick schedule assignment:
+  - The quick assignment form can apply a schedule to an entire department.
+  - The same form can assign schedules to multiple selected employees at once when no department is selected.
+  - Assignment now supports a start and end date, creating or updating one `employee_schedules` row per employee per day.
+  - After assignment, the schedule grid filter follows the assigned date range and selected department when applicable.
 
 ## Documentation Rule For Code Changes
 

@@ -6,7 +6,7 @@
                     <div class="d-flex flex-column flex-lg-row align-items-lg-center justify-content-between">
                         <div>
                             <h5 class="mb-1">Lịch làm việc nhân viên</h5>
-                            <p class="text-sm mb-0">Phân ca theo ngày, xem lịch theo phòng ban và chuẩn bị dữ liệu cho chấm công.</p>
+                            <p class="text-sm mb-0">Phân ca theo phòng ban, nhiều nhân viên và khoảng thời gian để chuẩn bị dữ liệu chấm công.</p>
                         </div>
                         <div class="mt-3 mt-lg-0">
                             <a href="{{ route('attendance-shift-definition') }}" class="btn btn-outline-secondary mb-0">Khai báo ca</a>
@@ -27,27 +27,53 @@
                             <div class="card h-100">
                                 <div class="card-header pb-0 p-3">
                                     <h6 class="mb-1">Phân ca nhanh</h6>
-                                    <p class="text-sm mb-0">Một nhân viên chỉ có một lịch chính trên mỗi ngày.</p>
+                                    <p class="text-sm mb-0">Chọn cả phòng ban hoặc nhiều nhân viên, sau đó áp dụng cho một khoảng ngày.</p>
                                 </div>
                                 <div class="card-body p-3">
                                     <form wire:submit.prevent="assignSchedule">
                                         <div class="form-group">
-                                            <label class="form-label">Nhân viên</label>
-                                            <select class="form-control" wire:model="employeeId">
-                                                <option value="">Chọn nhân viên</option>
-                                                @foreach ($employees as $employee)
-                                                    <option value="{{ $employee->id }}">
-                                                        {{ $employee->employee_code }} - {{ $employee->full_name }}
-                                                    </option>
+                                            <label class="form-label">Phòng ban áp dụng</label>
+                                            <select class="form-control" wire:model.live="assignDepartmentId">
+                                                <option value="">Không chọn phòng ban</option>
+                                                @foreach ($departments as $department)
+                                                    <option value="{{ $department->id }}">{{ $department->name }}</option>
                                                 @endforeach
                                             </select>
-                                            @error('employeeId') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
+                                            <p class="text-xs text-secondary mb-0 mt-1">Nếu chọn phòng ban, lịch sẽ áp dụng cho toàn bộ nhân viên trong phòng ban đó.</p>
+                                            @error('assignDepartmentId') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
                                         </div>
 
-                                        <div class="form-group mt-3">
-                                            <label class="form-label">Ngày làm việc</label>
-                                            <input type="date" class="form-control" wire:model="workDate">
-                                            @error('workDate') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
+                                        @if ($assignDepartmentId)
+                                            <div class="alert alert-info text-white text-sm mt-3 mb-0" role="alert">
+                                                Sẽ áp dụng cho {{ $assignmentEmployees->count() }} nhân viên thuộc phòng ban đã chọn.
+                                            </div>
+                                        @else
+                                            <div class="form-group mt-3">
+                                                <label class="form-label">Nhân viên</label>
+                                                <select class="form-control" multiple size="8" wire:model="employeeIds">
+                                                    @foreach ($assignmentEmployees as $employee)
+                                                        <option value="{{ $employee->id }}">
+                                                            {{ $employee->employee_code }} - {{ $employee->full_name }}{{ $employee->department ? ' - '.$employee->department->name : '' }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                                <p class="text-xs text-secondary mb-0 mt-1">Giữ Ctrl để chọn nhiều nhân viên cùng lúc.</p>
+                                                @error('employeeIds') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
+                                                @error('employeeIds.*') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
+                                            </div>
+                                        @endif
+
+                                        <div class="row mt-3">
+                                            <div class="col-6">
+                                                <label class="form-label">Từ ngày</label>
+                                                <input type="date" class="form-control" wire:model="assignDateFrom">
+                                                @error('assignDateFrom') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
+                                            </div>
+                                            <div class="col-6">
+                                                <label class="form-label">Đến ngày</label>
+                                                <input type="date" class="form-control" wire:model="assignDateTo">
+                                                @error('assignDateTo') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
+                                            </div>
                                         </div>
 
                                         <div class="form-group mt-3">
@@ -153,9 +179,19 @@
                                                             @endphp
                                                             <td class="text-center">
                                                                 @if ($schedule)
-                                                                    <span class="badge bg-gradient-primary">
-                                                                        {{ $schedule->shift?->code ?? strtoupper($schedule->schedule_type) }}
-                                                                    </span>
+                                                                    @if ($schedule->shift)
+                                                                        <span
+                                                                            class="badge text-white"
+                                                                            style="background-color: {{ $schedule->shift->display_color ?: '#2563EB' }};"
+                                                                            title="{{ $schedule->shift->name }}"
+                                                                        >
+                                                                            {{ $schedule->shift->code }}
+                                                                        </span>
+                                                                    @else
+                                                                        <span class="badge bg-gradient-secondary">
+                                                                            {{ strtoupper($schedule->schedule_type) }}
+                                                                        </span>
+                                                                    @endif
                                                                 @else
                                                                     <span class="text-xs text-secondary">-</span>
                                                                 @endif
@@ -207,7 +243,16 @@
                                                             <p class="text-xs text-secondary mb-0">{{ $schedule->employee->employee_code }} - {{ $schedule->employee->department?->name ?? 'Chưa gán' }}</p>
                                                         </td>
                                                         <td>
-                                                            <p class="text-sm mb-0">{{ $schedule->shift?->name ?? 'Không gán ca' }}</p>
+                                                            @if ($schedule->shift)
+                                                                <span
+                                                                    class="badge text-white"
+                                                                    style="background-color: {{ $schedule->shift->display_color ?: '#2563EB' }};"
+                                                                >
+                                                                    {{ $schedule->shift->name }}
+                                                                </span>
+                                                            @else
+                                                                <span class="badge bg-gradient-secondary">Không gán ca</span>
+                                                            @endif
                                                         </td>
                                                         <td><span class="badge bg-gradient-info">{{ $schedule->schedule_type }}</span></td>
                                                         <td><span class="badge bg-gradient-secondary">{{ $schedule->status }}</span></td>

@@ -3,6 +3,8 @@
 namespace App\Http\Livewire\Pages\Attendance;
 
 use Carbon\Carbon;
+use Carbon\CarbonPeriod;
+use Illuminate\Support\Collection;
 use Livewire\Component;
 use Modules\Org\Models\Department;
 use Modules\Schedule\Actions\AssignShiftAction;
@@ -13,11 +15,15 @@ use Modules\User\Models\Employee;
 
 class Schedule extends Component
 {
-    public $employeeId = null;
+    public array $employeeIds = [];
+
+    public $assignDepartmentId = '';
 
     public $shiftId = null;
 
-    public string $workDate = '';
+    public string $assignDateFrom = '';
+
+    public string $assignDateTo = '';
 
     public string $scheduleType = 'work';
 
@@ -31,41 +37,80 @@ class Schedule extends Component
 
     public string $dateTo = '';
 
+    /**
+     * Prepare default schedule assignment and calendar filters.
+     */
     public function mount(): void
     {
-        $this->employeeId = Employee::query()->orderBy('employee_code')->value('id');
+        $firstEmployeeId = Employee::query()->orderBy('employee_code')->value('id');
+
+        $this->employeeIds = $firstEmployeeId ? [(string) $firstEmployeeId] : [];
         $this->shiftId = Shift::query()->orderBy('start_time')->orderBy('name')->value('id');
-        $this->workDate = now()->toDateString();
+        $this->assignDateFrom = now()->toDateString();
+        $this->assignDateTo = now()->toDateString();
         $this->dateFrom = now()->startOfWeek()->toDateString();
         $this->dateTo = now()->endOfWeek()->toDateString();
     }
 
+    /**
+     * Assign one schedule setup to a department or selected employees across a date range.
+     */
     public function assignSchedule(): void
     {
         $validated = $this->validate([
-            'employeeId' => ['required', 'exists:employees,id'],
+            'assignDepartmentId' => ['nullable', 'exists:departments,id'],
+            'employeeIds' => ['array'],
+            'employeeIds.*' => ['integer', 'exists:employees,id'],
             'shiftId' => ['nullable', 'exists:shifts,id'],
-            'workDate' => ['required', 'date'],
+            'assignDateFrom' => ['required', 'date'],
+            'assignDateTo' => ['required', 'date', 'after_or_equal:assignDateFrom'],
             'scheduleType' => ['required', 'string', 'max:40'],
             'status' => ['required', 'string', 'max:40'],
             'note' => ['nullable', 'string', 'max:1000'],
         ], [
-            'employeeId.required' => 'Vui lòng chọn nhân viên cần phân ca.',
-            'workDate.required' => 'Vui lòng chọn ngày làm việc.',
+            'assignDateFrom.required' => 'Vui lòng chọn ngày bắt đầu.',
+            'assignDateTo.required' => 'Vui lòng chọn ngày kết thúc.',
+            'assignDateTo.after_or_equal' => 'Ngày kết thúc phải lớn hơn hoặc bằng ngày bắt đầu.',
         ]);
 
-        app(AssignShiftAction::class)->execute(new EmployeeScheduleData(
-            employeeId: (int) $validated['employeeId'],
-            shiftId: $this->nullableInt($validated['shiftId']),
-            workDate: $validated['workDate'],
-            scheduleType: $validated['scheduleType'],
-            status: $validated['status'],
-            note: $validated['note'] ?: null,
-        ));
+        $employeeIds = $this->targetEmployeeIds($validated);
 
-        session()->flash('success', 'Đã cập nhật lịch làm việc cho nhân viên.');
+        if ($employeeIds->isEmpty()) {
+            $this->addError('employeeIds', 'Vui lòng chọn phòng ban hoặc ít nhất một nhân viên để phân ca.');
+
+            return;
+        }
+
+        $dates = $this->assignmentDates($validated['assignDateFrom'], $validated['assignDateTo']);
+        $assignShift = app(AssignShiftAction::class);
+
+        foreach ($employeeIds as $employeeId) {
+            foreach ($dates as $date) {
+                $assignShift->execute(new EmployeeScheduleData(
+                    employeeId: (int) $employeeId,
+                    shiftId: $this->nullableInt($validated['shiftId']),
+                    workDate: $date,
+                    scheduleType: $validated['scheduleType'],
+                    status: $validated['status'],
+                    note: $validated['note'] ?: null,
+                ));
+            }
+        }
+
+        $this->departmentFilter = $this->assignDepartmentId ?: $this->departmentFilter;
+        $this->dateFrom = $validated['assignDateFrom'];
+        $this->dateTo = $validated['assignDateTo'];
+
+        session()->flash('success', sprintf(
+            'Đã cập nhật %d dòng lịch làm việc cho %d nhân viên.',
+            $employeeIds->count() * count($dates),
+            $employeeIds->count()
+        ));
     }
 
+    /**
+     * Delete one declared employee schedule row.
+     */
     public function deleteSchedule(int $scheduleId): void
     {
         EmployeeSchedule::query()->findOrFail($scheduleId)->delete();
@@ -73,6 +118,9 @@ class Schedule extends Component
         session()->flash('success', 'Đã xóa dòng lịch làm việc.');
     }
 
+    /**
+     * Render schedule assignment controls, the compact grid, and declared schedule rows.
+     */
     public function render()
     {
         $employees = Employee::query()
@@ -92,8 +140,15 @@ class Schedule extends Component
             ->orderBy('employee_id')
             ->get();
 
+        $assignmentEmployees = Employee::query()
+            ->with(['department', 'position'])
+            ->when($this->assignDepartmentId, fn ($query) => $query->where('department_id', $this->assignDepartmentId))
+            ->orderBy('employee_code')
+            ->get();
+
         return view('livewire.pages.attendance.schedule', [
             'departments' => Department::query()->orderBy('sort_order')->orderBy('name')->get(),
+            'assignmentEmployees' => $assignmentEmployees,
             'employees' => $employees,
             'scheduleDays' => $this->scheduleDays(),
             'schedules' => $schedules,
@@ -101,6 +156,9 @@ class Schedule extends Component
         ]);
     }
 
+    /**
+     * Build the visible calendar day headers, capped to keep the grid compact.
+     */
     private function scheduleDays(): array
     {
         $start = Carbon::parse($this->dateFrom ?: now()->startOfWeek());
@@ -119,8 +177,40 @@ class Schedule extends Component
         return $days;
     }
 
+    /**
+     * Convert empty Livewire select values into nullable integers.
+     */
     private function nullableInt(mixed $value): ?int
     {
         return $value === null || $value === '' ? null : (int) $value;
+    }
+
+    /**
+     * Resolve the employee targets from the selected department or explicit employee list.
+     */
+    private function targetEmployeeIds(array $validated): Collection
+    {
+        if (! empty($validated['assignDepartmentId'])) {
+            return Employee::query()
+                ->where('department_id', $validated['assignDepartmentId'])
+                ->orderBy('employee_code')
+                ->pluck('id');
+        }
+
+        return collect($validated['employeeIds'] ?? [])
+            ->filter()
+            ->map(fn ($employeeId) => (int) $employeeId)
+            ->unique()
+            ->values();
+    }
+
+    /**
+     * Build all assignment dates between the selected start and end date.
+     */
+    private function assignmentDates(string $dateFrom, string $dateTo): array
+    {
+        return collect(CarbonPeriod::create($dateFrom, $dateTo))
+            ->map(fn (Carbon $date) => $date->toDateString())
+            ->all();
     }
 }
