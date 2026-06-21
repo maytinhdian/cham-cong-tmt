@@ -139,3 +139,59 @@ None for this change.
 Priority:
 
 None
+
+## 2026-06-21 Schedule Shift Reference
+
+Problem:
+
+No new unresolved problem was found while adding the collapsible shift reference list.
+
+Impact:
+
+None for this change.
+
+Priority:
+
+None
+
+## 2026-06-21 Schedule Collapse Layout
+
+Problem:
+
+No new unresolved problem was found while moving secondary schedule sections into collapsed accordions.
+
+Impact:
+
+None for this change.
+
+Priority:
+
+None
+
+## 2026-06-21 Schedule Two Column Layout
+
+Problem:
+
+No new unresolved problem was found while changing the schedule page to visible two-column quick assignment and shift reference panels.
+
+Impact:
+
+None for this change.
+
+Priority:
+
+None
+
+## 2026-06-21 Declared Schedule Row Limit
+
+Problem:
+
+No new unresolved problem was found while limiting the default declared schedule list to 10 rows with a collapse for the remaining rows.
+
+Impact:
+
+None for this change.
+
+Priority:
+
+None

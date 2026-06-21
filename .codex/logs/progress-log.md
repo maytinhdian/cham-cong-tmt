@@ -163,6 +163,21 @@ Recommended next feature after this note:
   - The same form can assign schedules to multiple selected employees at once when no department is selected.
   - Assignment now supports a start and end date, creating or updating one `employee_schedules` row per employee per day.
   - After assignment, the schedule grid filter follows the assigned date range and selected department when applicable.
+- Added a collapsible shift reference list on the work schedule page:
+  - The left scheduling panel now has a `Danh sách ca làm việc` accordion.
+  - Each shift reference shows code, configured display color, name, work time, and break minutes.
+- Reduced visual clutter on the work schedule page:
+  - `Phân ca nhanh` now uses a collapsed accordion by default.
+  - The schedule grid filters and calendar grid remain visible as the primary working area.
+  - `Danh sách lịch đã khai báo` now uses a collapsed accordion by default.
+- Reworked the work schedule page layout after UI review:
+  - `Phân ca nhanh` and `Danh sách ca làm việc` now display side by side in two columns.
+  - The shift reference list is visible by default and no longer uses collapse.
+  - The department/date filters moved down to the `Danh sách lịch đã khai báo` section.
+  - The declared schedule list is visible by default so filtered results are easier to read.
+- Limited the default declared schedule list length:
+  - The `Danh sách lịch đã khai báo` table now shows the first 10 rows by default.
+  - Additional filtered rows are placed in a Bootstrap collapse opened by a `Xem thêm` button.
 
 ## Documentation Rule For Code Changes
 

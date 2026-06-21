@@ -251,3 +251,59 @@ The existing `employee_schedules` unique key on `employee_id` and `work_date` al
 Result:
 
 The schedule page now resolves the selected department or employee list, expands the selected date range, and calls the existing assignment action for each employee/date combination.
+
+## 2026-06-21
+
+Decision:
+
+The work schedule page should expose basic shift information through a collapsed reference list.
+
+Reason:
+
+Users need to compare shift codes, times, colors, and break minutes while assigning schedules, but showing the full shift list permanently would make the scheduling screen harder to scan.
+
+Result:
+
+Added a `Danh sách ca làm việc` accordion under the quick assignment panel, using the existing shift data already loaded for the assignment select.
+
+## 2026-06-21
+
+Decision:
+
+The work schedule grid should remain the primary visible area, while secondary actions and detail tables should be collapsed by default.
+
+Reason:
+
+The schedule page combines assignment, reference, calendar review, and detailed row management. Keeping everything expanded makes the page hard to scan for daily use.
+
+Result:
+
+`Phân ca nhanh`, `Danh sách ca làm việc`, and `Danh sách lịch đã khai báo` are now accordion sections, while the filters and calendar grid remain visible.
+
+## 2026-06-21
+
+Decision:
+
+The work schedule page should show quick assignment and shift references side by side, while placing filters directly above the declared schedule list.
+
+Reason:
+
+Users need quick assignment controls and basic shift information visible at the same time. The department/date filters are more understandable when they sit next to the detailed results they filter.
+
+Result:
+
+The schedule page now uses two visible top columns for `Phân ca nhanh` and `Danh sách ca làm việc`, keeps the day grid visible below, and moves the filter controls into the `Danh sách lịch đã khai báo` card.
+
+## 2026-06-21
+
+Decision:
+
+The declared schedule list should show only the first 10 filtered rows by default.
+
+Reason:
+
+The detailed list can become long after filtering by department and date range. Showing the first 10 rows keeps the page compact while still allowing users to expand the remaining rows when needed.
+
+Result:
+
+Rows after the first 10 are rendered inside a Bootstrap collapse controlled by a `Xem thêm` button.

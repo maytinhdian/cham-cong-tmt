@@ -23,11 +23,11 @@
 
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-xl-4">
+                        <div class="col-xl-6">
                             <div class="card h-100">
                                 <div class="card-header pb-0 p-3">
                                     <h6 class="mb-1">Phân ca nhanh</h6>
-                                    <p class="text-sm mb-0">Chọn cả phòng ban hoặc nhiều nhân viên, sau đó áp dụng cho một khoảng ngày.</p>
+                                    <p class="text-sm mb-0">Chọn phòng ban hoặc nhiều nhân viên, sau đó áp dụng cho một khoảng ngày.</p>
                                 </div>
                                 <div class="card-body p-3">
                                     <form wire:submit.prevent="assignSchedule">
@@ -123,28 +123,53 @@
                             </div>
                         </div>
 
-                        <div class="col-xl-8 mt-4 mt-xl-0">
+                        <div class="col-xl-6 mt-4 mt-xl-0">
                             <div class="card h-100">
                                 <div class="card-header pb-0 p-3">
+                                    <h6 class="mb-1">Danh sách ca làm việc</h6>
+                                    <p class="text-sm mb-0">Thông tin ca cơ bản để đối chiếu khi phân lịch.</p>
+                                </div>
+                                <div class="card-body p-3">
                                     <div class="row">
-                                        <div class="col-md-4">
-                                            <label class="form-label">Phòng ban</label>
-                                            <select class="form-control" wire:model.live="departmentFilter">
-                                                <option value="">Tất cả</option>
-                                                @foreach ($departments as $department)
-                                                    <option value="{{ $department->id }}">{{ $department->name }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                        <div class="col-md-4 mt-3 mt-md-0">
-                                            <label class="form-label">Từ ngày</label>
-                                            <input type="date" class="form-control" wire:model.live="dateFrom">
-                                        </div>
-                                        <div class="col-md-4 mt-3 mt-md-0">
-                                            <label class="form-label">Đến ngày</label>
-                                            <input type="date" class="form-control" wire:model.live="dateTo">
-                                        </div>
+                                        @forelse ($shifts as $shift)
+                                            <div class="col-md-6 mb-3">
+                                                <div class="border rounded-3 p-3 h-100">
+                                                    <div class="d-flex align-items-start">
+                                                        <span
+                                                            class="badge text-white me-2 mt-1"
+                                                            style="background-color: {{ $shift->display_color ?: '#2563EB' }};"
+                                                        >
+                                                            {{ $shift->code }}
+                                                        </span>
+                                                        <div class="flex-grow-1">
+                                                            <p class="text-sm font-weight-bold mb-0">{{ $shift->name }}</p>
+                                                            <p class="text-xs text-secondary mb-0">
+                                                                {{ substr($shift->start_time, 0, 5) }} - {{ substr($shift->end_time, 0, 5) }}
+                                                            </p>
+                                                            @if ($shift->break_minutes)
+                                                                <p class="text-xs text-secondary mb-0">Nghỉ giữa ca: {{ $shift->break_minutes }} phút</p>
+                                                            @endif
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @empty
+                                            <div class="col-12">
+                                                <p class="text-sm text-secondary mb-0">Chưa có ca làm việc để tham khảo.</p>
+                                            </div>
+                                        @endforelse
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header pb-0 p-3">
+                                    <h6 class="mb-1">Bảng lịch theo ngày</h6>
+                                    <p class="text-sm mb-0">Xem nhanh lịch đã gán theo nhân viên và từng ngày.</p>
                                 </div>
                                 <div class="card-body p-3">
                                     <div class="table-responsive">
@@ -219,9 +244,34 @@
                             <div class="card">
                                 <div class="card-header pb-0 p-3">
                                     <h6 class="mb-1">Danh sách lịch đã khai báo</h6>
-                                    <p class="text-sm mb-0">Các dòng lịch trong khoảng ngày đang lọc.</p>
+                                    <p class="text-sm mb-0">Lọc và xem chi tiết các dòng lịch trong khoảng ngày cần kiểm tra.</p>
                                 </div>
                                 <div class="card-body p-3">
+                                    <div class="row mb-3">
+                                        <div class="col-md-4">
+                                            <label class="form-label">Phòng ban</label>
+                                            <select class="form-control" wire:model.live="departmentFilter">
+                                                <option value="">Tất cả</option>
+                                                @foreach ($departments as $department)
+                                                    <option value="{{ $department->id }}">{{ $department->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4 mt-3 mt-md-0">
+                                            <label class="form-label">Từ ngày</label>
+                                            <input type="date" class="form-control" wire:model.live="dateFrom">
+                                        </div>
+                                        <div class="col-md-4 mt-3 mt-md-0">
+                                            <label class="form-label">Đến ngày</label>
+                                            <input type="date" class="form-control" wire:model.live="dateTo">
+                                        </div>
+                                    </div>
+
+                                    @php
+                                        $visibleSchedules = $schedules->take(10);
+                                        $collapsedSchedules = $schedules->skip(10);
+                                    @endphp
+
                                     <div class="table-responsive">
                                         <table class="table align-items-center mb-0">
                                             <thead>
@@ -235,7 +285,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @forelse ($schedules as $schedule)
+                                                @forelse ($visibleSchedules as $schedule)
                                                     <tr>
                                                         <td><p class="text-sm mb-0">{{ $schedule->work_date->format('d/m/Y') }}</p></td>
                                                         <td>
@@ -277,6 +327,61 @@
                                             </tbody>
                                         </table>
                                     </div>
+
+                                    @if ($collapsedSchedules->isNotEmpty())
+                                        <div class="collapse" id="declaredScheduleMoreRows">
+                                            <div class="table-responsive mt-2">
+                                                <table class="table align-items-center mb-0">
+                                                    <tbody>
+                                                        @foreach ($collapsedSchedules as $schedule)
+                                                            <tr>
+                                                                <td><p class="text-sm mb-0">{{ $schedule->work_date->format('d/m/Y') }}</p></td>
+                                                                <td>
+                                                                    <p class="text-sm font-weight-bold mb-0">{{ $schedule->employee->full_name }}</p>
+                                                                    <p class="text-xs text-secondary mb-0">{{ $schedule->employee->employee_code }} - {{ $schedule->employee->department?->name ?? 'Chưa gán' }}</p>
+                                                                </td>
+                                                                <td>
+                                                                    @if ($schedule->shift)
+                                                                        <span
+                                                                            class="badge text-white"
+                                                                            style="background-color: {{ $schedule->shift->display_color ?: '#2563EB' }};"
+                                                                        >
+                                                                            {{ $schedule->shift->name }}
+                                                                        </span>
+                                                                    @else
+                                                                        <span class="badge bg-gradient-secondary">Không gán ca</span>
+                                                                    @endif
+                                                                </td>
+                                                                <td><span class="badge bg-gradient-info">{{ $schedule->schedule_type }}</span></td>
+                                                                <td><span class="badge bg-gradient-secondary">{{ $schedule->status }}</span></td>
+                                                                <td class="text-center">
+                                                                    <button
+                                                                        class="btn btn-link text-danger text-xs font-weight-bold mb-0 p-0"
+                                                                        type="button"
+                                                                        wire:click="deleteSchedule({{ $schedule->id }})"
+                                                                        wire:confirm="Xóa dòng lịch này?"
+                                                                    >
+                                                                        Xóa
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+
+                                        <button
+                                            class="btn btn-outline-secondary btn-sm mt-3 mb-0"
+                                            type="button"
+                                            data-bs-toggle="collapse"
+                                            data-bs-target="#declaredScheduleMoreRows"
+                                            aria-expanded="false"
+                                            aria-controls="declaredScheduleMoreRows"
+                                        >
+                                            Xem thêm {{ $collapsedSchedules->count() }} dòng
+                                        </button>
+                                    @endif
                                 </div>
                             </div>
                         </div>
