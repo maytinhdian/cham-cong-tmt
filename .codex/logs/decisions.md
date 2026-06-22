@@ -391,3 +391,31 @@ The saved default for two-day shifts is `first_day`, and processing the next cal
 Result:
 
 Attendance processing now removes punches that fall inside the previous day's overnight shift window before pairing the current day, and a feature test locks the 22:00-06:00 scenario.
+
+## 2026-06-22
+
+Decision:
+
+Global before-shift and after-shift overtime caps should be applied after per-shift overtime eligibility but before total overtime limits.
+
+Reason:
+
+Per-shift switches decide whether a shift allows overtime in each direction, while company-wide rules can still cap how many minutes are payable before or after the shift.
+
+Result:
+
+`AttendanceRuleContext` now exposes the directional overtime caps, and `OvertimeCalculator` limits before-shift and after-shift overtime separately before applying the minimum and total overtime rules.
+
+## 2026-06-22
+
+Decision:
+
+Automated tests must use SQLite in-memory instead of the local MySQL development database.
+
+Reason:
+
+Feature tests that use `RefreshDatabase` can reset the configured database. With the SQLite test settings commented out, the night-shift feature test reset local MySQL data, including default login users.
+
+Result:
+
+`phpunit.xml` now sets `DB_CONNECTION=sqlite` and `DB_DATABASE=:memory:` for test runs, and the default roles/users were restored in the local MySQL database.

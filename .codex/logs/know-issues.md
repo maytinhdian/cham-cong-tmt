@@ -22,7 +22,7 @@ The attendance engine now consumes the core calculation rules and the per-shift 
 
 Impact:
 
-Rules for company display, reporting symbols, rounding/statistical aggregation, out-state policy, OT-state policy, two-day shift policy, leave-interval-as-OT, and global before/after overtime caps still need dedicated report or engine handling.
+Rules for company display, reporting symbols, rounding/statistical aggregation, out-state policy, OT-state policy, alternate two-day shift policy, and leave-interval-as-OT still need dedicated report, raw punch classification, or engine handling. Global before/after overtime caps are now wired into overtime calculation.
 
 Priority:
 
@@ -247,6 +247,20 @@ Resolved in this pass. The expanded declared schedule rows now render in the sam
 Impact:
 
 None for this change.
+
+Priority:
+
+None
+
+## 2026-06-22 PHPUnit Database Isolation
+
+Problem:
+
+Resolved in this pass. PHPUnit was using the local MySQL database because the SQLite testing database settings were commented out.
+
+Impact:
+
+The default login users were removed during a feature test run that used `RefreshDatabase`; they have been restored.
 
 Priority:
 

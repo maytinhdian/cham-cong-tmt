@@ -201,6 +201,14 @@ Recommended next feature after this note:
   - Attendance processing now detects the previous day's overnight schedule when processing the next calendar date.
   - Next-day checkout punches that belong to the previous overnight shift are excluded from the next day's own pairing.
   - Added a feature test covering a 22:00-06:00 shift so the 06:00 checkout stays on the original work date.
+- Wired additional attendance overtime rule consumption:
+  - `AttendanceRuleContext` now carries the saved global before-shift and after-shift overtime cap settings.
+  - `OvertimeCalculator` applies `limit_before_in_enabled` / `max_before_in_minutes` and `limit_after_out_enabled` / `max_after_out_minutes` before total overtime limits.
+  - Added unit coverage for before-shift and after-shift global overtime caps.
+- Fixed test database isolation:
+  - `phpunit.xml` now runs tests against SQLite in-memory instead of the local MySQL database.
+  - Restored the default login roles/users after the earlier feature test reset the local MySQL data.
+  - Verified the ca-dem feature test no longer deletes local users after it runs.
 
 ## Documentation Rule For Code Changes
 

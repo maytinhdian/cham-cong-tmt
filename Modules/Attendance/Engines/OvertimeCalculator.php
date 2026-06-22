@@ -31,8 +31,8 @@ class OvertimeCalculator
             $shiftEnd->addDay();
         }
 
-        $beforeShiftMinutes = $this->beforeShiftMinutes($clockIn, $shiftStart, $shift);
-        $afterShiftMinutes = $this->afterShiftMinutes($clockOut, $shiftEnd, $shift);
+        $beforeShiftMinutes = $this->limitedBeforeShiftMinutes($this->beforeShiftMinutes($clockIn, $shiftStart, $shift), $ruleContext);
+        $afterShiftMinutes = $this->limitedAfterShiftMinutes($this->afterShiftMinutes($clockOut, $shiftEnd, $shift), $ruleContext);
         $breakOvertimeMinutes = $shift->break_as_overtime_enabled ? max(0, $breakMinutes) : 0;
 
         return $this->applyRuleLimits($beforeShiftMinutes + $afterShiftMinutes + $breakOvertimeMinutes, $ruleContext);
@@ -86,6 +86,18 @@ class OvertimeCalculator
     }
 
     /**
+     * Apply the company-wide cap for overtime before the planned shift start.
+     */
+    private function limitedBeforeShiftMinutes(int $minutes, ?AttendanceRuleContext $ruleContext): int
+    {
+        if (! $ruleContext?->limitBeforeInEnabled) {
+            return $minutes;
+        }
+
+        return min($minutes, $ruleContext->maxBeforeInMinutes);
+    }
+
+    /**
      * Calculate overtime after the planned shift end once the shift threshold is reached.
      */
     private function afterShiftMinutes(?CarbonInterface $clockOut, CarbonInterface $shiftEnd, Shift $shift): int
@@ -102,5 +114,17 @@ class OvertimeCalculator
         $thresholdMinutes = (int) $shift->overtime_after_shift_min_minutes;
 
         return $afterShiftMinutes < $thresholdMinutes ? 0 : $afterShiftMinutes;
+    }
+
+    /**
+     * Apply the company-wide cap for overtime after the planned shift end.
+     */
+    private function limitedAfterShiftMinutes(int $minutes, ?AttendanceRuleContext $ruleContext): int
+    {
+        if (! $ruleContext?->limitAfterOutEnabled) {
+            return $minutes;
+        }
+
+        return min($minutes, $ruleContext->maxAfterOutMinutes);
     }
 }
