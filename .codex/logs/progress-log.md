@@ -189,6 +189,10 @@ Recommended next feature after this note:
   - The monthly grid filter now includes department selection, previous/next month controls, and a current-month shortcut.
   - The employee column header now includes an A-Z/Z-A sort toggle for the monthly grid.
   - Weekend cells in the monthly grid now receive a visible configurable background based on the saved weekend color rule.
+- Strengthened monthly schedule weekend highlighting:
+  - Weekend day headers now receive the same weekend classification as body cells.
+  - Weekend columns now use a visible top border, stronger date label color, and a fallback weekend color/background when saved CSS variables are missing.
+  - Weekend body cells now paint the inner cell area as well as the table cell so template table styles cannot visually hide the highlight.
 
 ## Documentation Rule For Code Changes
 

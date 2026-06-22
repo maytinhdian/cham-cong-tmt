@@ -228,12 +228,12 @@ None
 
 Problem:
 
-Weekend cell highlighting was implemented with configurable color variables, but the user still does not see the visual change on the schedule page.
+Resolved in this pass. Weekend headers and body cells now receive stronger visible highlighting using the configured weekend color with fallback CSS values.
 
 Impact:
 
-The monthly schedule grid may not clearly distinguish Sunday/weekend cells yet, even though weekend settings and color variables are wired in code.
+None for this change.
 
 Priority:
 
-Medium
+None

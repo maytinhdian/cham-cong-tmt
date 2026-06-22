@@ -242,7 +242,10 @@
                                                         </div>
                                                     </th>
                                                     @foreach ($scheduleDays as $day)
-                                                        <th class="schedule-month-day-col text-center text-secondary text-xxs font-weight-bolder opacity-7">
+                                                        @php
+                                                            $isWeekendHeader = in_array($day->dayOfWeekIso, $weekendWeekdays, true);
+                                                        @endphp
+                                                        <th class="schedule-month-day-col {{ $isWeekendHeader ? 'schedule-month-day-col--weekend' : '' }} text-center text-secondary text-xxs font-weight-bolder opacity-7">
                                                             <span class="schedule-month-weekday">
                                                                 {{ ['Chủ nhật', 'Thứ hai', 'Thứ ba', 'Thứ tư', 'Thứ năm', 'Thứ sáu', 'Thứ bảy'][$day->dayOfWeek] }}
                                                             </span>

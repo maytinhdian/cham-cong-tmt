@@ -349,3 +349,17 @@ The schedule grid needs to distinguish weekend cells now, while still allowing t
 Result:
 
 The monthly schedule grid marks cells whose ISO weekday is configured as weekend and sets the highlight through a CSS variable sourced from the saved `weekend_color` attendance rule.
+
+## 2026-06-22
+
+Decision:
+
+Weekend highlighting in the monthly schedule matrix should mark both headers and body cells, with visible fallback CSS values.
+
+Reason:
+
+Only tinting the table cell was too subtle and could be hidden by table/template styling. HR needs weekend columns to be identifiable without relying on a faint background alone.
+
+Result:
+
+Weekend headers now get their own weekend class and top border, weekend day numbers use the configured weekend color, and weekend body cells paint the inner cell area with the configured background.

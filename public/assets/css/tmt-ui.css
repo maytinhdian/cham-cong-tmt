@@ -70,6 +70,8 @@
     background: #ffffff;
     border: 1px solid #e9ecef;
     border-radius: 8px;
+    --schedule-weekend-bg: rgba(244, 67, 53, 0.16);
+    --schedule-weekend-color: #f44335;
     overflow: auto;
 }
 
@@ -152,6 +154,11 @@
     width: 86px;
 }
 
+.schedule-month-day-col--weekend {
+    background: var(--schedule-weekend-bg);
+    border-top: 2px solid var(--schedule-weekend-color);
+}
+
 .schedule-month-weekday {
     display: block;
     line-height: 1.2;
@@ -173,6 +180,17 @@
 
 .schedule-month-cell--weekend {
     background: var(--schedule-weekend-bg);
+    box-shadow: inset 0 0 0 1px rgba(244, 67, 53, 0.16);
+}
+
+.schedule-month-cell--weekend .schedule-month-cell-inner {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.24), transparent 46%), var(--schedule-weekend-bg);
+}
+
+.schedule-month-cell--weekend .schedule-month-cell-date,
+.schedule-month-day-col--weekend .schedule-month-weekday {
+    color: var(--schedule-weekend-color);
+    font-weight: 800;
 }
 
 .schedule-month-cell-inner {
