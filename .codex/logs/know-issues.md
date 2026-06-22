@@ -237,3 +237,17 @@ None for this change.
 Priority:
 
 None
+
+## 2026-06-22 Declared Schedule Expansion
+
+Problem:
+
+Resolved in this pass. The expanded declared schedule rows now render in the same table, and the action button changes from `Xem thêm ... dòng` to `Thu gọn` after expansion.
+
+Impact:
+
+None for this change.
+
+Priority:
+
+None

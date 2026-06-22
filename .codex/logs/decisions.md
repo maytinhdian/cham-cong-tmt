@@ -363,3 +363,17 @@ Only tinting the table cell was too subtle and could be hidden by table/template
 Result:
 
 Weekend headers now get their own weekend class and top border, weekend day numbers use the configured weekend color, and weekend body cells paint the inner cell area with the configured background.
+
+## 2026-06-22
+
+Decision:
+
+Declared schedule expansion should be controlled by Livewire state and rendered inside the same table.
+
+Reason:
+
+Using a Bootstrap collapse with a second table made the expanded rows visually unstable and prevented the button label from reflecting the open state.
+
+Result:
+
+The declared schedule list now uses one table for compact and expanded states, and the button toggles between showing the remaining row count and `Thu gọn`.

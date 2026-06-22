@@ -341,8 +341,8 @@
                                     </div>
 
                                     @php
-                                        $visibleSchedules = $schedules->take(10);
-                                        $collapsedSchedules = $schedules->skip(10);
+                                        $remainingSchedulesCount = max($schedules->count() - 10, 0);
+                                        $visibleSchedules = $showAllDeclaredSchedules ? $schedules : $schedules->take(10);
                                     @endphp
 
                                     <div class="table-responsive">
@@ -401,58 +401,13 @@
                                         </table>
                                     </div>
 
-                                    @if ($collapsedSchedules->isNotEmpty())
-                                        <div class="collapse" id="declaredScheduleMoreRows">
-                                            <div class="table-responsive mt-2">
-                                                <table class="table align-items-center mb-0">
-                                                    <tbody>
-                                                        @foreach ($collapsedSchedules as $schedule)
-                                                            <tr>
-                                                                <td><p class="text-sm mb-0">{{ $schedule->work_date->format('d/m/Y') }}</p></td>
-                                                                <td>
-                                                                    <p class="text-sm font-weight-bold mb-0">{{ $schedule->employee->full_name }}</p>
-                                                                    <p class="text-xs text-secondary mb-0">{{ $schedule->employee->employee_code }} - {{ $schedule->employee->department?->name ?? 'Chưa gán' }}</p>
-                                                                </td>
-                                                                <td>
-                                                                    @if ($schedule->shift)
-                                                                        <span
-                                                                            class="badge text-white"
-                                                                            style="background-color: {{ $schedule->shift->display_color ?: '#2563EB' }};"
-                                                                        >
-                                                                            {{ $schedule->shift->name }}
-                                                                        </span>
-                                                                    @else
-                                                                        <span class="badge bg-gradient-secondary">Không gán ca</span>
-                                                                    @endif
-                                                                </td>
-                                                                <td><span class="badge bg-gradient-info">{{ $schedule->schedule_type }}</span></td>
-                                                                <td><span class="badge bg-gradient-secondary">{{ $schedule->status }}</span></td>
-                                                                <td class="text-center">
-                                                                    <button
-                                                                        class="btn btn-link text-danger text-xs font-weight-bold mb-0 p-0"
-                                                                        type="button"
-                                                                        wire:click="deleteSchedule({{ $schedule->id }})"
-                                                                        wire:confirm="Xóa dòng lịch này?"
-                                                                    >
-                                                                        Xóa
-                                                                    </button>
-                                                                </td>
-                                                            </tr>
-                                                        @endforeach
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-
+                                    @if ($remainingSchedulesCount > 0)
                                         <button
                                             class="btn btn-outline-secondary btn-sm mt-3 mb-0"
                                             type="button"
-                                            data-bs-toggle="collapse"
-                                            data-bs-target="#declaredScheduleMoreRows"
-                                            aria-expanded="false"
-                                            aria-controls="declaredScheduleMoreRows"
+                                            wire:click="toggleDeclaredSchedules"
                                         >
-                                            Xem thêm {{ $collapsedSchedules->count() }} dòng
+                                            {{ $showAllDeclaredSchedules ? 'Thu gọn' : 'Xem thêm '.$remainingSchedulesCount.' dòng' }}
                                         </button>
                                     @endif
                                 </div>

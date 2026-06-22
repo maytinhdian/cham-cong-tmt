@@ -193,6 +193,10 @@ Recommended next feature after this note:
   - Weekend day headers now receive the same weekend classification as body cells.
   - Weekend columns now use a visible top border, stronger date label color, and a fallback weekend color/background when saved CSS variables are missing.
   - Weekend body cells now paint the inner cell area as well as the table cell so template table styles cannot visually hide the highlight.
+- Stabilized the declared schedule list expansion:
+  - The list now expands within the same table instead of rendering a second table below the first 10 rows.
+  - The expansion button now toggles between `Xem thêm ... dòng` and `Thu gọn`.
+  - Changing the declared schedule filters collapses the list back to the compact view.
 
 ## Documentation Rule For Code Changes
 

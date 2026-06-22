@@ -43,6 +43,8 @@ class Schedule extends Component
 
     public string $employeeSortDirection = 'asc';
 
+    public bool $showAllDeclaredSchedules = false;
+
     /**
      * Prepare default schedule assignment and calendar filters.
      */
@@ -132,6 +134,38 @@ class Schedule extends Component
     public function previousScheduleMonth(): void
     {
         $this->scheduleMonth = $this->scheduleMonthStart()->subMonth()->format('Y-m');
+    }
+
+    /**
+     * Toggle the detailed declared schedule list between compact and full view.
+     */
+    public function toggleDeclaredSchedules(): void
+    {
+        $this->showAllDeclaredSchedules = ! $this->showAllDeclaredSchedules;
+    }
+
+    /**
+     * Collapse the declared schedule list when the department filter changes.
+     */
+    public function updatedDepartmentFilter(): void
+    {
+        $this->showAllDeclaredSchedules = false;
+    }
+
+    /**
+     * Collapse the declared schedule list when the start date filter changes.
+     */
+    public function updatedDateFrom(): void
+    {
+        $this->showAllDeclaredSchedules = false;
+    }
+
+    /**
+     * Collapse the declared schedule list when the end date filter changes.
+     */
+    public function updatedDateTo(): void
+    {
+        $this->showAllDeclaredSchedules = false;
     }
 
     /**
