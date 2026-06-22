@@ -206,6 +206,7 @@ class OvertimeCalculatorTest extends TestCase
             'limit_total_overtime_enabled' => false,
             'max_total_overtime_minutes' => 120,
             'weekend_count_as_ot' => false,
+            'two_day_shift_policy' => 'first_day',
         ], ...$overrides);
 
         return AttendanceRuleContext::fromValues($values);

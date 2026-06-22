@@ -43,6 +43,7 @@ use App\Http\Livewire\Pages\Attendance\Settings as AttendanceSettings;
 use App\Http\Livewire\Pages\Attendance\Devices as AttendanceDevices;
 use App\Http\Livewire\Pages\Attendance\DeviceUserMappings as AttendanceDeviceUserMappings;
 use App\Http\Livewire\Pages\Attendance\DailyTimesheet as AttendanceDailyTimesheet;
+use App\Http\Livewire\Pages\Attendance\MonthlyTimesheet as AttendanceMonthlyTimesheet;
 use App\Http\Livewire\Pages\Attendance\ProcessLogs as AttendanceProcessLogs;
 use App\Http\Livewire\Pages\Attendance\RawLogs as AttendanceRawLogs;
 use App\Http\Livewire\Pages\Attendance\Schedule as AttendanceSchedule;
@@ -170,6 +171,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('pages/attendance/raw-logs', AttendanceRawLogs::class)->name('attendance-raw-logs');
     Route::get('pages/attendance/process-logs', AttendanceProcessLogs::class)->name('attendance-process-logs');
     Route::get('pages/attendance/daily-timesheet', AttendanceDailyTimesheet::class)->name('attendance-daily-timesheet');
+    Route::get('pages/attendance/monthly-timesheet', AttendanceMonthlyTimesheet::class)->name('attendance-monthly-timesheet');
     Route::get('pages/reports', AttendanceReports::class)->name('attendance-reports');
 	Route::get('pages/vr/vr-default', VrDefault::class)->name('vr-default');
 	Route::get('pages/vr/vr-info', VrInfo::class)->name('vr-info');

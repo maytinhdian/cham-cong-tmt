@@ -26,6 +26,7 @@ class AttendanceRuleContext
         public bool $limitTotalOvertimeEnabled,
         public int $maxTotalOvertimeMinutes,
         public bool $weekendCountAsOt,
+        public string $twoDayShiftPolicy,
     ) {
     }
 
@@ -56,6 +57,7 @@ class AttendanceRuleContext
             limitTotalOvertimeEnabled: (bool) $rules['limit_total_overtime_enabled'],
             maxTotalOvertimeMinutes: (int) $rules['max_total_overtime_minutes'],
             weekendCountAsOt: (bool) $rules['weekend_count_as_ot'],
+            twoDayShiftPolicy: (string) $rules['two_day_shift_policy'],
         );
     }
 }

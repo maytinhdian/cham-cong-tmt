@@ -8,7 +8,21 @@ Resolved for the current default first-day overnight policy. Next-day checkout l
 
 Impact:
 
-None for this default behavior. Supporting the alternate saved `two_day_shift_policy` value is still tracked under Attendance Rule Consumption.
+None for this behavior. The alternate saved `two_day_shift_policy = second_day` value is now supported.
+
+Priority:
+
+None
+
+## 2026-06-22 Attendance Test Data
+
+Problem:
+
+Resolved in this pass. MySQL was auto-updating `raw_attendance_logs.punch_time` when the processing status changed.
+
+Impact:
+
+Seeded raw logs now retain their original June 2026 punch timestamps after daily processing.
 
 Priority:
 
@@ -22,7 +36,7 @@ The attendance engine now consumes the core calculation rules and the per-shift 
 
 Impact:
 
-Rules for company display, reporting symbols, rounding/statistical aggregation, out-state policy, OT-state policy, alternate two-day shift policy, and leave-interval-as-OT still need dedicated report, raw punch classification, or engine handling. Global before/after overtime caps are now wired into overtime calculation.
+Rules for company display, reporting symbols, rounding/statistical aggregation, out-state policy, OT-state policy, and leave-interval-as-OT still need dedicated report, raw punch classification, or engine handling. Global before/after overtime caps and alternate two-day shift policy are now wired into attendance processing.
 
 Priority:
 
@@ -261,6 +275,20 @@ Resolved in this pass. PHPUnit was using the local MySQL database because the SQ
 Impact:
 
 The default login users were removed during a feature test run that used `RefreshDatabase`; they have been restored.
+
+Priority:
+
+None
+
+## 2026-06-22 Monthly Timesheet Aggregation
+
+Problem:
+
+No new unresolved problem was found while adding monthly timesheet aggregation.
+
+Impact:
+
+Timesheet closing and locking are still separate roadmap work.
 
 Priority:
 

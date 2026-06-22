@@ -209,6 +209,15 @@ Recommended next feature after this note:
   - `phpunit.xml` now runs tests against SQLite in-memory instead of the local MySQL database.
   - Restored the default login roles/users after the earlier feature test reset the local MySQL data.
   - Verified the ca-dem feature test no longer deletes local users after it runs.
+- Added `two_day_shift_policy = second_day` support:
+  - Attendance processing can now write an overnight shift result to the second calendar day when the saved rule is set to `second_day`.
+  - Processing either the shift start date or the second date updates the same second-day daily result.
+  - Daily result persistence now uses `whereDate()` before save so date matching is stable across MySQL and SQLite.
+- Added monthly timesheet aggregation foundation:
+  - Created `monthly_timesheets` table and `MonthlyTimesheet` model.
+  - Added monthly aggregation service/action that summarizes `daily_attendance_results` by employee and month.
+  - Added `Bảng công tháng` Livewire page, route, and sidebar entry with filters and a `Tổng hợp tháng` action.
+  - Added feature coverage for monthly aggregation from daily attendance rows.
 
 ## Documentation Rule For Code Changes
 
@@ -238,3 +247,18 @@ Important UI constraints:
 - Weekend settings currently default to `Thứ 7, Chủ nhật`.
 - Holiday calendar is currently empty after test cleanup.
 - Employee schedules table is currently empty after test cleanup.
+
+## 2026-06-22 Attendance Test Data Seeder
+
+- Added `TestAttendanceDataSeeder` for six reusable employees, `TEST-001` to `TEST-006`.
+- Seeded June 2026 office, 12-hour day, and 12-hour night-shift scenarios with complete, late, early, missing-log, absent, and overnight cases.
+- The seeder clears its own generated schedules, raw logs, daily results, and monthly rows before rebuilding so it can be rerun safely.
+- `two_day_shift_policy` now defaults to `second_day`, and the seeder persists that rule before processing overnight logs.
+- Added migrations to make `raw_attendance_logs.punch_time` stable as `DATETIME`, preventing status updates from changing the original punch time.
+- Verified the local database now has 6 test employees, 108 schedules, 210 raw logs, 126 daily results, and 6 June 2026 monthly timesheet rows.
+
+## Current Test Data Notes
+
+- Reusable attendance test data exists for `TEST-001` to `TEST-006`.
+- Test raw logs cover `2026-06-01 07:00:00` through `2026-06-21 07:00:00`.
+- Attendance rule `two_day_shift_policy` is currently set to `second_day`.

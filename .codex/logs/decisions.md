@@ -419,3 +419,58 @@ Feature tests that use `RefreshDatabase` can reset the configured database. With
 Result:
 
 `phpunit.xml` now sets `DB_CONNECTION=sqlite` and `DB_DATABASE=:memory:` for test runs, and the default roles/users were restored in the local MySQL database.
+
+## 2026-06-22
+
+Decision:
+
+The `second_day` overnight shift policy should store the processed daily result on the calendar date where the shift ends.
+
+Reason:
+
+Some payroll policies group overnight work by checkout date instead of shift start date. The engine needs to support both policies without creating duplicate daily rows.
+
+Result:
+
+`AttendanceRuleContext` now carries `two_day_shift_policy`; `AttendanceEngine` separates the log-processing date from the result date and uses `whereDate()` persistence so processing the first or second date updates the same second-day result.
+
+## 2026-06-22
+
+Decision:
+
+Monthly timesheets should be stored as one generated row per employee and payroll month.
+
+Reason:
+
+Payroll review needs stable month-level totals that can be regenerated from daily attendance results before the later closing/locking workflow is introduced.
+
+Result:
+
+Added `monthly_timesheets`, `MonthlyTimesheetService`, `GenerateMonthlyTimesheetAction`, and the `Bảng công tháng` page. The page can generate draft monthly summaries from processed daily results and review totals by month, department, employee, and status.
+## 2026-06-22
+
+Decision:
+
+The default overnight shift policy should be `second_day`.
+
+Reason:
+
+The selected payroll policy groups overnight work on the checkout calendar date, and seeded test data should match the behavior users review in daily and monthly timesheets.
+
+Result:
+
+`AttendanceRuleService` now defaults `two_day_shift_policy` to `second_day`; the night-shift feature test still covers `first_day` explicitly, and `TestAttendanceDataSeeder` persists the `second_day` rule before processing its sample logs.
+
+## 2026-06-22
+
+Decision:
+
+Raw attendance punch times must be stored as stable `DATETIME` values.
+
+Reason:
+
+The existing MySQL `TIMESTAMP` column had `ON UPDATE CURRENT_TIMESTAMP`, so marking a raw log as processed changed the original punch time to the current time.
+
+Result:
+
+Added migrations that convert `raw_attendance_logs.punch_time` to `DATETIME NOT NULL`, preserving original device punch times when processing status is updated.

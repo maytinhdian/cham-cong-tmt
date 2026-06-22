@@ -55,7 +55,7 @@ class AttendanceRuleService
             'max_shift_minutes' => $this->definition(1200, 'integer', 'matching', 50, 'Giới hạn dài nhất khi nhận diện ca.'),
             'min_overtime_minutes' => $this->definition(120, 'integer', 'matching', 60, 'Ngưỡng ngắn nhất vượt ca.'),
             'min_shift_gap_minutes' => $this->definition(5, 'integer', 'matching', 70, 'Khoảng lệch ca tối thiểu.'),
-            'two_day_shift_policy' => $this->definition('first_day', 'string', 'matching', 80, 'Cách ghi nhận ca kéo dài qua hai ngày.'),
+            'two_day_shift_policy' => $this->definition('second_day', 'string', 'matching', 80, 'Cách ghi nhận ca kéo dài qua hai ngày.'),
             'out_state_policy' => $this->definition('audit', 'string', 'state', 90, 'Cách xử lý trạng thái ra ngoài.'),
             'ot_state_policy' => $this->definition('audit', 'string', 'state', 100, 'Cách xử lý trạng thái tăng ca từ máy chấm công.'),
             'standard_work_minutes' => $this->definition(420, 'integer', 'calculation', 110, 'Số phút tương ứng một ngày công chuẩn.'),

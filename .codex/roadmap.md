@@ -64,7 +64,7 @@
 - [x] Daily attendance result model
 - [x] Daily timesheet review
 - [x] Daily timesheet adjustment
-- [ ] Monthly timesheet aggregation
+- [x] Monthly timesheet aggregation
 - [ ] Timesheet closing and locking
 
 ## Phase 7 - Reports

@@ -41,45 +41,46 @@ class AttendanceEngine
     {
         $date = is_string($workDate) ? Carbon::parse($workDate)->startOfDay() : $workDate->copy()->startOfDay();
         $ruleContext = $this->attendanceRuleService->context();
-        $dayContext = $this->dayResolver->resolve($employee, $date);
         $schedule = $this->shiftMatcher->match($employee, $date);
         $shift = $schedule?->shift;
-        $rawLogs = $this->rawLogsForDay($employee, $date, $shift);
-        $filteredLogs = $this->logFilter->filter($rawLogs, $shift, $date);
+        $processingDate = $date->copy();
+        $resultDate = $date->copy();
+
+        if ($ruleContext->twoDayShiftPolicy === 'second_day') {
+            [$schedule, $shift, $processingDate, $resultDate] = $this->secondDayShiftContext($employee, $date, $schedule, $shift);
+        }
+
+        $dayContext = $this->dayResolver->resolve($employee, $resultDate);
+        $rawLogs = $this->rawLogsForDay($employee, $processingDate, $shift, $ruleContext);
+        $filteredLogs = $this->logFilter->filter($rawLogs, $shift, $processingDate);
         $pairing = $this->logPairing->pair($filteredLogs);
 
         $clockIn = $pairing->clockIn;
         $clockOut = $pairing->clockOut;
         $isApprovedLeave = $dayContext->dayType === 'leave';
         $grossWorkMinutes = $isApprovedLeave ? 0 : $this->workHourCalculator->calculate($clockIn, $clockOut);
-        $breakMinutes = $isApprovedLeave ? 0 : $this->breakCalculator->calculate($clockIn, $clockOut, $shift, $date);
+        $breakMinutes = $isApprovedLeave ? 0 : $this->breakCalculator->calculate($clockIn, $clockOut, $shift, $processingDate);
         $workMinutes = max(0, $grossWorkMinutes - $breakMinutes);
         $missingLogCount = $this->missingLogCount($clockIn, $clockOut, $shift, $dayContext, $schedule, $ruleContext);
-        $lateMinutes = $this->lateMinutes($clockIn, $shift, $date, $dayContext, $schedule, $ruleContext);
-        $earlyLeaveMinutes = $this->earlyLeaveMinutes($clockOut, $shift, $date, $dayContext, $schedule, $ruleContext);
+        $lateMinutes = $this->lateMinutes($clockIn, $shift, $processingDate, $dayContext, $schedule, $ruleContext);
+        $earlyLeaveMinutes = $this->earlyLeaveMinutes($clockOut, $shift, $processingDate, $dayContext, $schedule, $ruleContext);
         $attendanceValue = $this->attendanceCalculator->calculate($shift, $dayContext, $workMinutes, $ruleContext);
 
-        $dailyResult = DailyAttendanceResult::query()->updateOrCreate(
-            [
-                'employee_id' => $employee->id,
-                'work_date' => $date->toDateString(),
-            ],
-            [
-                'employee_schedule_id' => $schedule?->id,
-                'shift_id' => $shift?->id,
-                'clock_in_at' => $clockIn,
-                'clock_out_at' => $clockOut,
-                'work_minutes' => $workMinutes,
-                'break_minutes' => $breakMinutes,
-                'attendance_value' => $attendanceValue,
-                'late_minutes' => $isApprovedLeave ? 0 : $lateMinutes,
-                'early_leave_minutes' => $isApprovedLeave ? 0 : $earlyLeaveMinutes,
-                'overtime_minutes' => $this->overtimeMinutes($clockIn, $clockOut, $shift, $date, $dayContext, $workMinutes, $breakMinutes, $ruleContext),
-                'missing_log_count' => $missingLogCount,
-                'status' => $this->statusFor($schedule, $shift, $rawLogs, $missingLogCount, $lateMinutes, $earlyLeaveMinutes, $dayContext, $clockIn, $clockOut, $ruleContext),
-                'note' => $this->noteFor($schedule, $shift, $rawLogs, $missingLogCount, $dayContext, $clockIn, $clockOut, $ruleContext),
-            ]
-        );
+        $dailyResult = $this->saveDailyResult($employee, $resultDate, [
+            'employee_schedule_id' => $schedule?->id,
+            'shift_id' => $shift?->id,
+            'clock_in_at' => $clockIn,
+            'clock_out_at' => $clockOut,
+            'work_minutes' => $workMinutes,
+            'break_minutes' => $breakMinutes,
+            'attendance_value' => $attendanceValue,
+            'late_minutes' => $isApprovedLeave ? 0 : $lateMinutes,
+            'early_leave_minutes' => $isApprovedLeave ? 0 : $earlyLeaveMinutes,
+            'overtime_minutes' => $this->overtimeMinutes($clockIn, $clockOut, $shift, $processingDate, $dayContext, $workMinutes, $breakMinutes, $ruleContext),
+            'missing_log_count' => $missingLogCount,
+            'status' => $this->statusFor($schedule, $shift, $rawLogs, $missingLogCount, $lateMinutes, $earlyLeaveMinutes, $dayContext, $clockIn, $clockOut, $ruleContext),
+            'note' => $this->noteFor($schedule, $shift, $rawLogs, $missingLogCount, $dayContext, $clockIn, $clockOut, $ruleContext),
+        ]);
 
         if ($rawLogs->isNotEmpty()) {
             RawAttendanceLog::query()
@@ -91,9 +92,32 @@ class AttendanceEngine
     }
 
     /**
+     * Create or update one daily result by calendar date across database drivers.
+     */
+    private function saveDailyResult(Employee $employee, CarbonInterface $workDate, array $attributes): DailyAttendanceResult
+    {
+        $dailyResult = DailyAttendanceResult::query()
+            ->where('employee_id', $employee->id)
+            ->whereDate('work_date', $workDate->toDateString())
+            ->first();
+
+        if (! $dailyResult) {
+            $dailyResult = new DailyAttendanceResult([
+                'employee_id' => $employee->id,
+                'work_date' => $workDate->toDateString(),
+            ]);
+        }
+
+        $dailyResult->fill($attributes);
+        $dailyResult->save();
+
+        return $dailyResult;
+    }
+
+    /**
      * Read logs within a normal day or an overnight-shift window.
      */
-    private function rawLogsForDay(Employee $employee, CarbonInterface $workDate, ?Shift $shift): Collection
+    private function rawLogsForDay(Employee $employee, CarbonInterface $workDate, ?Shift $shift, AttendanceRuleContext $ruleContext): Collection
     {
         $from = $workDate->copy()->startOfDay();
         $to = $workDate->copy()->endOfDay();
@@ -109,7 +133,36 @@ class AttendanceEngine
             ->orderBy('punch_time')
             ->get();
 
-        return $this->withoutPreviousOvernightLogs($logs, $employee, $workDate);
+        if ($ruleContext->twoDayShiftPolicy === 'first_day') {
+            return $this->withoutPreviousOvernightLogs($logs, $employee, $workDate);
+        }
+
+        return $logs;
+    }
+
+    /**
+     * Resolve the schedule date and result date when overnight shifts are recorded on day two.
+     */
+    private function secondDayShiftContext(
+        Employee $employee,
+        CarbonInterface $workDate,
+        ?EmployeeSchedule $schedule,
+        ?Shift $shift
+    ): array {
+        if ($schedule && $shift && $this->isOvernightShift($shift)) {
+            return [$schedule, $shift, $workDate->copy(), $workDate->copy()->addDay()];
+        }
+
+        if (! $schedule) {
+            $previousSchedule = $this->shiftMatcher->previousOvernight($employee, $workDate);
+            $previousShift = $previousSchedule?->shift;
+
+            if ($previousSchedule && $previousShift) {
+                return [$previousSchedule, $previousShift, $previousSchedule->work_date->copy()->startOfDay(), $workDate->copy()];
+            }
+        }
+
+        return [$schedule, $shift, $workDate->copy(), $workDate->copy()];
     }
 
     /**
