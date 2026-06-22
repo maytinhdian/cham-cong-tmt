@@ -307,3 +307,45 @@ The detailed list can become long after filtering by department and date range. 
 Result:
 
 Rows after the first 10 are rendered inside a Bootstrap collapse controlled by a `Xem thêm` button.
+
+## 2026-06-22
+
+Decision:
+
+The main work schedule grid should use a full monthly matrix with calendar-style day cells.
+
+Reason:
+
+HR needs a month-level overview where employees remain easy to scan vertically, while shift assignments read like calendar events across the days of the month.
+
+Result:
+
+The schedule page now loads a selected month, renders every day as a column with weekday and date labels, keeps the existing employee identity column, and displays shift codes as wider bottom-aligned bars inside each day cell.
+
+## 2026-06-22
+
+Decision:
+
+The monthly schedule matrix should expose department and month navigation controls directly in the grid header.
+
+Reason:
+
+Users need to filter the visual month matrix by department and move between adjacent months without leaving the schedule overview.
+
+Result:
+
+The monthly grid header now includes a department filter, previous and next month buttons, a month picker, and a `Hôm nay` shortcut that returns the grid to the current month.
+
+## 2026-06-22
+
+Decision:
+
+Weekend highlighting in the monthly schedule matrix should be driven by existing weekend settings and attendance rule color data.
+
+Reason:
+
+The schedule grid needs to distinguish weekend cells now, while still allowing the future weekend-definition UI to choose which weekdays and color should be used without changing the grid markup again.
+
+Result:
+
+The monthly schedule grid marks cells whose ISO weekday is configured as weekend and sets the highlight through a CSS variable sourced from the saved `weekend_color` attendance rule.

@@ -23,3 +23,188 @@
     border-color: #e91e63;
     box-shadow: 0 0 0 0.2rem rgba(233, 30, 99, 0.15);
 }
+
+.schedule-month-filters {
+    align-items: flex-end;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    justify-content: flex-end;
+}
+
+.schedule-month-control,
+.schedule-month-department-filter {
+    min-width: 190px;
+}
+
+.schedule-month-department-filter {
+    min-width: 220px;
+}
+
+.schedule-month-today {
+    min-width: 96px;
+}
+
+.schedule-month-nav {
+    align-items: center;
+    display: flex;
+    gap: 0.5rem;
+}
+
+.schedule-month-nav .form-control {
+    min-width: 150px;
+    text-align: center;
+}
+
+.schedule-month-nav .btn,
+.schedule-month-today .btn {
+    align-items: center;
+    display: inline-flex;
+    justify-content: center;
+    min-height: 41px;
+    min-width: 41px;
+    padding: 0.5rem;
+}
+
+.schedule-month-scroll {
+    background: #ffffff;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    overflow: auto;
+}
+
+.schedule-month-table {
+    min-width: 2926px;
+    table-layout: fixed;
+}
+
+.schedule-month-table thead th,
+.schedule-month-table tbody td {
+    border-right: 1px solid #e9ecef;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.schedule-month-table thead th:last-child,
+.schedule-month-table tbody td:last-child {
+    border-right: 0;
+}
+
+.schedule-month-table tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+.schedule-month-employee-col {
+    background: #ffffff;
+    left: 0;
+    min-width: 260px;
+    position: sticky;
+    width: 260px;
+    z-index: 2;
+}
+
+.schedule-month-table thead .schedule-month-employee-col {
+    z-index: 3;
+}
+
+.schedule-month-employee-header {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+    position: relative;
+}
+
+.schedule-month-employee-title {
+    font-size: 0.78rem;
+}
+
+.schedule-month-sort-btn {
+    align-items: center;
+    display: inline-flex;
+    line-height: 1;
+    position: absolute;
+    right: 0;
+}
+
+.schedule-month-alpha-sort {
+    align-items: center;
+    color: #7b809a;
+    display: inline-flex;
+    gap: 0.08rem;
+    line-height: 1;
+}
+
+.schedule-month-alpha-sort span {
+    font-size: 0.7rem;
+    font-weight: 800;
+}
+
+.schedule-month-alpha-sort .material-icons-round {
+    font-size: 0.8rem;
+    line-height: 1;
+}
+
+.schedule-month-day-col {
+    background: #ffffff;
+    height: 48px;
+    min-width: 86px;
+    padding: 0.75rem 0.35rem;
+    width: 86px;
+}
+
+.schedule-month-weekday {
+    display: block;
+    line-height: 1.2;
+}
+
+.schedule-month-weekday {
+    color: #eb3473;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+}
+
+.schedule-month-cell {
+    height: 74px;
+    min-width: 86px;
+    padding: 0;
+    vertical-align: bottom;
+    width: 86px;
+}
+
+.schedule-month-cell--weekend {
+    background: var(--schedule-weekend-bg);
+}
+
+.schedule-month-cell-inner {
+    align-items: flex-end;
+    display: flex;
+    height: 74px;
+    justify-content: center;
+    position: relative;
+    width: 100%;
+}
+
+.schedule-month-cell-date {
+    color: #7b809a;
+    font-size: 0.72rem;
+    left: 0.5rem;
+    line-height: 1;
+    position: absolute;
+    top: 0.5rem;
+}
+
+.schedule-month-shift.badge {
+    border-radius: 4px;
+    display: block;
+    left: 1.5%;
+    margin: 0;
+    max-width: 97%;
+    overflow: hidden;
+    padding: 0.35rem 0.4rem;
+    position: absolute;
+    text-align: center;
+    text-overflow: ellipsis;
+    bottom: 0.35rem;
+    white-space: nowrap;
+    width: 97%;
+}

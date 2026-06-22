@@ -178,6 +178,17 @@ Recommended next feature after this note:
 - Limited the default declared schedule list length:
   - The `Danh sách lịch đã khai báo` table now shows the first 10 rows by default.
   - Additional filtered rows are placed in a Bootstrap collapse opened by a `Xem thêm` button.
+- Updated the main work schedule grid to a monthly calendar-style matrix:
+  - The grid now shows every day in the selected month instead of a capped day range.
+  - The employee column keeps the avatar, employee name, and department style.
+  - Each day column shows weekday and day-of-month in the header.
+  - Shift codes render as wider bottom-aligned calendar bars using the shift display color and 97% of the actual cell width.
+  - Each employee/day cell also shows the day number inside the calendar cell.
+  - The monthly grid header now shows full Vietnamese weekday names only.
+  - Weekday names use a lighter variant of the Material Dashboard Primary color.
+  - The monthly grid filter now includes department selection, previous/next month controls, and a current-month shortcut.
+  - The employee column header now includes an A-Z/Z-A sort toggle for the monthly grid.
+  - Weekend cells in the monthly grid now receive a visible configurable background based on the saved weekend color rule.
 
 ## Documentation Rule For Code Changes
 

@@ -166,20 +166,86 @@
 
                     <div class="row mt-4">
                         <div class="col-12">
-                            <div class="card">
+                            <div class="card card-calendar">
                                 <div class="card-header pb-0 p-3">
-                                    <h6 class="mb-1">Bảng lịch theo ngày</h6>
-                                    <p class="text-sm mb-0">Xem nhanh lịch đã gán theo nhân viên và từng ngày.</p>
+                                    <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center">
+                                        <div>
+                                            <h6 class="mb-1">Bảng lịch theo tháng</h6>
+                                            <p class="text-sm mb-0">Xem nhanh lịch đã gán theo nhân viên và từng ngày trong tháng.</p>
+                                        </div>
+                                        <div class="schedule-month-filters mt-3 mt-lg-0">
+                                            <div class="schedule-month-department-filter">
+                                                <label class="form-label text-xs text-uppercase text-secondary mb-1">Phòng ban</label>
+                                                <select class="form-control" wire:model.live="departmentFilter">
+                                                    <option value="">Tất cả</option>
+                                                    @foreach ($departments as $department)
+                                                        <option value="{{ $department->id }}">{{ $department->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <div class="schedule-month-control">
+                                                <label class="form-label text-xs text-uppercase text-secondary mb-1">Tháng</label>
+                                                <div class="schedule-month-nav">
+                                                    <button
+                                                        class="btn btn-outline-secondary btn-sm mb-0"
+                                                        type="button"
+                                                        wire:click="previousScheduleMonth"
+                                                        title="Lùi 1 tháng"
+                                                    >
+                                                        <i class="material-icons-round text-sm">chevron_left</i>
+                                                    </button>
+                                                    <input type="month" class="form-control" wire:model.live="scheduleMonth">
+                                                    <button
+                                                        class="btn btn-outline-secondary btn-sm mb-0"
+                                                        type="button"
+                                                        wire:click="nextScheduleMonth"
+                                                        title="Tiến 1 tháng"
+                                                    >
+                                                        <i class="material-icons-round text-sm">chevron_right</i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="schedule-month-today">
+                                                <label class="form-label text-xs text-uppercase text-secondary mb-1">&nbsp;</label>
+                                                <button
+                                                    class="btn bg-gradient-primary btn-sm mb-0 w-100"
+                                                    type="button"
+                                                    wire:click="goToCurrentScheduleMonth"
+                                                >
+                                                    Hôm nay
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="card-body p-3">
-                                    <div class="table-responsive">
-                                        <table class="table align-items-center mb-0">
+                                    <div class="schedule-month-scroll" style="--schedule-weekend-color: {{ $weekendHighlightColor }}; --schedule-weekend-bg: {{ $weekendHighlightBackground }};">
+                                        <table class="table align-items-center mb-0 schedule-month-table">
                                             <thead>
                                                 <tr>
-                                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nhân viên</th>
+                                                    <th class="schedule-month-employee-col text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                        <div class="schedule-month-employee-header">
+                                                            <span class="schedule-month-employee-title">Nhân viên</span>
+                                                            <button
+                                                                class="btn btn-link text-secondary schedule-month-sort-btn mb-0 p-0"
+                                                                type="button"
+                                                                wire:click="toggleEmployeeSort"
+                                                                title="{{ $employeeSortDirection === 'asc' ? 'Sắp xếp Z-A' : 'Sắp xếp A-Z' }}"
+                                                                aria-label="{{ $employeeSortDirection === 'asc' ? 'Sắp xếp Z-A' : 'Sắp xếp A-Z' }}"
+                                                            >
+                                                                <span class="schedule-month-alpha-sort" aria-hidden="true">
+                                                                    <span>{{ $employeeSortDirection === 'asc' ? 'A' : 'Z' }}</span>
+                                                                    <i class="material-icons-round">arrow_downward</i>
+                                                                    <span>{{ $employeeSortDirection === 'asc' ? 'Z' : 'A' }}</span>
+                                                                </span>
+                                                            </button>
+                                                        </div>
+                                                    </th>
                                                     @foreach ($scheduleDays as $day)
-                                                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                            {{ $day->format('d/m') }}
+                                                        <th class="schedule-month-day-col text-center text-secondary text-xxs font-weight-bolder opacity-7">
+                                                            <span class="schedule-month-weekday">
+                                                                {{ ['Chủ nhật', 'Thứ hai', 'Thứ ba', 'Thứ tư', 'Thứ năm', 'Thứ sáu', 'Thứ bảy'][$day->dayOfWeek] }}
+                                                            </span>
                                                         </th>
                                                     @endforeach
                                                 </tr>
@@ -187,7 +253,7 @@
                                             <tbody>
                                                 @forelse ($employees as $employee)
                                                     <tr>
-                                                        <td>
+                                                        <td class="schedule-month-employee-col">
                                                             <div class="d-flex px-2 py-1">
                                                                 <div class="avatar avatar-sm bg-gradient-dark me-3">
                                                                     <span class="text-white text-xs font-weight-bold">{{ mb_substr($employee->full_name, 0, 1) }}</span>
@@ -200,26 +266,31 @@
                                                         </td>
                                                         @foreach ($scheduleDays as $day)
                                                             @php
-                                                                $schedule = $schedules->first(fn ($item) => $item->employee_id === $employee->id && $item->work_date->isSameDay($day));
+                                                                $schedule = $monthlyScheduleByEmployeeDate[$employee->id][$day->toDateString()] ?? null;
+                                                                $isWeekendDay = in_array($day->dayOfWeekIso, $weekendWeekdays, true);
+                                                                $shiftTitle = $schedule?->shift
+                                                                    ? $schedule->shift->name.' - '.substr($schedule->shift->start_time, 0, 5).' đến '.substr($schedule->shift->end_time, 0, 5)
+                                                                    : strtoupper((string) $schedule?->schedule_type);
                                                             @endphp
-                                                            <td class="text-center">
-                                                                @if ($schedule)
-                                                                    @if ($schedule->shift)
-                                                                        <span
-                                                                            class="badge text-white"
-                                                                            style="background-color: {{ $schedule->shift->display_color ?: '#2563EB' }};"
-                                                                            title="{{ $schedule->shift->name }}"
-                                                                        >
-                                                                            {{ $schedule->shift->code }}
-                                                                        </span>
-                                                                    @else
-                                                                        <span class="badge bg-gradient-secondary">
-                                                                            {{ strtoupper($schedule->schedule_type) }}
-                                                                        </span>
+                                                            <td class="schedule-month-cell {{ $isWeekendDay ? 'schedule-month-cell--weekend' : '' }}">
+                                                                <div class="schedule-month-cell-inner">
+                                                                    <span class="schedule-month-cell-date">{{ $day->format('j') }}</span>
+                                                                    @if ($schedule)
+                                                                        @if ($schedule->shift)
+                                                                            <span
+                                                                                class="schedule-month-shift badge text-white"
+                                                                                style="background-color: {{ $schedule->shift->display_color ?: '#2563EB' }};"
+                                                                                title="{{ $shiftTitle }}"
+                                                                            >
+                                                                                {{ $schedule->shift->code }}
+                                                                            </span>
+                                                                        @else
+                                                                            <span class="schedule-month-shift badge bg-gradient-secondary" title="{{ $shiftTitle }}">
+                                                                                {{ strtoupper($schedule->schedule_type) }}
+                                                                            </span>
+                                                                        @endif
                                                                     @endif
-                                                                @else
-                                                                    <span class="text-xs text-secondary">-</span>
-                                                                @endif
+                                                                </div>
                                                             </td>
                                                         @endforeach
                                                     </tr>
@@ -233,7 +304,6 @@
                                             </tbody>
                                         </table>
                                     </div>
-                                    <p class="text-xs text-secondary mt-3 mb-0">Bảng lịch đang giới hạn tối đa 14 ngày để giữ giao diện gọn.</p>
                                 </div>
                             </div>
                         </div>

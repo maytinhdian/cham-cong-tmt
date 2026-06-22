@@ -195,3 +195,45 @@ None for this change.
 Priority:
 
 None
+
+## 2026-06-22 Monthly Schedule Matrix
+
+Problem:
+
+No new unresolved problem was found while changing the main work schedule grid to a monthly calendar-style matrix.
+
+Impact:
+
+None for this change.
+
+Priority:
+
+None
+
+## 2026-06-22 Monthly Schedule Filters
+
+Problem:
+
+No new unresolved problem was found while adding department and month navigation filters to the monthly schedule grid.
+
+Impact:
+
+None for this change.
+
+Priority:
+
+None
+
+## 2026-06-22 Monthly Weekend Highlight
+
+Problem:
+
+Weekend cell highlighting was implemented with configurable color variables, but the user still does not see the visual change on the schedule page.
+
+Impact:
+
+The monthly schedule grid may not clearly distinguish Sunday/weekend cells yet, even though weekend settings and color variables are wired in code.
+
+Priority:
+
+Medium

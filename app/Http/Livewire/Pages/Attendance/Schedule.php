@@ -6,10 +6,12 @@ use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Illuminate\Support\Collection;
 use Livewire\Component;
+use Modules\Attendance\Services\AttendanceRuleService;
 use Modules\Org\Models\Department;
 use Modules\Schedule\Actions\AssignShiftAction;
 use Modules\Schedule\DTOs\EmployeeScheduleData;
 use Modules\Schedule\Models\EmployeeSchedule;
+use Modules\Schedule\Models\WeekendSetting;
 use Modules\Shift\Models\Shift;
 use Modules\User\Models\Employee;
 
@@ -37,6 +39,10 @@ class Schedule extends Component
 
     public string $dateTo = '';
 
+    public string $scheduleMonth = '';
+
+    public string $employeeSortDirection = 'asc';
+
     /**
      * Prepare default schedule assignment and calendar filters.
      */
@@ -50,6 +56,7 @@ class Schedule extends Component
         $this->assignDateTo = now()->toDateString();
         $this->dateFrom = now()->startOfWeek()->toDateString();
         $this->dateTo = now()->endOfWeek()->toDateString();
+        $this->scheduleMonth = now()->format('Y-m');
     }
 
     /**
@@ -100,6 +107,7 @@ class Schedule extends Component
         $this->departmentFilter = $this->assignDepartmentId ?: $this->departmentFilter;
         $this->dateFrom = $validated['assignDateFrom'];
         $this->dateTo = $validated['assignDateTo'];
+        $this->scheduleMonth = Carbon::parse($validated['assignDateFrom'])->format('Y-m');
 
         session()->flash('success', sprintf(
             'Đã cập nhật %d dòng lịch làm việc cho %d nhân viên.',
@@ -119,14 +127,60 @@ class Schedule extends Component
     }
 
     /**
+     * Move the monthly schedule grid back by one month.
+     */
+    public function previousScheduleMonth(): void
+    {
+        $this->scheduleMonth = $this->scheduleMonthStart()->subMonth()->format('Y-m');
+    }
+
+    /**
+     * Move the monthly schedule grid forward by one month.
+     */
+    public function nextScheduleMonth(): void
+    {
+        $this->scheduleMonth = $this->scheduleMonthStart()->addMonth()->format('Y-m');
+    }
+
+    /**
+     * Return the monthly schedule grid to the current month.
+     */
+    public function goToCurrentScheduleMonth(): void
+    {
+        $this->scheduleMonth = now()->format('Y-m');
+    }
+
+    /**
+     * Toggle employee ordering in the monthly schedule matrix.
+     */
+    public function toggleEmployeeSort(): void
+    {
+        $this->employeeSortDirection = $this->employeeSortDirection === 'asc' ? 'desc' : 'asc';
+    }
+
+    /**
      * Render schedule assignment controls, the compact grid, and declared schedule rows.
      */
     public function render()
     {
+        $monthStart = $this->scheduleMonthStart();
+        $monthEnd = $monthStart->copy()->endOfMonth();
+
         $employees = Employee::query()
             ->with(['department', 'position'])
             ->when($this->departmentFilter, fn ($query) => $query->where('department_id', $this->departmentFilter))
+            ->orderBy('full_name', $this->employeeSortDirection === 'desc' ? 'desc' : 'asc')
             ->orderBy('employee_code')
+            ->get();
+
+        $monthlySchedules = EmployeeSchedule::query()
+            ->with(['employee.department', 'employee.position', 'shift'])
+            ->when($this->departmentFilter, function ($query) {
+                $query->whereHas('employee', fn ($employeeQuery) => $employeeQuery->where('department_id', $this->departmentFilter));
+            })
+            ->whereBetween('work_date', [$monthStart->toDateString(), $monthEnd->toDateString()])
+            ->orderBy('work_date')
+            ->orderBy('employee_id')
             ->get();
 
         $schedules = EmployeeSchedule::query()
@@ -150,23 +204,23 @@ class Schedule extends Component
             'departments' => Department::query()->orderBy('sort_order')->orderBy('name')->get(),
             'assignmentEmployees' => $assignmentEmployees,
             'employees' => $employees,
+            'weekendHighlightColor' => $this->weekendHighlightColor(),
+            'weekendHighlightBackground' => $this->weekendHighlightBackground(),
+            'weekendWeekdays' => $this->weekendWeekdays(),
             'scheduleDays' => $this->scheduleDays(),
+            'monthlyScheduleByEmployeeDate' => $this->monthlyScheduleLookup($monthlySchedules),
             'schedules' => $schedules,
             'shifts' => Shift::query()->orderBy('start_time')->orderBy('name')->get(),
         ]);
     }
 
     /**
-     * Build the visible calendar day headers, capped to keep the grid compact.
+     * Build every visible day in the selected monthly schedule grid.
      */
     private function scheduleDays(): array
     {
-        $start = Carbon::parse($this->dateFrom ?: now()->startOfWeek());
-        $end = Carbon::parse($this->dateTo ?: now()->endOfWeek());
-
-        if ($start->diffInDays($end) > 13) {
-            $end = $start->copy()->addDays(13);
-        }
+        $start = $this->scheduleMonthStart();
+        $end = $start->copy()->endOfMonth();
 
         $days = [];
 
@@ -175,6 +229,73 @@ class Schedule extends Component
         }
 
         return $days;
+    }
+
+    /**
+     * Resolve the selected work schedule month, falling back to the current month.
+     */
+    private function scheduleMonthStart(): Carbon
+    {
+        $month = $this->scheduleMonth ?: now()->format('Y-m');
+
+        try {
+            return Carbon::createFromFormat('Y-m-d', $month.'-01')->startOfMonth();
+        } catch (\Throwable) {
+            return now()->startOfMonth();
+        }
+    }
+
+    /**
+     * Index monthly schedules by employee and work date for fast calendar rendering.
+     */
+    private function monthlyScheduleLookup(Collection $monthlySchedules): array
+    {
+        $lookup = [];
+
+        foreach ($monthlySchedules as $schedule) {
+            $lookup[$schedule->employee_id][$schedule->work_date->toDateString()] = $schedule;
+        }
+
+        return $lookup;
+    }
+
+    /**
+     * Return weekend weekdays using the same ISO weekday values as attendance processing.
+     */
+    private function weekendWeekdays(): array
+    {
+        $weekdays = WeekendSetting::query()
+            ->where('is_weekend', true)
+            ->pluck('weekday')
+            ->map(fn ($weekday) => (int) $weekday)
+            ->all();
+
+        return $weekdays ?: [7];
+    }
+
+    /**
+     * Resolve the configurable weekend highlight color for the monthly schedule grid.
+     */
+    private function weekendHighlightColor(): string
+    {
+        $ruleService = app(AttendanceRuleService::class);
+        $rules = $ruleService->valuesWithDefaults($ruleService->definitions());
+        $color = (string) ($rules['weekend_color']['value'] ?? '#f44335');
+
+        return preg_match('/^#[0-9A-Fa-f]{6}$/', $color) ? $color : '#f44335';
+    }
+
+    /**
+     * Convert the configured weekend color into a visible translucent cell background.
+     */
+    private function weekendHighlightBackground(): string
+    {
+        $color = ltrim($this->weekendHighlightColor(), '#');
+        $red = hexdec(substr($color, 0, 2));
+        $green = hexdec(substr($color, 2, 2));
+        $blue = hexdec(substr($color, 4, 2));
+
+        return sprintf('rgba(%d, %d, %d, 0.16)', $red, $green, $blue);
     }
 
     /**
