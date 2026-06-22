@@ -47,4 +47,12 @@ class AttendanceDevice extends Model
     {
         return $this->hasMany(AttendanceDeviceUserMap::class);
     }
+
+    /**
+     * List commands waiting for or returned by this PUSH attendance device.
+     */
+    public function commands(): HasMany
+    {
+        return $this->hasMany(AttendanceDeviceCommand::class);
+    }
 }

@@ -95,6 +95,7 @@ use App\Http\Livewire\LaravelExamples\UserManagement\Create as UserManagementCre
 use App\Http\Livewire\LaravelExamples\UserManagement\Edit as UserManagementEdit;
 use App\Http\Livewire\LaravelExamples\UserManagement\Index as UserManagementIndex;
 use Illuminate\Support\Facades\Route;
+use Modules\Device\Controllers\ZktecoPushController;
 
 /*
 |--------------------------------------------------------------------------
@@ -113,6 +114,11 @@ Route::get('/', function () {
         : redirect()->route('login');
 });
 
+Route::get('iclock/cdata', [ZktecoPushController::class, 'cdata'])->name('zkteco-push.cdata');
+Route::post('iclock/cdata', [ZktecoPushController::class, 'upload'])->name('zkteco-push.upload');
+Route::match(['get', 'post'], 'iclock/getrequest', [ZktecoPushController::class, 'getRequest'])->name('zkteco-push.getrequest');
+Route::match(['get', 'post'], 'iclock/ping', [ZktecoPushController::class, 'ping'])->name('zkteco-push.ping');
+Route::post('iclock/devicecmd', [ZktecoPushController::class, 'deviceCommand'])->name('zkteco-push.devicecmd');
 
 Route::get('sign-up', Register::class)->middleware('guest')->name('register');
 

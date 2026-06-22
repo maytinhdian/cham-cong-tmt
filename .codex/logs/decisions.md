@@ -474,3 +474,17 @@ The existing MySQL `TIMESTAMP` column had `ON UPDATE CURRENT_TIMESTAMP`, so mark
 Result:
 
 Added migrations that convert `raw_attendance_logs.punch_time` to `DATETIME NOT NULL`, preserving original device punch times when processing status is updated.
+
+## 2026-06-22
+
+Decision:
+
+ZKTeco attendance devices should be integrated through the PUSH protocol endpoints rather than a direct socket poller.
+
+Reason:
+
+The referenced `Attendance PUSH Communication Protocol 20200801.pdf` defines the device as an HTTP client that initializes with `/iclock/cdata`, polls `/iclock/getrequest`, uploads ATTLOG records to `/iclock/cdata?table=ATTLOG`, and acknowledges commands through `/iclock/devicecmd`.
+
+Result:
+
+Added a small PUSH adapter under `Modules/Device` with parser, import service, command queue service, public `/iclock/*` routes, CSRF exclusion for device callbacks, and feature tests. Device `SN` maps to `attendance_devices.code`; queued sync uses the protocol `LOG` command.

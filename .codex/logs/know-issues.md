@@ -14,6 +14,20 @@ Priority:
 
 None
 
+## 2026-06-22 ZKTeco PUSH Migration
+
+Problem:
+
+The new `attendance_device_commands` migration could not be applied to the local development database because MySQL on `127.0.0.1:3306` refused the connection.
+
+Impact:
+
+Code and tests are ready, but the local MySQL database will not have the command queue table until MySQL is started and `php artisan migrate --force` is rerun.
+
+Priority:
+
+High before testing with a real device
+
 ## 2026-06-22 Attendance Test Data
 
 Problem:

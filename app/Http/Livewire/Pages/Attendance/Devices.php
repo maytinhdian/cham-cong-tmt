@@ -8,6 +8,7 @@ use Modules\Device\Actions\CreateAttendanceDeviceAction;
 use Modules\Device\Actions\UpdateAttendanceDeviceAction;
 use Modules\Device\DTOs\AttendanceDeviceData;
 use Modules\Device\Models\AttendanceDevice;
+use Modules\Device\Services\AttendanceDeviceCommandService;
 use Modules\Device\Services\AttendanceDeviceService;
 
 class Devices extends Component
@@ -105,15 +106,15 @@ class Devices extends Component
     }
 
     /**
-     * Mark the device as synced while raw log synchronization is not implemented yet.
+     * Queue a PUSH command so the device uploads new logs on its next poll.
      */
     public function syncDevice(int $deviceId): void
     {
         $device = AttendanceDevice::query()->findOrFail($deviceId);
 
-        app(AttendanceDeviceService::class)->markSynced($device);
+        app(AttendanceDeviceCommandService::class)->queueLogSync($device);
 
-        session()->flash('success', 'Đã ghi nhận thời điểm đồng bộ thiết bị.');
+        session()->flash('success', 'Đã gửi yêu cầu đồng bộ. Thiết bị sẽ đẩy log lên ở lần kết nối tiếp theo.');
     }
 
     /**

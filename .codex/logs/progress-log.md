@@ -262,3 +262,16 @@ Important UI constraints:
 - Reusable attendance test data exists for `TEST-001` to `TEST-006`.
 - Test raw logs cover `2026-06-01 07:00:00` through `2026-06-21 07:00:00`.
 - Attendance rule `two_day_shift_policy` is currently set to `second_day`.
+
+## 2026-06-22 ZKTeco PUSH Device Integration
+
+- Read `Attendance PUSH Communication Protocol 20200801.pdf` and implemented the attendance-log path for ZKTeco PUSH devices.
+- Added public `/iclock/cdata`, `/iclock/getrequest`, `/iclock/ping`, and `/iclock/devicecmd` endpoints.
+- Initialization responds with `GET OPTION FROM`, `TransFlag=TransData AttLog`, timezone 7, and realtime ATTLOG upload enabled.
+- `POST /iclock/cdata?table=ATTLOG` now parses pushed attendance lines and stores them in `raw_attendance_logs` with source `zkteco_push`.
+- Device `SN` is matched to `attendance_devices.code`, and unknown serial numbers auto-create a ZKTeco device record.
+- Active `attendance_device_user_maps` are applied during import so raw logs link to employees when mapped.
+- Added `attendance_device_commands` to queue PUSH commands.
+- The device page `Đồng bộ` action now queues a `LOG` command; the next `/iclock/getrequest` returns `C:<id>:LOG` so the device uploads new logs.
+- `/iclock/devicecmd` records command acknowledgements.
+- Added feature coverage for initialization, ATTLOG import, and queued LOG command dispatch.
