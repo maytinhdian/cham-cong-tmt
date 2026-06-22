@@ -102,12 +102,39 @@ class AttendanceEngine
             $to = $workDate->copy()->addDay()->endOfDay();
         }
 
-        return RawAttendanceLog::query()
+        $logs = RawAttendanceLog::query()
             ->where('employee_id', $employee->id)
             ->where('processing_status', '!=', 'ignored')
             ->whereBetween('punch_time', [$from, $to])
             ->orderBy('punch_time')
             ->get();
+
+        return $this->withoutPreviousOvernightLogs($logs, $employee, $workDate);
+    }
+
+    /**
+     * Remove punches that already belong to the previous day's overnight shift.
+     */
+    private function withoutPreviousOvernightLogs(Collection $logs, Employee $employee, CarbonInterface $workDate): Collection
+    {
+        if ($logs->isEmpty()) {
+            return $logs;
+        }
+
+        $previousSchedule = $this->shiftMatcher->previousOvernight($employee, $workDate);
+        $previousShift = $previousSchedule?->shift;
+
+        if (! $previousSchedule || ! $previousShift) {
+            return $logs;
+        }
+
+        [$windowStart, $windowEnd] = $this->shiftWindow($previousSchedule->work_date, $previousShift);
+
+        return $logs
+            ->reject(fn (RawAttendanceLog $log): bool => $log->punch_time
+                && $log->punch_time->greaterThanOrEqualTo($windowStart)
+                && $log->punch_time->lessThanOrEqualTo($windowEnd))
+            ->values();
     }
 
     /**
@@ -339,6 +366,29 @@ class AttendanceEngine
     private function isOvernightShift(Shift $shift): bool
     {
         return Carbon::parse((string) $shift->end_time)->lessThanOrEqualTo(Carbon::parse((string) $shift->start_time));
+    }
+
+    /**
+     * Build the absolute matching window used to identify one scheduled shift's logs.
+     */
+    private function shiftWindow(CarbonInterface $workDate, Shift $shift): array
+    {
+        $shiftStart = Carbon::parse($workDate->toDateString().' '.substr((string) $shift->start_time, 0, 8));
+        $windowStart = $shift->clock_in_from
+            ? Carbon::parse($workDate->toDateString().' '.substr((string) $shift->clock_in_from, 0, 8))
+            : $shiftStart->copy();
+
+        if (! $shift->clock_in_from && $shift->overtime_before_shift_enabled) {
+            $windowStart = $workDate->copy()->startOfDay();
+        }
+
+        $windowEnd = Carbon::parse($workDate->toDateString().' '.substr((string) ($shift->clock_out_to ?: $shift->end_time), 0, 8));
+
+        if ($windowEnd->lessThanOrEqualTo($shiftStart)) {
+            $windowEnd->addDay();
+        }
+
+        return [$windowStart, $windowEnd];
     }
 
     /**

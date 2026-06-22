@@ -197,6 +197,10 @@ Recommended next feature after this note:
   - The list now expands within the same table instead of rendering a second table below the first 10 rows.
   - The expansion button now toggles between `Xem thêm ... dòng` and `Thu gọn`.
   - Changing the declared schedule filters collapses the list back to the compact view.
+- Finalized default overnight shift matching behavior:
+  - Attendance processing now detects the previous day's overnight schedule when processing the next calendar date.
+  - Next-day checkout punches that belong to the previous overnight shift are excluded from the next day's own pairing.
+  - Added a feature test covering a 22:00-06:00 shift so the 06:00 checkout stays on the original work date.
 
 ## Documentation Rule For Code Changes
 

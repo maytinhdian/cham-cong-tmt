@@ -4,15 +4,15 @@
 
 Problem:
 
-Night shift matching not finalized.
+Resolved for the current default first-day overnight policy. Next-day checkout logs from an overnight shift are now kept with the original shift date and excluded from the next day's own pairing.
 
 Impact:
 
-Attendance calculation may be incorrect.
+None for this default behavior. Supporting the alternate saved `two_day_shift_policy` value is still tracked under Attendance Rule Consumption.
 
 Priority:
 
-High
+None
 
 ## Attendance Rule Consumption
 

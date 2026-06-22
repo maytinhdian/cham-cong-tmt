@@ -377,3 +377,17 @@ Using a Bootstrap collapse with a second table made the expanded rows visually u
 Result:
 
 The declared schedule list now uses one table for compact and expanded states, and the button toggles between showing the remaining row count and `Thu gọn`.
+
+## 2026-06-22
+
+Decision:
+
+Overnight shift results should remain attached to the shift's starting work date under the current default rule policy.
+
+Reason:
+
+The saved default for two-day shifts is `first_day`, and processing the next calendar date should not reuse the checkout punch from the previous night's shift as a separate day result.
+
+Result:
+
+Attendance processing now removes punches that fall inside the previous day's overnight shift window before pairing the current day, and a feature test locks the 22:00-06:00 scenario.
