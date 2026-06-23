@@ -101,7 +101,8 @@ class ZktecoPushProtocolTest extends TestCase
         $response = $this->get('/iclock/getrequest?SN=DEV-PUSH-03');
 
         $response->assertOk();
-        $response->assertSeeText('C:' . $command->command_key . ':LOG');
+        $response->assertSeeText('C: ' . $command->command_key . ': LOG');
+        $this->assertMatchesRegularExpression('/^[A-Z0-9]{12}$/', $command->command_key);
 
         $this->assertDatabaseHas('attendance_device_commands', [
             'id' => $command->id,

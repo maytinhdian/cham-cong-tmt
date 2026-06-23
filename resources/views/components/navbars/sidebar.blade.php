@@ -219,12 +219,12 @@
             </li>
             <li class="nav-item">
                 <a data-bs-toggle="collapse" href="#deviceExamples"
-                    class="nav-link text-white {{ in_array(Route::currentRouteName(), ['attendance-devices', 'attendance-device-user-mappings', 'attendance-raw-logs', 'attendance-process-logs']) ? 'active' : '' }}"
+                    class="nav-link text-white {{ in_array(Route::currentRouteName(), ['attendance-devices', 'attendance-device-user-mappings', 'attendance-raw-logs', 'attendance-process-logs', 'attendance-tabulator-demo']) ? 'active' : '' }}"
                     aria-controls="deviceExamples" role="button" aria-expanded="false">
                     <i class="ni ni-tablet-button opacity-10"></i>
                     <span class="nav-link-text ms-2 ps-1">Thiết bị chấm công</span>
                 </a>
-                <div class="collapse {{ in_array(Route::currentRouteName(), ['attendance-devices', 'attendance-device-user-mappings', 'attendance-raw-logs', 'attendance-process-logs']) ? 'show' : '' }}"
+                <div class="collapse {{ in_array(Route::currentRouteName(), ['attendance-devices', 'attendance-device-user-mappings', 'attendance-raw-logs', 'attendance-process-logs', 'attendance-tabulator-demo']) ? 'show' : '' }}"
                     id="deviceExamples">
                     <ul class="nav">
                         <li class="nav-item {{ Route::currentRouteName() == 'attendance-devices' ? 'active' : '' }}">
@@ -253,6 +253,13 @@
                                 href="{{ route('attendance-process-logs') }}">
                                 <span class="sidenav-mini-icon"> XL </span>
                                 <span class="sidenav-normal ms-2 ps-1"> Xử lý log </span>
+                            </a>
+                        </li>
+                        <li class="nav-item {{ Route::currentRouteName() == 'attendance-tabulator-demo' ? 'active' : '' }}">
+                            <a class="nav-link text-white {{ Route::currentRouteName() == 'attendance-tabulator-demo' ? 'active' : '' }}"
+                                href="{{ route('attendance-tabulator-demo') }}">
+                                <span class="sidenav-mini-icon"> TB </span>
+                                <span class="sidenav-normal ms-2 ps-1"> Demo Tabulator </span>
                             </a>
                         </li>
                     </ul>

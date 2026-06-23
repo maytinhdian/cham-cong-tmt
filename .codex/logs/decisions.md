@@ -488,3 +488,59 @@ The referenced `Attendance PUSH Communication Protocol 20200801.pdf` defines the
 Result:
 
 Added a small PUSH adapter under `Modules/Device` with parser, import service, command queue service, public `/iclock/*` routes, CSRF exclusion for device callbacks, and feature tests. Device `SN` maps to `attendance_devices.code`; queued sync uses the protocol `LOG` command.
+
+## 2026-06-23
+
+Decision:
+
+ZKTeco protocol notes will be kept as Markdown beside the source PDF under `.codex/docs/devices`.
+
+Reason:
+
+The original protocol PDF is long and covers many biometric, file, firmware, and remote-enrollment features that are not part of the current attendance-log integration. A concise summary and API reference make the implemented `/iclock/*` subset easier to audit and extend.
+
+Result:
+
+Added `zkteco-push-summary.md` and `zkteco-push-api-reference.md`, focused on initialization, ATTLOG upload, getrequest commands, devicecmd replies, heartbeat, and the small command subset needed by this project.
+
+## 2026-06-23
+
+Decision:
+
+BIODATA synchronization will remain documented future scope until tested against a real ZKTeco device.
+
+Reason:
+
+The protocol provides `BIODATA` upload, query, update, delete, and clear commands, which are enough for server-mediated cross-device biometric sync. Actual template compatibility depends on device model, firmware, biometric type, algorithm version, format, and payload behavior, so implementation should wait for real hardware verification.
+
+Result:
+
+Added BIODATA notes to the ZKTeco summary and API reference. The current product scope remains attendance-log import first.
+
+## 2026-06-23
+
+Decision:
+
+ZKTeco queued command IDs should be compact alphanumeric values and getrequest responses should follow the documented `C: <id>: <command>` shape.
+
+Reason:
+
+The protocol describes command IDs as server-generated values with a maximum length of 16 characters and examples include spaces around the `C:` command fields. Keeping the generated IDs simple improves compatibility before hardware testing.
+
+Result:
+
+`AttendanceDeviceCommandService` now generates 12-character uppercase alphanumeric command keys and returns `C: <command_key>: LOG` for queued sync commands.
+
+## 2026-06-23
+
+Decision:
+
+The first Tabulator trial will be a client-side demo page loaded from CDN instead of a bundled production dependency.
+
+Reason:
+
+The user wants to try the table experience before committing it to core attendance screens. Loading Tabulator only on the demo page keeps the current Bootstrap/Livewire tables untouched while still proving add/delete/edit/filter/download interactions.
+
+Result:
+
+Added `Attendance\TabulatorDemo`, the `attendance-tabulator-demo` route, and a sidebar entry. The page uses sample attendance-log data and does not persist changes to the database.

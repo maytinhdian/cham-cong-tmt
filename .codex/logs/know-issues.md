@@ -28,6 +28,66 @@ Priority:
 
 High before testing with a real device
 
+## 2026-06-23 ZKTeco Protocol Documentation
+
+Problem:
+
+No new unresolved problem was found while documenting the ZKTeco PUSH PDF.
+
+Impact:
+
+The documentation covers the important attendance-log API subset. Advanced protocol areas such as biometric templates, attendance photos, remote enrollment, firmware/file transfer, and encrypted communication remain later implementation scope.
+
+Priority:
+
+None
+
+## 2026-06-23 ZKTeco BIODATA Sync
+
+Problem:
+
+Cross-device biometric template synchronization is supported by the protocol in principle, but it has not been implemented or tested with real hardware.
+
+Impact:
+
+The app can import attendance logs now, but cannot yet pull biometric templates from one ZKTeco device and push them to other devices.
+
+Pending Work:
+
+When a real device is available, test `POST /iclock/cdata?table=BIODATA`, `DATA QUERY BIODATA`, `DATA UPDATE BIODATA`, `DATA DELETE BIODATA`, and `CLEAR BIODATA`. Then add database storage for biometric templates and command queue support for selected target devices.
+
+Priority:
+
+Deferred until real-device testing
+
+## 2026-06-23 ZKTeco Non-Hardware Review
+
+Problem:
+
+Resolved in this pass. Queued command IDs previously used a long `uniqid` value that included a dot, while the protocol expects compact command IDs of up to 16 alphanumeric characters.
+
+Impact:
+
+The simulated PUSH flow now uses a safer command ID and a getrequest command string closer to the documented format.
+
+Priority:
+
+None
+
+## 2026-06-23 Tabulator Demo
+
+Problem:
+
+No unresolved product issue was introduced. The demo intentionally uses CDN assets and sample client-side data only.
+
+Impact:
+
+The demo is useful for evaluating table interactions, but it is not yet a production replacement for existing Livewire tables and does not save edits.
+
+Priority:
+
+None
+
 ## 2026-06-22 Attendance Test Data
 
 Problem:

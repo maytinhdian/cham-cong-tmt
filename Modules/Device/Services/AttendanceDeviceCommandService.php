@@ -2,6 +2,7 @@
 
 namespace Modules\Device\Services;
 
+use Illuminate\Support\Str;
 use Modules\Device\Models\AttendanceDevice;
 use Modules\Device\Models\AttendanceDeviceCommand;
 
@@ -14,7 +15,7 @@ class AttendanceDeviceCommandService
     {
         $command = AttendanceDeviceCommand::query()->create([
             'attendance_device_id' => $device->id,
-            'command_key' => uniqid('log', true),
+            'command_key' => $this->makeCommandKey(),
             'command' => 'LOG',
             'status' => 'pending',
         ]);
@@ -44,7 +45,7 @@ class AttendanceDeviceCommandService
             'sent_at' => now(),
         ]);
 
-        return 'C:' . $command->command_key . ':' . $command->command;
+        return 'C: ' . $command->command_key . ': ' . $command->command;
     }
 
     /**
@@ -78,5 +79,17 @@ class AttendanceDeviceCommandService
         }
 
         return $count;
+    }
+
+    /**
+     * Generate a compact protocol-safe command id for device acknowledgement.
+     */
+    private function makeCommandKey(): string
+    {
+        do {
+            $key = strtoupper(Str::random(12));
+        } while (AttendanceDeviceCommand::query()->where('command_key', $key)->exists());
+
+        return $key;
     }
 }

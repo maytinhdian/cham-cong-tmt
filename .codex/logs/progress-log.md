@@ -275,3 +275,18 @@ Important UI constraints:
 - The device page `Đồng bộ` action now queues a `LOG` command; the next `/iclock/getrequest` returns `C:<id>:LOG` so the device uploads new logs.
 - `/iclock/devicecmd` records command acknowledgements.
 - Added feature coverage for initialization, ATTLOG import, and queued LOG command dispatch.
+
+## 2026-06-23 ZKTeco Device Documentation
+
+- Read `.codex/docs/devices/zkteco-sdk.pdf`, the ZKTeco Attendance PUSH Communication Protocol document.
+- Added `.codex/docs/devices/zkteco-push-summary.md` with the integration flow, attendance-log format, command priorities, and project scope notes.
+- Added `.codex/docs/devices/zkteco-push-api-reference.md` with the important `/iclock/*` endpoints, request/response formats, ATTLOG body format, command formats, and return codes.
+- Confirmed the documented API subset matches the existing Laravel routes for initialization, ATTLOG upload, command polling, heartbeat, and command acknowledgement.
+- Recorded that the protocol supports server-mediated `BIODATA` synchronization between devices, but implementation is postponed until a real ZKTeco device is available for firmware/model testing.
+- Reviewed the non-hardware ZKTeco flow and tightened queued command formatting so `/iclock/getrequest` returns protocol-style `C: <id>: LOG` with compact alphanumeric command IDs.
+
+## 2026-06-23 Tabulator Demo
+
+- Added a client-side Tabulator demo page under `pages/attendance/tabulator-demo`.
+- The demo shows attendance-log-like sample data with add row, delete selected rows, clear, reset, search, copy JSON, CSV download, inline editing, row selection, header filters, and status badges.
+- Added the demo route and sidebar entry under `Thiết bị chấm công`.

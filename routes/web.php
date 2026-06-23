@@ -50,6 +50,7 @@ use App\Http\Livewire\Pages\Attendance\Schedule as AttendanceSchedule;
 use App\Http\Livewire\Pages\Attendance\ShiftDefinition as AttendanceShiftDefinition;
 use App\Http\Livewire\Pages\Attendance\WeekendDefinition as AttendanceWeekendDefinition;
 use App\Http\Livewire\Pages\Attendance\SymbolStatistics as AttendanceSymbolStatistics;
+use App\Http\Livewire\Pages\Attendance\TabulatorDemo as AttendanceTabulatorDemo;
 use App\Http\Livewire\Pages\Reports\Index as AttendanceReports;
 use App\Http\Livewire\Ecommerce\Orders\Details;
 use App\Http\Livewire\Ecommerce\Orders\OrderList;
@@ -176,6 +177,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('pages/attendance/device-user-mappings', AttendanceDeviceUserMappings::class)->name('attendance-device-user-mappings');
     Route::get('pages/attendance/raw-logs', AttendanceRawLogs::class)->name('attendance-raw-logs');
     Route::get('pages/attendance/process-logs', AttendanceProcessLogs::class)->name('attendance-process-logs');
+    Route::get('pages/attendance/tabulator-demo', AttendanceTabulatorDemo::class)->name('attendance-tabulator-demo');
     Route::get('pages/attendance/daily-timesheet', AttendanceDailyTimesheet::class)->name('attendance-daily-timesheet');
     Route::get('pages/attendance/monthly-timesheet', AttendanceMonthlyTimesheet::class)->name('attendance-monthly-timesheet');
     Route::get('pages/reports', AttendanceReports::class)->name('attendance-reports');
