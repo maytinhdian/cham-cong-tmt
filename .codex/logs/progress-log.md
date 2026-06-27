@@ -319,3 +319,13 @@ Important UI constraints:
 - Delayed the custom tab sync until after the template moving-tab initializer runs to avoid duplicate indicators.
 - Verified Blade compilation with `php artisan view:cache`.
 - Matched the Material Dashboard sample more closely by keeping the attendance settings nav in `flex-row` mode and using the template-like `0.5s ease` moving-tab transition.
+
+## 2026-06-27 ZKTeco PUSH Version Diff
+
+- Read the two new protocol PDFs:
+  - `.codex/docs/devices/ZkTecoPUSH-Communication-Protocol-20200325.pdf`
+  - `.codex/docs/devices/ZKTecoPUSH-Communication-Protocol-20240112.pdf`
+- Extracted PDF text with `pypdf` for local review.
+- Added `.codex/docs/devices/zkteco-push-version-diff.md` summarizing differences between the 2020 Attendance PUSH document and the 2024 Security PUSH document.
+- Noted that the current TMT implementation follows the 2020 attendance-log subset, while the 2024 document adds a broader security/access-control flow with registry/session handling, `rtlog`, `tabledata`, `querydata`, channel controller, Wiegand 2.0, video intercom, and expanded event codes.
+- Linked the version-diff note from `.codex/docs/devices/zkteco-push-summary.md`.

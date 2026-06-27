@@ -395,3 +395,17 @@ The fix is scoped to `.attendance-settings-tabs` and does not change other `nav-
 Priority:
 
 None
+
+## 2026-06-27 ZKTeco PUSH Version Diff
+
+Problem:
+
+No new implementation problem was introduced while reviewing the two PUSH protocol PDFs. The review confirmed that the 2024 Security PUSH document is broader than the current attendance-log integration.
+
+Impact:
+
+Future support for 2024-style devices may require registry/session handling, `rtlog`, `tabledata`, `querydata`, and access-control event parsing. The current `ATTLOG` path remains the primary supported scope.
+
+Priority:
+
+Future compatibility work when real hardware requires the 2024 flow

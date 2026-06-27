@@ -2,6 +2,8 @@
 
 Source: `zkteco-sdk.pdf` - Attendance PUSH Communication Protocol, PUSH SDK, Software Version 2.4.1, Doc Version 3.9, July 2020.
 
+Related comparison note: `zkteco-push-version-diff.md` summarizes the differences between the March 2020 Attendance PUSH PDF and the January 2024 Security PUSH PDF.
+
 ## Purpose
 
 ZKTeco PUSH is an HTTP-based protocol where the attendance device acts as the client. The server does not open a socket connection to the device. Instead, the device calls server endpoints to initialize, push attendance data, poll for commands, and report command results.

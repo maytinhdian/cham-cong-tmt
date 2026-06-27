@@ -590,3 +590,17 @@ Added `public/assets/js/tmt-ui.js` to resync only `.attendance-settings-tabs` in
 Follow-up:
 
 The attendance settings nav keeps the template `flex-row` class and uses the same slower `0.5s ease` movement rhythm as the Material Dashboard sample tabs.
+
+## 2026-06-27
+
+Decision:
+
+Keep the ZKTeco PUSH 2020 and 2024 protocol comparison as a separate documentation note instead of merging it into the existing attendance-focused API reference.
+
+Reason:
+
+The 2024 PDF is a broader Security PUSH document, not a direct replacement for the current Attendance PUSH integration. Keeping a separate version-diff note preserves the current `ATTLOG` implementation guidance while documenting future compatibility work for registry/session, `rtlog`, `tabledata`, `querydata`, and access-control features.
+
+Result:
+
+Added `.codex/docs/devices/zkteco-push-version-diff.md` and linked it from the ZKTeco PUSH summary.
