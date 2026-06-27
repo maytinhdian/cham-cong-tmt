@@ -290,3 +290,32 @@ Important UI constraints:
 - Added a client-side Tabulator demo page under `pages/attendance/tabulator-demo`.
 - The demo shows attendance-log-like sample data with add row, delete selected rows, clear, reset, search, copy JSON, CSV download, inline editing, row selection, header filters, and status badges.
 - Added the demo route and sidebar entry under `Thiết bị chấm công`.
+
+## 2026-06-25 Local Database Schema Sync
+
+- Checked the local database with `php artisan migrate:status`.
+- Found eight pending attendance/device/timesheet migrations on the local MySQL database.
+- Ran `php artisan migrate` to add the missing schema pieces:
+  - break and attendance value fields on `daily_attendance_results`.
+  - `attendance_rules`.
+  - overtime policy fields on `shifts`.
+  - `monthly_timesheets`.
+  - stable `DATETIME` handling for `raw_attendance_logs.punch_time`.
+  - `attendance_device_commands`.
+- Rechecked migration status and confirmed all migrations are now applied.
+
+## 2026-06-27 Attendance Settings Tab Highlight
+
+- Applied the Material Dashboard floating active-tab treatment to `pages/attendance/settings`.
+- Added a scoped `attendance-settings-tabs` wrapper so the attendance rule tabs show a white raised active state like the profile overview tabs.
+- Kept the styling in `public/assets/css/tmt-ui.css` so the fallback works even when the template moving-tab script has not initialized yet.
+- Verified Blade compilation with `php artisan view:cache`.
+
+## 2026-06-27 Attendance Settings Tab Motion
+
+- Smoothed the `pages/attendance/settings` tab transition by removing the vertical active-link transform that made tabs feel jumpy.
+- Added scoped moving-tab transition tuning in `public/assets/css/tmt-ui.css` using transform/width/height animation with `will-change`.
+- Added `public/assets/js/tmt-ui.js` and loaded it after Material Dashboard so the attendance settings tabs resync their moving indicator on click, `shown.bs.tab`, Livewire navigation, and resize.
+- Delayed the custom tab sync until after the template moving-tab initializer runs to avoid duplicate indicators.
+- Verified Blade compilation with `php artisan view:cache`.
+- Matched the Material Dashboard sample more closely by keeping the attendance settings nav in `flex-row` mode and using the template-like `0.5s ease` moving-tab transition.

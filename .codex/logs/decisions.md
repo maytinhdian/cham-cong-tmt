@@ -544,3 +544,49 @@ The user wants to try the table experience before committing it to core attendan
 Result:
 
 Added `Attendance\TabulatorDemo`, the `attendance-tabulator-demo` route, and a sidebar entry. The page uses sample attendance-log data and does not persist changes to the database.
+
+## 2026-06-25
+
+Decision:
+
+Local database repair should use the existing project migrations instead of creating duplicate compatibility tables such as generic `timesheets`, `leaves`, or `holidays`.
+
+Reason:
+
+The current codebase already stores those concepts in the established project tables: `daily_attendance_results`, `monthly_timesheets`, `approved_leaves`, and `holiday_calendars`. Creating parallel tables would split business data and confuse later services.
+
+Result:
+
+Ran the pending migrations through `php artisan migrate`, bringing the local database in line with the current Laravel schema.
+
+## 2026-06-27
+
+Decision:
+
+Attendance settings tabs should have a scoped raised active state that matches the Material Dashboard profile overview tabs.
+
+Reason:
+
+The settings page already uses `nav-pills`, but its active tab can appear flat when the template moving-tab script is not visibly applied during Livewire rendering. A scoped fallback keeps this specific business settings screen consistent without changing every nav-pills group.
+
+Result:
+
+Added an `attendance-settings-tabs` wrapper on the settings page and matching CSS in `tmt-ui.css` for the active tab background, light shadow, and subtle lift.
+
+## 2026-06-27
+
+Decision:
+
+Attendance settings tab motion should be handled by a small scoped helper loaded after the Material Dashboard script.
+
+Reason:
+
+The template initializes `moving-tab` asynchronously and binds movement through hover/click behavior. On the attendance settings screen, that can feel delayed or jumpy, especially when the active link itself also animates.
+
+Result:
+
+Added `public/assets/js/tmt-ui.js` to resync only `.attendance-settings-tabs` indicators after the template initializes, and tuned `tmt-ui.css` so the moving indicator animates smoothly while the tab text remains stable.
+
+Follow-up:
+
+The attendance settings nav keeps the template `flex-row` class and uses the same slower `0.5s ease` movement rhythm as the Material Dashboard sample tabs.

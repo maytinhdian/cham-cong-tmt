@@ -18,15 +18,15 @@ None
 
 Problem:
 
-The new `attendance_device_commands` migration could not be applied to the local development database because MySQL on `127.0.0.1:3306` refused the connection.
+Resolved on 2026-06-25. The local MySQL database accepted the pending migrations, including `attendance_device_commands`.
 
 Impact:
 
-Code and tests are ready, but the local MySQL database will not have the command queue table until MySQL is started and `php artisan migrate --force` is rerun.
+The command queue table now exists in the local database.
 
 Priority:
 
-High before testing with a real device
+None
 
 ## 2026-06-23 ZKTeco Protocol Documentation
 
@@ -363,6 +363,34 @@ No new unresolved problem was found while adding monthly timesheet aggregation.
 Impact:
 
 Timesheet closing and locking are still separate roadmap work.
+
+Priority:
+
+None
+
+## 2026-06-27 Attendance Settings Tab Highlight
+
+Problem:
+
+No new unresolved problem was found while applying the raised active-tab treatment to the attendance settings page.
+
+Impact:
+
+The change is scoped to the attendance settings tabs and does not change other nav-pills groups.
+
+Priority:
+
+None
+
+## 2026-06-27 Attendance Settings Tab Motion
+
+Problem:
+
+Resolved in this pass. The attendance settings tabs could feel jumpy because the active link had its own transform while the Material Dashboard moving indicator was also being repositioned.
+
+Impact:
+
+The fix is scoped to `.attendance-settings-tabs` and does not change other `nav-pills` groups.
 
 Priority:
 

@@ -24,6 +24,35 @@
     box-shadow: 0 0 0 0.2rem rgba(233, 30, 99, 0.15);
 }
 
+.attendance-settings-tabs .nav.nav-pills {
+    overflow: visible;
+}
+
+.attendance-settings-tabs .nav.nav-pills .nav-link {
+    align-items: center;
+    display: inline-flex;
+    justify-content: center;
+    min-height: 40px;
+    transition: color 0.18s ease, font-weight 0.18s ease;
+}
+
+.attendance-settings-tabs .nav.nav-pills > .nav-item > .nav-link.active {
+    background: #ffffff;
+    box-shadow: 0 1px 5px 1px #ddd;
+    font-weight: 600;
+}
+
+.attendance-settings-tabs .nav.nav-pills .moving-tab {
+    backface-visibility: hidden;
+    pointer-events: none;
+    transition: transform 0.5s ease, width 0.5s ease, height 0.5s ease !important;
+    will-change: transform, width, height;
+}
+
+.attendance-settings-tabs .nav.nav-pills .moving-tab .nav-link.active {
+    box-shadow: 0 1px 5px 1px #ddd;
+}
+
 .schedule-month-filters {
     align-items: flex-end;
     display: flex;

@@ -24,8 +24,8 @@
 
                 <div class="card-body p-3">
                     <form id="attendance-rules-form" wire:submit.prevent="saveRules">
-                        <div class="nav-wrapper position-relative end-0 mb-4">
-                            <ul class="nav nav-pills nav-fill p-1" role="tablist">
+                        <div class="nav-wrapper attendance-settings-tabs position-relative end-0 mb-4">
+                            <ul class="nav nav-pills nav-fill p-1 flex-row" role="tablist">
                                 <li class="nav-item">
                                     <a class="nav-link mb-0 px-0 py-1 active" data-bs-toggle="tab" href="#basic-settings" role="tab" aria-selected="true">
                                         <i class="material-icons text-lg position-relative">settings</i>
