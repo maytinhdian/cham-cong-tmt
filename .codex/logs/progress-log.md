@@ -329,3 +329,33 @@ Important UI constraints:
 - Added `.codex/docs/devices/zkteco-push-version-diff.md` summarizing differences between the 2020 Attendance PUSH document and the 2024 Security PUSH document.
 - Noted that the current TMT implementation follows the 2020 attendance-log subset, while the 2024 document adds a broader security/access-control flow with registry/session handling, `rtlog`, `tabledata`, `querydata`, channel controller, Wiegand 2.0, video intercom, and expanded event codes.
 - Linked the version-diff note from `.codex/docs/devices/zkteco-push-summary.md`.
+
+## 2026-06-30 Authorization & Roles Foundation
+
+- Added Phase 6.5 to `.codex/roadmap.md` for authorization and roles before Reports.
+- Added a module creation guide to `.codex/instructions.md`.
+- Created `permissions` and `permission_role` tables for module/action permissions.
+- Added `Modules/Core/Models/Permission` and `Modules/Core/Authorization/PermissionRegistry`.
+- Added `AuthorizationSeeder` to seed default permissions and role-permission assignments.
+- Expanded `RolesSeeder` with business roles: `Super Admin`, `HR Manager`, `HR Staff`, `Department Manager`, and `Employee`, while preserving template roles `Admin`, `Creator`, and `Member`.
+- Updated `User` and `Role` models with permission relationships and permission-check helpers.
+- Registered permission Gates in `AuthServiceProvider`; existing `Admin` and `Super Admin` roles bypass detailed permission checks.
+- Protected HR, attendance, device, timesheet, report, and authorization routes with `can:*` middleware.
+- Added Livewire action-level authorization checks to sensitive attendance/device/settings/schedule actions.
+- Added Core activity logging for manual raw-log changes, raw-log processing, monthly timesheet generation, and attendance device operations.
+- Ran `php artisan migrate --force`; this applied the new permission migration and also applied the previously pending `attendance_device_commands` migration.
+- Ran `php artisan db:seed --class=AuthorizationSeeder --force`.
+- Verified changed PHP files with `php -l`, rebuilt optimized autoload, and ran `php artisan view:cache`.
+
+## 2026-06-30 Role Permission Matrix UI
+
+- Reworked the role create page from a basic name/description form into a business permission matrix.
+- Reworked the role edit page so Admin can assign permissions by grouped modules.
+- Added grouped permission controls with module-level `Chọn nhóm` and `Bỏ chọn` actions.
+- Added selected-permission count feedback on the role form.
+- Updated the role list to show permission count and assigned-user count per role.
+- Fixed role management authorization references to use the current `App\Models\User` class.
+- Added action-level authorization checks to role create, edit, and delete actions.
+- Verified the edited role PHP files with `php -l`.
+- Verified Blade compilation with `php artisan view:cache`.
+- Added a New Page Authorization Guide to `.codex/instructions.md` so future pages define permissions, route middleware, action authorization, and audit logging consistently.

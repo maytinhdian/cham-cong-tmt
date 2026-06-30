@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Pages\Attendance;
 
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component;
 use Modules\Device\Actions\SaveAttendanceDeviceUserMapAction;
 use Modules\Device\DTOs\AttendanceDeviceUserMapData;
@@ -12,6 +13,8 @@ use Modules\User\Models\Employee;
 
 class DeviceUserMappings extends Component
 {
+    use AuthorizesRequests;
+
     public $editingMappingId = null;
 
     public $attendanceDeviceId = null;
@@ -44,6 +47,8 @@ class DeviceUserMappings extends Component
      */
     public function saveMapping(): void
     {
+        $this->authorize('attendance.devices.manage');
+
         $validated = $this->validate([
             'attendanceDeviceId' => ['required', 'exists:attendance_devices,id'],
             'employeeId' => ['required', 'exists:employees,id'],
@@ -76,6 +81,8 @@ class DeviceUserMappings extends Component
      */
     public function editMapping(int $mappingId): void
     {
+        $this->authorize('attendance.devices.manage');
+
         $mapping = AttendanceDeviceUserMap::query()->findOrFail($mappingId);
 
         $this->editingMappingId = $mapping->id;
@@ -92,6 +99,8 @@ class DeviceUserMappings extends Component
      */
     public function applyMapping(int $mappingId): void
     {
+        $this->authorize('attendance.devices.manage');
+
         $mapping = AttendanceDeviceUserMap::query()->findOrFail($mappingId);
         $updatedRows = app(AttendanceDeviceUserMapService::class)->applyToRawLogs($mapping);
 
@@ -103,6 +112,8 @@ class DeviceUserMappings extends Component
      */
     public function deleteMapping(int $mappingId): void
     {
+        $this->authorize('attendance.devices.manage');
+
         AttendanceDeviceUserMap::query()->findOrFail($mappingId)->delete();
 
         if ((int) $this->editingMappingId === $mappingId) {

@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Pages\Attendance;
 
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component;
 use Modules\Attendance\Actions\AdjustDailyTimesheetAction;
 use Modules\Attendance\DTOs\DailyTimesheetAdjustmentData;
@@ -12,6 +13,8 @@ use Modules\User\Models\Employee;
 
 class DailyTimesheet extends Component
 {
+    use AuthorizesRequests;
+
     public string $dateFrom = '';
 
     public string $dateTo = '';
@@ -59,6 +62,8 @@ class DailyTimesheet extends Component
      */
     public function openAdjustment(int $dailyAttendanceResultId): void
     {
+        $this->authorize('attendance.timesheet.adjust');
+
         $dailyResult = DailyAttendanceResult::query()->findOrFail($dailyAttendanceResultId);
 
         $this->adjustingResultId = $dailyResult->id;
@@ -85,6 +90,8 @@ class DailyTimesheet extends Component
      */
     public function saveAdjustment(AdjustDailyTimesheetAction $adjustDailyTimesheetAction): void
     {
+        $this->authorize('attendance.timesheet.adjust');
+
         $validated = $this->validate([
             'adjustingResultId' => ['required', 'exists:daily_attendance_results,id'],
             'adjustClockInAt' => ['nullable', 'date'],

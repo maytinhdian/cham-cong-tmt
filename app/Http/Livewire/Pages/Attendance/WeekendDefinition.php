@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Pages\Attendance;
 
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component;
 use Modules\Schedule\Actions\SaveHolidayAction;
 use Modules\Schedule\Actions\SyncWeekendSettingsAction;
@@ -11,6 +12,8 @@ use Modules\Schedule\Models\WeekendSetting;
 
 class WeekendDefinition extends Component
 {
+    use AuthorizesRequests;
+
     public array $weekendDays = ['6', '7'];
 
     public string $holidayDate = '';
@@ -25,6 +28,9 @@ class WeekendDefinition extends Component
 
     public ?string $note = null;
 
+    /**
+     * Load saved weekend settings and prepare the holiday form defaults.
+     */
     public function mount(): void
     {
         if (WeekendSetting::query()->exists()) {
@@ -41,8 +47,13 @@ class WeekendDefinition extends Component
         $this->holidayDate = now()->toDateString();
     }
 
+    /**
+     * Persist the selected recurring weekend weekdays.
+     */
     public function saveWeekendSettings(): void
     {
+        $this->authorize('attendance.settings.manage');
+
         $this->validate([
             'weekendDays' => ['array'],
             'weekendDays.*' => ['string', 'in:1,2,3,4,5,6,7'],
@@ -53,8 +64,13 @@ class WeekendDefinition extends Component
         session()->flash('success', 'Đã lưu cấu hình ngày cuối tuần.');
     }
 
+    /**
+     * Save a holiday or special calendar day used by attendance processing.
+     */
     public function saveHoliday(): void
     {
+        $this->authorize('attendance.settings.manage');
+
         $validated = $this->validate([
             'holidayDate' => ['required', 'date'],
             'holidayName' => ['required', 'string', 'max:255'],
@@ -85,13 +101,21 @@ class WeekendDefinition extends Component
         $this->workdayValue = '1';
     }
 
+    /**
+     * Delete a holiday or special calendar day from attendance processing.
+     */
     public function deleteHoliday(int $holidayId): void
     {
+        $this->authorize('attendance.settings.manage');
+
         HolidayCalendar::query()->findOrFail($holidayId)->delete();
 
         session()->flash('success', 'Đã xóa ngày nghỉ/lễ.');
     }
 
+    /**
+     * Render weekend settings and holiday calendar records.
+     */
     public function render()
     {
         return view('livewire.pages.attendance.weekend-definition', [

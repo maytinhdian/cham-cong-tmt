@@ -72,6 +72,36 @@ class User extends Authenticatable
         return $this->role_id === 3;
     }
 
+    /**
+     * Check whether the user belongs to a role name, case-insensitively.
+     */
+    public function hasRoleName(string $roleName): bool
+    {
+        return strcasecmp((string) $this->role?->name, $roleName) === 0;
+    }
+
+    /**
+     * Check whether this user should bypass detailed business permissions.
+     */
+    public function isSuperRole(): bool
+    {
+        return $this->isAdmin() || $this->hasRoleName('Admin') || $this->hasRoleName('Super Admin');
+    }
+
+    /**
+     * Check whether the user's role grants a module/action permission.
+     */
+    public function hasPermission(string $permission): bool
+    {
+        if ($this->isSuperRole()) {
+            return true;
+        }
+
+        return $this->role?->permissions()
+            ->where('name', $permission)
+            ->exists() ?? false;
+    }
+
     public function role(){
 
         return $this->belongsTo(Role::class);

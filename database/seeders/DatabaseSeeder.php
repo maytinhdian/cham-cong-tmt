@@ -15,6 +15,12 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         DB::statement('SET FOREIGN_KEY_CHECKS=0');
+        if (DB::getSchemaBuilder()->hasTable('permission_role')) {
+            DB::table('permission_role')->truncate();
+        }
+        if (DB::getSchemaBuilder()->hasTable('permissions')) {
+            DB::table('permissions')->truncate();
+        }
         DB::table('roles')->truncate();
         DB::table('users')->truncate();
         DB::table('categories')->truncate();
@@ -23,6 +29,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             RolesSeeder::class,
+            AuthorizationSeeder::class,
             UserSeeder::class,
             CategorySeeder::class,
             TagSeeder::class,

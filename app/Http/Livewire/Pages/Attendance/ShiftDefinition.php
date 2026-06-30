@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Pages\Attendance;
 
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Modules\Shift\DTOs\ShiftData;
@@ -10,6 +11,8 @@ use Modules\Shift\Services\ShiftService;
 
 class ShiftDefinition extends Component
 {
+    use AuthorizesRequests;
+
     public ?int $editingShiftId = null;
 
     public string $code = '';
@@ -116,6 +119,8 @@ class ShiftDefinition extends Component
      */
     public function editShift(int $shiftId): void
     {
+        $this->authorize('attendance.settings.manage');
+
         $shift = Shift::query()->findOrFail($shiftId);
 
         $this->resetValidation();
@@ -153,6 +158,8 @@ class ShiftDefinition extends Component
      */
     public function saveShift(ShiftService $shiftService): void
     {
+        $this->authorize('attendance.settings.manage');
+
         $validated = $this->validate([
             'code' => [
                 'required',
@@ -241,6 +248,8 @@ class ShiftDefinition extends Component
      */
     public function deleteShift(int $shiftId, ShiftService $shiftService): void
     {
+        $this->authorize('attendance.settings.manage');
+
         $shift = Shift::query()->withCount('schedules')->findOrFail($shiftId);
 
         if ($shift->schedules_count > 0) {

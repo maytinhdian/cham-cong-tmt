@@ -2,15 +2,19 @@
 
 namespace App\Http\Livewire\Pages\Attendance;
 
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component;
 use Modules\Attendance\Actions\ProcessRawLogsAction;
 use Modules\Attendance\Models\DailyAttendanceResult;
 use Modules\Attendance\Models\RawAttendanceLog;
 use Modules\Attendance\Services\AttendanceProcessingService;
+use Modules\Core\Services\ActivityLogger;
 use Modules\User\Models\Employee;
 
 class ProcessLogs extends Component
 {
+    use AuthorizesRequests;
+
     public string $dateFrom = '';
 
     public string $dateTo = '';
@@ -33,6 +37,8 @@ class ProcessLogs extends Component
      */
     public function processLogs(ProcessRawLogsAction $processRawLogsAction): void
     {
+        $this->authorize('attendance.processing.run');
+
         $validated = $this->validate([
             'dateFrom' => ['required', 'date'],
             'dateTo' => ['required', 'date'],
@@ -46,6 +52,21 @@ class ProcessLogs extends Component
             $validated['dateFrom'],
             $validated['dateTo'],
             $this->nullableInt($validated['employeeId'])
+        );
+
+        app(ActivityLogger::class)->logForCurrentRequest(
+            'attendance',
+            'raw_logs.processed',
+            null,
+            'Raw logs were processed into daily attendance results.',
+            null,
+            null,
+            [
+                'date_from' => $validated['dateFrom'],
+                'date_to' => $validated['dateTo'],
+                'employee_id' => $this->nullableInt($validated['employeeId']),
+                'processed_count' => $processedCount,
+            ]
         );
 
         session()->flash('success', "Đã xử lý {$processedCount} dòng ngày công.");

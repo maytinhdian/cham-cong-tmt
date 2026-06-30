@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Pages\Attendance;
 
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Modules\Device\Actions\CreateAttendanceDeviceAction;
@@ -10,9 +11,12 @@ use Modules\Device\DTOs\AttendanceDeviceData;
 use Modules\Device\Models\AttendanceDevice;
 use Modules\Device\Services\AttendanceDeviceCommandService;
 use Modules\Device\Services\AttendanceDeviceService;
+use Modules\Core\Services\ActivityLogger;
 
 class Devices extends Component
 {
+    use AuthorizesRequests;
+
     public $editingDeviceId = null;
 
     public string $code = '';
@@ -40,6 +44,8 @@ class Devices extends Component
      */
     public function saveDevice(): void
     {
+        $this->authorize('attendance.devices.manage');
+
         $validated = $this->validateDevice();
 
         $data = $this->makeDeviceData($validated);
@@ -47,9 +53,11 @@ class Devices extends Component
         if ($this->editingDeviceId) {
             $device = AttendanceDevice::query()->findOrFail($this->editingDeviceId);
             app(UpdateAttendanceDeviceAction::class)->execute($device, $data);
+            app(ActivityLogger::class)->logForCurrentRequest('device', 'device.updated', $device, 'Attendance device was updated.');
             session()->flash('success', 'Đã cập nhật thiết bị chấm công.');
         } else {
-            app(CreateAttendanceDeviceAction::class)->execute($data);
+            $device = app(CreateAttendanceDeviceAction::class)->execute($data);
+            app(ActivityLogger::class)->logForCurrentRequest('device', 'device.created', $device, 'Attendance device was created.');
             session()->flash('success', 'Đã thêm thiết bị chấm công.');
         }
 
@@ -61,6 +69,8 @@ class Devices extends Component
      */
     public function editDevice(int $deviceId): void
     {
+        $this->authorize('attendance.devices.manage');
+
         $device = AttendanceDevice::query()->findOrFail($deviceId);
 
         $this->editingDeviceId = $device->id;
@@ -80,7 +90,12 @@ class Devices extends Component
      */
     public function deleteDevice(int $deviceId): void
     {
-        AttendanceDevice::query()->findOrFail($deviceId)->delete();
+        $this->authorize('attendance.devices.manage');
+
+        $device = AttendanceDevice::query()->findOrFail($deviceId);
+        $device->delete();
+
+        app(ActivityLogger::class)->logForCurrentRequest('device', 'device.deleted', $device, 'Attendance device was deleted.');
 
         if ((int) $this->editingDeviceId === $deviceId) {
             $this->resetForm();
@@ -94,10 +109,21 @@ class Devices extends Component
      */
     public function checkConnection(int $deviceId): void
     {
+        $this->authorize('attendance.devices.manage');
+
         $device = AttendanceDevice::query()->findOrFail($deviceId);
         $online = filled($device->ip_address);
 
         app(AttendanceDeviceService::class)->markConnectionChecked($device, $online);
+
+        app(ActivityLogger::class)->logForCurrentRequest(
+            'device',
+            'device.connection_checked',
+            $device,
+            'Attendance device connection was checked.',
+            null,
+            ['connection_status' => $online ? 'online' : 'offline']
+        );
 
         session()->flash(
             'success',
@@ -110,9 +136,13 @@ class Devices extends Component
      */
     public function syncDevice(int $deviceId): void
     {
+        $this->authorize('attendance.devices.manage');
+
         $device = AttendanceDevice::query()->findOrFail($deviceId);
 
         app(AttendanceDeviceCommandService::class)->queueLogSync($device);
+
+        app(ActivityLogger::class)->logForCurrentRequest('device', 'device.log_sync_queued', $device, 'Attendance device log sync command was queued.');
 
         session()->flash('success', 'Đã gửi yêu cầu đồng bộ. Thiết bị sẽ đẩy log lên ở lần kết nối tiếp theo.');
     }

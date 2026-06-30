@@ -69,13 +69,13 @@
 
 ## Phase 6.5 - Authorization & Roles
 
-- [ ] Define role list and permission matrix
-- [ ] Add module/action permission naming convention
-- [ ] Add role and permission seed data
-- [ ] Protect Livewire pages by permission
-- [ ] Protect sensitive Livewire actions by permission
-- [ ] Add user-role assignment UI
-- [ ] Add audit log for sensitive permission-protected actions
+- [x] Define role list and permission matrix
+- [x] Add module/action permission naming convention
+- [x] Add role and permission seed data
+- [x] Protect Livewire pages by permission
+- [x] Protect sensitive Livewire actions by permission
+- [x] Add user-role assignment UI through the existing user management role selector
+- [x] Add audit log for sensitive permission-protected actions
 
 ## Phase 7 - Reports
 

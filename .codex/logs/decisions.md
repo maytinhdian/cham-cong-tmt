@@ -604,3 +604,31 @@ The 2024 PDF is a broader Security PUSH document, not a direct replacement for t
 Result:
 
 Added `.codex/docs/devices/zkteco-push-version-diff.md` and linked it from the ZKTeco PUSH summary.
+
+## 2026-06-30
+
+Decision:
+
+Authorization will use the existing `roles` table and app `User` model, extended with first-party `permissions` and `permission_role` tables instead of adding an external permission package.
+
+Reason:
+
+The project already has template role management and user-role assignment screens. Extending that foundation keeps the change small, avoids package migration work, and lets business permissions be expressed with module/action names before Reports and timesheet locking are implemented.
+
+Result:
+
+Added `PermissionRegistry`, `Permission` model, permission seed data, Gate registration, route `can:*` middleware, and action-level checks for sensitive attendance workflows. Existing `Admin` and new `Super Admin` roles bypass detailed checks for backward compatibility.
+
+## 2026-06-30
+
+Decision:
+
+Role creation and editing should expose permissions as a grouped business matrix instead of a plain role form.
+
+Reason:
+
+Admins need to understand role scope quickly before Reports and timesheet locking are added. Grouping permissions by module makes role setup safer than typing a role name and assigning permissions elsewhere.
+
+Result:
+
+The role create/edit screens now show grouped permission checkboxes, module-level select/clear actions, and selected-permission counts. The role list now shows permission and user counts for faster review.

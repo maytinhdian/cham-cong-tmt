@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Pages\Attendance;
 
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component;
 use Modules\Attendance\Services\AttendanceRuleService;
 use Modules\Schedule\Actions\SyncWeekendSettingsAction;
@@ -9,6 +10,8 @@ use Modules\Schedule\Models\WeekendSetting;
 
 class Settings extends Component
 {
+    use AuthorizesRequests;
+
     public array $rules = [];
 
     public array $weekendDays = ['6', '7'];
@@ -39,6 +42,8 @@ class Settings extends Component
      */
     public function saveRules(): void
     {
+        $this->authorize('attendance.settings.manage');
+
         $this->validate([
             'rules.company_name' => ['required', 'string', 'max:255'],
             'rules.company_short_name' => ['required', 'string', 'max:255'],

@@ -2,15 +2,19 @@
 
 namespace App\Http\Livewire\Pages\Attendance;
 
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component;
 use Modules\Attendance\Actions\SaveRawAttendanceLogAction;
 use Modules\Attendance\DTOs\RawAttendanceLogData;
 use Modules\Attendance\Models\RawAttendanceLog;
+use Modules\Core\Services\ActivityLogger;
 use Modules\Device\Models\AttendanceDevice;
 use Modules\User\Models\Employee;
 
 class RawLogs extends Component
 {
+    use AuthorizesRequests;
+
     public $attendanceDeviceId = null;
 
     public $employeeId = null;
@@ -56,6 +60,8 @@ class RawLogs extends Component
      */
     public function saveRawLog(): void
     {
+        $this->authorize('attendance.raw_logs.manage');
+
         $validated = $this->validate([
             'attendanceDeviceId' => ['nullable', 'exists:attendance_devices,id'],
             'employeeId' => ['nullable', 'exists:employees,id'],
@@ -71,7 +77,7 @@ class RawLogs extends Component
             'punchTime.required' => 'Vui lòng nhập thời gian chấm công.',
         ]);
 
-        app(SaveRawAttendanceLogAction::class)->execute(new RawAttendanceLogData(
+        $rawLog = app(SaveRawAttendanceLogAction::class)->execute(new RawAttendanceLogData(
             attendanceDeviceId: $this->nullableInt($validated['attendanceDeviceId']),
             employeeId: $this->nullableInt($validated['employeeId']),
             deviceUserCode: $validated['deviceUserCode'],
@@ -85,6 +91,13 @@ class RawLogs extends Component
             ],
             note: $validated['note'] ?: null,
         ));
+
+        app(ActivityLogger::class)->logForCurrentRequest(
+            'attendance',
+            'raw_log.created',
+            $rawLog,
+            'Manual raw attendance log was created.'
+        );
 
         session()->flash('success', 'Đã lưu log chấm công thô.');
 
@@ -100,7 +113,17 @@ class RawLogs extends Component
      */
     public function deleteRawLog(int $rawLogId): void
     {
-        RawAttendanceLog::query()->findOrFail($rawLogId)->delete();
+        $this->authorize('attendance.raw_logs.manage');
+
+        $rawLog = RawAttendanceLog::query()->findOrFail($rawLogId);
+        $rawLog->delete();
+
+        app(ActivityLogger::class)->logForCurrentRequest(
+            'attendance',
+            'raw_log.deleted',
+            $rawLog,
+            'Raw attendance log was deleted.'
+        );
 
         session()->flash('success', 'Đã xóa log chấm công thô.');
     }
@@ -110,9 +133,20 @@ class RawLogs extends Component
      */
     public function ignoreRawLog(int $rawLogId): void
     {
-        RawAttendanceLog::query()
-            ->findOrFail($rawLogId)
-            ->update(['processing_status' => 'ignored']);
+        $this->authorize('attendance.raw_logs.manage');
+
+        $rawLog = RawAttendanceLog::query()->findOrFail($rawLogId);
+        $oldStatus = $rawLog->processing_status;
+        $rawLog->update(['processing_status' => 'ignored']);
+
+        app(ActivityLogger::class)->logForCurrentRequest(
+            'attendance',
+            'raw_log.ignored',
+            $rawLog,
+            'Raw attendance log was marked as ignored.',
+            ['processing_status' => $oldStatus],
+            ['processing_status' => 'ignored']
+        );
 
         session()->flash('success', 'Đã đánh dấu bỏ qua log chấm công.');
     }

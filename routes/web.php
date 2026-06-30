@@ -145,13 +145,13 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('laravel-examples/category/{id}', CategoryEdit::class)->name('edit-category');
     Route::get('laravel-examples/new-category', CategoryCreate::class)->name('add-category');
 
-    Route::get('laravel-examples/user-management', UserManagementIndex::class)->name('user-management');
-    Route::get('laravel-examples/user-management/{id}', UserManagementEdit::class)->name('edit-user');
-    Route::get('laravel-examples/new-user-management', UserManagementCreate::class)->name('add-user');
+    Route::get('laravel-examples/user-management', UserManagementIndex::class)->middleware('can:authorization.manage')->name('user-management');
+    Route::get('laravel-examples/user-management/{id}', UserManagementEdit::class)->middleware('can:authorization.manage')->name('edit-user');
+    Route::get('laravel-examples/new-user-management', UserManagementCreate::class)->middleware('can:authorization.manage')->name('add-user');
 
-    Route::get('laravel-examples/role-management', RolesIndex::class)->name('role-management');
-    Route::get('laravel-examples/role-management/{id}', RolesEdit::class)->name('edit-role');
-    Route::get('laravel-examples/new-role-management', RolesCreate::class)->name('new-role');
+    Route::get('laravel-examples/role-management', RolesIndex::class)->middleware('can:authorization.manage')->name('role-management');
+    Route::get('laravel-examples/role-management/{id}', RolesEdit::class)->middleware('can:authorization.manage')->name('edit-role');
+    Route::get('laravel-examples/new-role-management', RolesCreate::class)->middleware('can:authorization.manage')->name('new-role');
 
     Route::get('laravel-examples/user-profile', ProfileEdit::class)->name('user-profile');
 
@@ -161,26 +161,26 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('pages/rtl', Rtl::class)->name('rtl');
 	Route::get('pages/sweet-alerts', SweetAlerts::class)->name('sweet-alerts');
     Route::get('pages/widgets', Widgets::class)->name('widgets');
-    Route::get('pages/employees', EmployeeIndex::class)->name('employee-list');
-    Route::get('pages/employees/dashboard', EmployeeDashboard::class)->name('employee-dashboard');
-    Route::get('pages/employees/bulk-create', EmployeeBulkCreate::class)->name('employee-bulk-create');
-    Route::get('pages/employees/departments', EmployeeDepartment::class)->name('employee-department');
-    Route::get('pages/employees/company-chart', EmployeeCompanyChart::class)->name('employee-company-chart');
-    Route::get('pages/employees/positions', EmployeePosition::class)->name('employee-position');
-    Route::get('pages/employees/{employee}', EmployeeDetail::class)->name('employee-detail');
-    Route::get('pages/attendance/settings', AttendanceSettings::class)->name('attendance-settings');
-    Route::get('pages/attendance/schedules', AttendanceSchedule::class)->name('attendance-schedules');
-    Route::get('pages/attendance/shift-definition', AttendanceShiftDefinition::class)->name('attendance-shift-definition');
-    Route::get('pages/attendance/weekend-definition', AttendanceWeekendDefinition::class)->name('attendance-weekend-definition');
-    Route::get('pages/attendance/symbol-statistics', AttendanceSymbolStatistics::class)->name('attendance-symbol-statistics');
-    Route::get('pages/attendance/devices', AttendanceDevices::class)->name('attendance-devices');
-    Route::get('pages/attendance/device-user-mappings', AttendanceDeviceUserMappings::class)->name('attendance-device-user-mappings');
-    Route::get('pages/attendance/raw-logs', AttendanceRawLogs::class)->name('attendance-raw-logs');
-    Route::get('pages/attendance/process-logs', AttendanceProcessLogs::class)->name('attendance-process-logs');
+    Route::get('pages/employees', EmployeeIndex::class)->middleware('can:employees.view')->name('employee-list');
+    Route::get('pages/employees/dashboard', EmployeeDashboard::class)->middleware('can:employees.view')->name('employee-dashboard');
+    Route::get('pages/employees/bulk-create', EmployeeBulkCreate::class)->middleware('can:employees.manage')->name('employee-bulk-create');
+    Route::get('pages/employees/departments', EmployeeDepartment::class)->middleware('can:employees.manage')->name('employee-department');
+    Route::get('pages/employees/company-chart', EmployeeCompanyChart::class)->middleware('can:employees.view')->name('employee-company-chart');
+    Route::get('pages/employees/positions', EmployeePosition::class)->middleware('can:employees.manage')->name('employee-position');
+    Route::get('pages/employees/{employee}', EmployeeDetail::class)->middleware('can:employees.view')->name('employee-detail');
+    Route::get('pages/attendance/settings', AttendanceSettings::class)->middleware('can:attendance.settings.manage')->name('attendance-settings');
+    Route::get('pages/attendance/schedules', AttendanceSchedule::class)->middleware('can:attendance.schedules.manage')->name('attendance-schedules');
+    Route::get('pages/attendance/shift-definition', AttendanceShiftDefinition::class)->middleware('can:attendance.settings.manage')->name('attendance-shift-definition');
+    Route::get('pages/attendance/weekend-definition', AttendanceWeekendDefinition::class)->middleware('can:attendance.settings.manage')->name('attendance-weekend-definition');
+    Route::get('pages/attendance/symbol-statistics', AttendanceSymbolStatistics::class)->middleware('can:attendance.settings.manage')->name('attendance-symbol-statistics');
+    Route::get('pages/attendance/devices', AttendanceDevices::class)->middleware('can:attendance.devices.manage')->name('attendance-devices');
+    Route::get('pages/attendance/device-user-mappings', AttendanceDeviceUserMappings::class)->middleware('can:attendance.devices.manage')->name('attendance-device-user-mappings');
+    Route::get('pages/attendance/raw-logs', AttendanceRawLogs::class)->middleware('can:attendance.raw_logs.view')->name('attendance-raw-logs');
+    Route::get('pages/attendance/process-logs', AttendanceProcessLogs::class)->middleware('can:attendance.processing.run')->name('attendance-process-logs');
     Route::get('pages/attendance/tabulator-demo', AttendanceTabulatorDemo::class)->name('attendance-tabulator-demo');
-    Route::get('pages/attendance/daily-timesheet', AttendanceDailyTimesheet::class)->name('attendance-daily-timesheet');
-    Route::get('pages/attendance/monthly-timesheet', AttendanceMonthlyTimesheet::class)->name('attendance-monthly-timesheet');
-    Route::get('pages/reports', AttendanceReports::class)->name('attendance-reports');
+    Route::get('pages/attendance/daily-timesheet', AttendanceDailyTimesheet::class)->middleware('can:attendance.timesheet.view')->name('attendance-daily-timesheet');
+    Route::get('pages/attendance/monthly-timesheet', AttendanceMonthlyTimesheet::class)->middleware('can:attendance.timesheet.view')->name('attendance-monthly-timesheet');
+    Route::get('pages/reports', AttendanceReports::class)->middleware('can:reports.view')->name('attendance-reports');
 	Route::get('pages/vr/vr-default', VrDefault::class)->name('vr-default');
 	Route::get('pages/vr/vr-info', VrInfo::class)->name('vr-info');
 	Route::get('pages/users/new-user', NewUser::class)->name('new-user');

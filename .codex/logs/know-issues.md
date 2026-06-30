@@ -409,3 +409,35 @@ Future support for 2024-style devices may require registry/session handling, `rt
 Priority:
 
 Future compatibility work when real hardware requires the 2024 flow
+
+## 2026-06-30 Authorization Test Follow-up
+
+Problem:
+
+`php artisan test` currently has one failing template test: `Tests\Feature\ExampleTest` expects `GET /` to return HTTP 200, while the application root route redirects unauthenticated users to `sign-in` and authenticated users to the dashboard, producing HTTP 302.
+
+Impact:
+
+The authorization changes passed syntax checks and the domain feature/unit tests passed. The remaining failure is the default sample test expectation for the root redirect behavior.
+
+Pending Work:
+
+Update or replace `Tests\Feature\ExampleTest` so it asserts the intended redirect behavior for `/`.
+
+Priority:
+
+Low
+
+## 2026-06-30 Role Permission Matrix UI
+
+Problem:
+
+No new unresolved problem was found while reworking the role create/edit UI.
+
+Impact:
+
+Role assignment is now clearer, but it still uses the existing template user-management screens for assigning users to roles.
+
+Priority:
+
+None

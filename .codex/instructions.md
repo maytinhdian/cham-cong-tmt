@@ -78,3 +78,50 @@ Before creating a module, update `.codex/architecture.md` if the module introduc
 ```bash
 composer dump-autoload
 ```
+
+## New Page Authorization Guide
+
+When adding a new authenticated business page, define its permission before or during implementation.
+
+Checklist:
+
+1. Add the permission name to `Modules/Core/Authorization/PermissionRegistry.php`.
+2. Use the module/action naming convention:
+
+```text
+<module>.<feature>.<action>
+```
+
+Examples:
+
+```text
+reports.missing_logs.view
+reports.missing_logs.export
+attendance.timesheet.close
+employees.manage
+```
+
+3. Add the permission to the default role matrix in `PermissionRegistry::rolePermissions()`.
+4. Run:
+
+```bash
+php artisan db:seed --class=AuthorizationSeeder
+```
+
+5. Protect the route with `can:<permission>`:
+
+```php
+Route::get('pages/reports/missing-logs', MissingLogs::class)
+    ->middleware('can:reports.missing_logs.view')
+    ->name('reports-missing-logs');
+```
+
+6. Protect sensitive Livewire actions with `$this->authorize(...)`, especially actions that create, update, delete, process, export, approve, close, unlock, or sync data:
+
+```php
+$this->authorize('reports.missing_logs.export');
+```
+
+7. Add Core activity logging for sensitive actions when the result affects attendance data, payroll review, devices, reports, settings, or authorization.
+
+Page-level permission controls who can open the screen. Action-level authorization controls what the user can do after the screen is open.

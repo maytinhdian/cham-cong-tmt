@@ -2,14 +2,18 @@
 
 namespace App\Http\Livewire\Pages\Attendance;
 
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component;
 use Modules\Attendance\Actions\GenerateMonthlyTimesheetAction;
 use Modules\Attendance\Services\MonthlyTimesheetService;
+use Modules\Core\Services\ActivityLogger;
 use Modules\Org\Models\Department;
 use Modules\User\Models\Employee;
 
 class MonthlyTimesheet extends Component
 {
+    use AuthorizesRequests;
+
     public string $periodMonth = '';
 
     public $departmentId = '';
@@ -31,6 +35,8 @@ class MonthlyTimesheet extends Component
      */
     public function generateMonthlyTimesheet(GenerateMonthlyTimesheetAction $generateMonthlyTimesheetAction): void
     {
+        $this->authorize('attendance.timesheet.generate');
+
         $validated = $this->validate([
             'periodMonth' => ['required', 'date_format:Y-m'],
             'departmentId' => ['nullable', 'exists:departments,id'],
@@ -42,6 +48,20 @@ class MonthlyTimesheet extends Component
         $generatedCount = $generateMonthlyTimesheetAction->execute(
             $validated['periodMonth'],
             $this->nullableInt($validated['departmentId'])
+        );
+
+        app(ActivityLogger::class)->logForCurrentRequest(
+            'attendance',
+            'monthly_timesheet.generated',
+            null,
+            'Monthly timesheet rows were generated from daily attendance results.',
+            null,
+            null,
+            [
+                'period_month' => $validated['periodMonth'],
+                'department_id' => $this->nullableInt($validated['departmentId']),
+                'generated_count' => $generatedCount,
+            ]
         );
 
         session()->flash('success', "Đã tổng hợp {$generatedCount} dòng bảng công tháng.");

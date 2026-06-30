@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Pages\Attendance;
 
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Collection;
 use Livewire\Component;
 use Modules\Attendance\Services\AttendanceRuleService;
@@ -17,6 +18,8 @@ use Modules\User\Models\Employee;
 
 class Schedule extends Component
 {
+    use AuthorizesRequests;
+
     public array $employeeIds = [];
 
     public $assignDepartmentId = '';
@@ -66,6 +69,8 @@ class Schedule extends Component
      */
     public function assignSchedule(): void
     {
+        $this->authorize('attendance.schedules.manage');
+
         $validated = $this->validate([
             'assignDepartmentId' => ['nullable', 'exists:departments,id'],
             'employeeIds' => ['array'],
@@ -123,6 +128,8 @@ class Schedule extends Component
      */
     public function deleteSchedule(int $scheduleId): void
     {
+        $this->authorize('attendance.schedules.manage');
+
         EmployeeSchedule::query()->findOrFail($scheduleId)->delete();
 
         session()->flash('success', 'Đã xóa dòng lịch làm việc.');
