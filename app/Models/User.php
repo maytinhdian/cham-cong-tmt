@@ -5,8 +5,10 @@ namespace App\Models;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Modules\User\Models\Employee;
 
 class User extends Authenticatable
 {
@@ -20,6 +22,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'username',
         'password',
         'role_id',
         'location',
@@ -105,5 +108,13 @@ class User extends Authenticatable
     public function role(){
 
         return $this->belongsTo(Role::class);
+    }
+
+    /**
+     * Link this login account back to the employee profile it belongs to.
+     */
+    public function employeeProfile(): HasOne
+    {
+        return $this->hasOne(Employee::class, 'user_id');
     }
 }

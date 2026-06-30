@@ -1,201 +1,158 @@
-<div class="container-fluid my-3 py-3">
-    <div class="row mb-5">
-        <div class="col-lg-12 mt-lg-0 mt-4">
-            <!-- Card Profile -->
-            <div class="card card-body" id="profile">
-                <div class="row justify-content-center align-items-center">
-                    @error('picture')
-                    <p class='text-danger'>{{ $message }} </p>
-                    @enderror
-                    <div class="col-sm-auto col-4">
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex flex-column flex-md-row align-items-md-center gap-3">
                         <form wire:submit="update" enctype="multipart/form-data">
                             <div class="avatar avatar-xl position-relative preview">
                                 @if($picture)
-                                <img src="{{ $picture->temporaryUrl() }}" class="w-100 rounded-circle shadow-sm"
-                                    alt="Profile Photo">
-                                @elseif (auth()->user()->picture)
-                                <img src="/storage/{{(auth()->user()->picture)}}" alt="avatar"
-                                    class="w-100 rounded-circle shadow-sm">
+                                    <img src="{{ $picture->temporaryUrl() }}" class="w-100 rounded-circle shadow-sm" alt="Profile Photo">
+                                @elseif ($user->picture)
+                                    <img src="/storage/{{ $user->picture }}" alt="avatar" class="w-100 rounded-circle shadow-sm">
                                 @else
-                                <img src="{{ asset('assets') }}/img/default-avatar.png" alt="avatar"
-                                    class="w-100 rounded-circle shadow-sm">
+                                    <img src="{{ asset('assets') }}/img/default-avatar.png" alt="avatar" class="w-100 rounded-circle shadow-sm">
                                 @endif
-                                <label for="file-input"
-                                    class="btn btn-sm btn-icon-only bg-gradient-light position-absolute bottom-0 end-0 mb-n2 me-n2">
-                                    <i class="fa fa-pen top-0" data-bs-toggle="tooltip" data-bs-placement="top" title=""
-                                        aria-hidden="true" data-bs-original-title="Edit Image"
-                                        aria-label="Edit Image"></i><span class="sr-only">Edit Image</span>
+                                <label for="file-input" class="btn btn-sm btn-icon-only bg-gradient-light position-absolute bottom-0 end-0 mb-n2 me-n2" title="Đổi ảnh">
+                                    <i class="material-icons text-sm">edit</i>
                                 </label>
-                                <input wire:model.live='picture' type="file" id="file-input">
+                                <input wire:model.live="picture" type="file" id="file-input" class="d-none">
                             </div>
-                    </div>
-                    <div class="col-sm-auto col-8 my-auto">
-                        <div class="h-100">
-                            <h5 class="mb-1 font-weight-bolder">
-                                {{ auth()->user()->name }}
-                            </h5>
-                            <p class="mb-0 font-weight-normal text-sm">
-                                CEO / Co-Founder
-                            </p>
+                        </form>
+                        <div class="flex-grow-1">
+                            <h5 class="mb-1">{{ $user->name }}</h5>
+                            <div class="d-flex flex-wrap gap-2">
+                                <span class="badge bg-gradient-dark">{{ $user->username ?? $user->email }}</span>
+                                <span class="badge bg-gradient-info">{{ $user->role?->name ?? 'Chưa gán vai trò' }}</span>
+                                @if ($employee)
+                                    <span class="badge bg-gradient-secondary">{{ $employee->employee_code }}</span>
+                                @endif
+                            </div>
                         </div>
                     </div>
-                    <div class="col-sm-auto ms-sm-auto mt-sm-0 mt-3 d-flex">
-                        <label class="form-check-label mb-0">
-                            <small id="profileVisibility">
-                                Switch to invisible
-                            </small>
-                        </label>
-                        <div class="form-check form-switch ms-2 my-auto">
-                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault23" checked
-                                onchange="visible()">
-                        </div>
-                    </div>
+
+                    @error('picture')
+                        <p class="text-danger text-xs mt-3 mb-0">{{ $message }}</p>
+                    @enderror
+
+                    @if (session('status'))
+                        <div class="alert alert-success text-white mt-3 mb-0" role="alert">{{ session('status') }}</div>
+                    @endif
+                    @if (session('demo'))
+                        <div class="alert alert-danger text-white mt-3 mb-0" role="alert">{{ session('demo') }}</div>
+                    @endif
                 </div>
             </div>
-            @if (session('status'))
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="alert alert-success alert-dismissible text-white mt-3" role="alert">
-                        <span class="text-sm">{{ Session::get('status') }}</span>
-                        <button type="button" class="btn-close text-lg py-3 opacity-10" data-bs-dismiss="alert"
-                            aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-12 col-lg-7">
+            <div class="card h-100">
+                <div class="card-header pb-0 p-3">
+                    <h6 class="mb-0">Thông tin cá nhân</h6>
+                    <p class="text-sm text-secondary mb-0">Cập nhật thông tin liên hệ cơ bản của tài khoản.</p>
                 </div>
-            </div>
-            @endif
-            @if (Session::has('demo'))
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="alert alert-danger alert-dismissible text-white mt-3" role="alert">
-                        <span class="text-sm">{{ Session::get('demo') }}</span>
-                        <button type="button" class="btn-close text-lg py-3 opacity-10" data-bs-dismiss="alert"
-                            aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            @endif
-            <!-- Card Basic Info -->
-            <div class="card mt-4" id="basic-info">
-                <div class="card-header">
-                    <h5>Basic Info</h5>
-                </div>
-                <div class="card-body pt-0">
-                    <div class="row">
-                        <div class="col-6">
-
-                            <div class="input-group input-group-static">
-                                <label>Name</label>
-                                <input wire:model.blur="user.name" type="text" class="form-control" placeholder="Alec">
+                <div class="card-body">
+                    <form wire:submit="update">
+                        <div class="row">
+                            <div class="col-12 col-md-6">
+                                <label class="form-label">Họ và tên</label>
+                                <input wire:model.blur="user.name" type="text" class="form-control">
+                                @error('user.name') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
                             </div>
-                            @error('user.name')
-                            <p class='text-danger inputerror'>{{ $message }} </p>
-                            @enderror
-                        </div>
-                        <div class="col-6">
-
-                            <div class="input-group input-group-static">
-                                <label>Email</label>
-                                <input wire:model.blur="user.email" type="email" class="form-control"
-                                    placeholder="example@email.com">
+                            <div class="col-12 col-md-6 mt-3 mt-md-0">
+                                <label class="form-label">Email</label>
+                                <input wire:model.blur="user.email" type="email" class="form-control">
+                                @error('user.email') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
                             </div>
-                            @error('user.email')
-                            <p class='text-danger inputerror'>{{ $message }} </p>
-                            @enderror
                         </div>
-                    </div>
-                    <div class="row mt-4">
-                        <div class="col-6">
 
-                            <div class="input-group input-group-static">
-                                <label>Your location</label>
-                                <input wire:model.blur="user.location" type="text" class="form-control"
-                                    placeholder="Sydney, A">
+                        <div class="row mt-3">
+                            <div class="col-12 col-md-6">
+                                <label class="form-label">Số điện thoại</label>
+                                <input wire:model.blur="user.phone" type="text" class="form-control">
+                                @error('user.phone') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
                             </div>
-                            @error('user.location')
-                            <p class='text-danger inputerror'>{{ $message }} </p>
-                            @enderror
+                            <div class="col-12 col-md-6 mt-3 mt-md-0">
+                                <label class="form-label">Địa chỉ</label>
+                                <input wire:model.blur="user.location" type="text" class="form-control">
+                                @error('user.location') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
+                            </div>
                         </div>
-                        <div class="col-6">
 
-                            <div class="input-group input-group-static">
-                                <label>Phone Number</label>
-                                <input wire:model.blur="user.phone" type="number" class="form-control"
-                                    placeholder="+40 735 631 620">
+                        <div class="row mt-3">
+                            <div class="col-12 col-md-6">
+                                <label class="form-label">Tên đăng nhập</label>
+                                <input type="text" class="form-control" value="{{ $user->username ?? $user->email }}" disabled>
                             </div>
-                            @error('user.phone')
-                            <p class='text-danger inputerror'>{{ $message }} </p>
-                            @enderror
+                            <div class="col-12 col-md-6 mt-3 mt-md-0">
+                                <label class="form-label">Vai trò</label>
+                                <input type="text" class="form-control" value="{{ $user->role?->name ?? 'Chưa gán' }}" disabled>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <button type='submit' class="btn bg-gradient-dark btn-sm mt-6 mb-0">Save
-                                Changes</button>
-                        </div>
-                    </div>
+
+                        @if ($employee)
+                            <div class="border rounded-3 p-3 mt-4">
+                                <h6 class="text-sm mb-2">Thông tin nhân viên</h6>
+                                <div class="row">
+                                    <div class="col-12 col-md-4">
+                                        <p class="text-xs text-secondary mb-1">Mã nhân viên</p>
+                                        <p class="text-sm mb-0">{{ $employee->employee_code }}</p>
+                                    </div>
+                                    <div class="col-12 col-md-4 mt-3 mt-md-0">
+                                        <p class="text-xs text-secondary mb-1">Phòng ban</p>
+                                        <p class="text-sm mb-0">{{ $employee->department?->name ?? 'Chưa gán' }}</p>
+                                    </div>
+                                    <div class="col-12 col-md-4 mt-3 mt-md-0">
+                                        <p class="text-xs text-secondary mb-1">Chức vụ</p>
+                                        <p class="text-sm mb-0">{{ $employee->position?->name ?? 'Chưa gán' }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+
+                        <button type="submit" class="btn bg-gradient-dark mt-4 mb-0">Lưu thông tin</button>
                     </form>
                 </div>
             </div>
-            <!-- Card Change Password -->
-            <div class="card mt-4" id="password">
-                <div class="card-header">
-                    <h5>Change Password</h5>
+        </div>
+
+        <div class="col-12 col-lg-5 mt-4 mt-lg-0">
+            <div class="card h-100">
+                <div class="card-header pb-0 p-3">
+                    <h6 class="mb-0">Đổi mật khẩu</h6>
+                    <p class="text-sm text-secondary mb-0">Nhập mật khẩu hiện tại trước khi đổi sang mật khẩu mới.</p>
                     @if (session('error'))
-                    <div class="row">
-                        <div class="alert alert-danger alert-dismissible text-white" role="alert">
-                            <span class="text-sm">{{ Session::get('error') }}</span>
-                            <button type="button" class="btn-close text-lg py-3 opacity-10" data-bs-dismiss="alert"
-                                aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                    </div>
+                        <div class="alert alert-danger text-white mt-3 mb-0" role="alert">{{ session('error') }}</div>
                     @elseif (session('success'))
-                    <div class="row">
-                        <div class="alert alert-success alert-dismissible text-white" role="alert">
-                            <span class="text-sm">{{ Session::get('success') }}</span>
-                            <button type="button" class="btn-close text-lg py-3 opacity-10" data-bs-dismiss="alert"
-                                aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                    </div>
+                        <div class="alert alert-success text-white mt-3 mb-0" role="alert">{{ session('success') }}</div>
                     @endif
                 </div>
-                <div class="card-body pt-0">
+                <div class="card-body">
                     <form wire:submit="passwordUpdate">
-                        @csrf
-
-                        <div class="input-group input-group-outline">
-                            <input wire:model.blur="old_password" type="password" class="form-control"
-                                placeholder="Current Password">
+                        <div class="form-group">
+                            <label class="form-label">Mật khẩu hiện tại</label>
+                            <input wire:model.blur="old_password" type="password" class="form-control" autocomplete="current-password">
+                            @error('old_password') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
                         </div>
-                        @error('old_password')
-                        <p class='text-danger inputerror'>{{ $message }} </p>
-                        @enderror
-
-                        <div class="input-group input-group-outline mt-4">
-                            <input wire:model.blur='new_password' type="password" class="form-control"
-                                placeholder="New Password">
+                        <div class="form-group mt-3">
+                            <label class="form-label">Mật khẩu mới</label>
+                            <input wire:model.blur="new_password" type="password" class="form-control" autocomplete="new-password">
+                            @error('new_password') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
                         </div>
-                        @error('new_password')
-                        <p class='text-danger inputerror'>{{ $message }} </p>
-                        @enderror
-                        <div class="input-group input-group-outline mt-4">
-                            <input wire:model.live="confirmationPassword" type="password" class="form-control"
-                                placeholder="Confirm New Password">
+                        <div class="form-group mt-3">
+                            <label class="form-label">Nhập lại mật khẩu mới</label>
+                            <input wire:model.live="confirmationPassword" type="password" class="form-control" autocomplete="new-password">
                         </div>
-                        <button class="btn bg-gradient-dark btn-sm mt-6 mb-0">Update password</button>
+                        <button class="btn bg-gradient-dark mt-4 mb-0">Cập nhật mật khẩu</button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
 @push('js')
-<script src="{{ asset('assets') }}/js/plugins/perfect-scrollbar.min.js"></script>
+    <script src="{{ asset('assets') }}/js/plugins/perfect-scrollbar.min.js"></script>
 @endpush

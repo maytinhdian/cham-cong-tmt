@@ -84,14 +84,20 @@ class MonthlyTimesheet extends Component
     public function render(MonthlyTimesheetService $monthlyTimesheetService)
     {
         $filters = $this->filters();
+        $canViewAllTimesheets = $this->canViewAllTimesheets();
 
         return view('livewire.pages.attendance.monthly-timesheet', [
-            'departments' => Department::query()->orderBy('sort_order')->orderBy('name')->get(),
-            'employees' => Employee::query()
-                ->with('department')
-                ->when($this->nullableInt($this->departmentId), fn ($query, $departmentId) => $query->where('department_id', $departmentId))
-                ->orderBy('employee_code')
-                ->get(),
+            'canViewAllTimesheets' => $canViewAllTimesheets,
+            'departments' => $canViewAllTimesheets
+                ? Department::query()->orderBy('sort_order')->orderBy('name')->get()
+                : collect(),
+            'employees' => $canViewAllTimesheets
+                ? Employee::query()
+                    ->with('department')
+                    ->when($this->nullableInt($this->departmentId), fn ($query, $departmentId) => $query->where('department_id', $departmentId))
+                    ->orderBy('employee_code')
+                    ->get()
+                : collect(),
             'results' => $monthlyTimesheetService->results($filters),
             'summary' => $monthlyTimesheetService->summary($filters),
         ]);
@@ -102,12 +108,32 @@ class MonthlyTimesheet extends Component
      */
     private function filters(): array
     {
+        $canViewAllTimesheets = $this->canViewAllTimesheets();
+
         return [
             'period_month' => $this->periodMonth,
-            'department_id' => $this->nullableInt($this->departmentId),
-            'employee_id' => $this->nullableInt($this->employeeId),
+            'department_id' => $canViewAllTimesheets ? $this->nullableInt($this->departmentId) : null,
+            'employee_id' => $canViewAllTimesheets
+                ? $this->nullableInt($this->employeeId)
+                : ($this->currentEmployeeId() ?? 0),
             'status' => $this->statusFilter ?: null,
         ];
+    }
+
+    /**
+     * Determine whether the current user can review every employee's monthly timesheet.
+     */
+    private function canViewAllTimesheets(): bool
+    {
+        return (bool) auth()->user()?->can('attendance.timesheet.view_all');
+    }
+
+    /**
+     * Resolve the employee profile linked to the current login account.
+     */
+    private function currentEmployeeId(): ?int
+    {
+        return auth()->user()?->employeeProfile()->value('id');
     }
 
     /**

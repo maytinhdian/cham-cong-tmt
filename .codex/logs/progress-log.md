@@ -359,3 +359,47 @@ Important UI constraints:
 - Verified the edited role PHP files with `php -l`.
 - Verified Blade compilation with `php artisan view:cache`.
 - Added a New Page Authorization Guide to `.codex/instructions.md` so future pages define permissions, route middleware, action authorization, and audit logging consistently.
+
+## 2026-06-30 Employee Login Account Provisioning
+
+- Added `users.username` so employees can log in with their employee code while existing email login still works.
+- Updated the login form and Livewire login action to accept either email or employee code.
+- Added `EmployeeAccountService` to create or update a Laravel user account linked to `employees.user_id`.
+- Employee accounts use the employee code as `username` and default to the existing `Member` role unless a higher role is selected by an authorized user.
+- Added a `Tài khoản đăng nhập` panel to the employee quick-edit form for authorized users with `authorization.manage`.
+- The employee list now shows whether each employee already has a linked login account, plus username and role when available.
+- Account provisioning writes a Core activity log entry with the linked user, username, and role.
+- Ran the new username migration with `php artisan migrate --force`.
+- Verified edited PHP files with `php -l`, rebuilt optimized autoload, compiled Blade views, and reran `MonthlyTimesheetServiceTest`.
+
+## 2026-06-30 Employee Self-Service Profile
+
+- Updated `/laravel-examples/user-profile` into a self-service profile page for any authenticated employee/user account.
+- The page now shows username, role, employee code, department, and position when the account is linked to an employee.
+- Users can update simple profile fields: name, email, phone, location, and avatar.
+- Simple contact changes are mirrored back to the linked employee profile for name, email, and phone.
+- Users can change their own password after entering the current password.
+- Profile and password changes now write Core activity log entries.
+- Added `User::employeeProfile()` to link a login account back to its employee profile.
+- Verified edited PHP files with `php -l`, compiled Blade views, and reran `MonthlyTimesheetServiceTest`.
+
+## 2026-06-30 Permission-Aware Sidebar
+
+- Reworked the sidebar so menu groups are shown only when the current user has the related permission.
+- The avatar menu always keeps `Hồ sơ cá nhân` available for authenticated users.
+- Attendance settings, device, timesheet, report, and employee menus now use the current permission matrix.
+- Admin/Super Admin still see the compact system/admin area, including dashboard and user/role management.
+- Removed broad template/demo navigation from normal employee-facing sidebar visibility.
+- Verified Blade compilation with `php artisan view:cache`.
+- Reran `MonthlyTimesheetServiceTest`.
+
+## 2026-06-30 Self-Scoped Timesheet Views
+
+- Added `attendance.timesheet.view_all` permission for users who can review every employee's daily/monthly timesheet.
+- Kept `attendance.timesheet.view` as the base permission for opening timesheet pages.
+- Daily and monthly timesheet pages now force non-`view_all` users to their linked `employees.user_id` profile.
+- If a login account has no linked employee profile and lacks `view_all`, timesheet queries return no rows instead of falling back to all employees.
+- Employee/member users no longer see department or employee filters on daily/monthly timesheet pages.
+- Employee/member users no longer see daily adjustment actions or monthly generation actions.
+- Reran `AuthorizationSeeder` so the new permission is available in the role matrix and default role assignments.
+- Verified edited PHP files with `php -l`, compiled Blade views, and reran `MonthlyTimesheetServiceTest`.

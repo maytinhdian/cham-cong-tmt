@@ -11,7 +11,9 @@
                             </p>
                         </div>
                         <div class="mt-3 mt-lg-0">
-                            <a href="{{ route('attendance-process-logs') }}" class="btn btn-outline-secondary mb-0">Xử lý log</a>
+                            @can('attendance.processing.run')
+                                <a href="{{ route('attendance-process-logs') }}" class="btn btn-outline-secondary mb-0">Xử lý log</a>
+                            @endcan
                             <button type="button" class="btn bg-gradient-dark mb-0 ms-2" wire:click="resetFilters">Làm mới lọc</button>
                         </div>
                     </div>
@@ -176,6 +178,7 @@
                                             <label class="form-label">Đến ngày</label>
                                             <input type="date" class="form-control" wire:model.live="dateTo">
                                         </div>
+                                        @if ($canViewAllTimesheets)
                                         <div class="col-md-3 mt-3">
                                             <label class="form-label">Phòng ban</label>
                                             <select class="form-control" wire:model.live="departmentId">
@@ -194,6 +197,7 @@
                                                 @endforeach
                                             </select>
                                         </div>
+                                        @endif
                                         <div class="col-md-2 mt-3">
                                             <label class="form-label">Trạng thái</label>
                                             <select class="form-control" wire:model.live="statusFilter">
@@ -226,7 +230,9 @@
                                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Trễ/sớm</th>
                                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">OT</th>
                                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Trạng thái</th>
-                                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Thao tác</th>
+                                                    @can('attendance.timesheet.adjust')
+                                                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Thao tác</th>
+                                                    @endcan
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -301,19 +307,21 @@
                                                                 <p class="text-xs text-secondary mb-0 mt-1">{{ $result->adjustments_count }} lần chỉnh</p>
                                                             @endif
                                                         </td>
-                                                        <td class="text-center">
-                                                            <button
-                                                                type="button"
-                                                                class="btn btn-link text-dark font-weight-bold text-xs mb-0 p-0"
-                                                                wire:click="openAdjustment({{ $result->id }})"
-                                                            >
-                                                                Điều chỉnh
-                                                            </button>
-                                                        </td>
+                                                        @can('attendance.timesheet.adjust')
+                                                            <td class="text-center">
+                                                                <button
+                                                                    type="button"
+                                                                    class="btn btn-link text-dark font-weight-bold text-xs mb-0 p-0"
+                                                                    wire:click="openAdjustment({{ $result->id }})"
+                                                                >
+                                                                    Điều chỉnh
+                                                                </button>
+                                                            </td>
+                                                        @endcan
                                                     </tr>
                                                 @empty
                                                     <tr>
-                                                        <td colspan="11" class="text-center py-4">
+                                                        <td colspan="@can('attendance.timesheet.adjust') 11 @else 10 @endcan" class="text-center py-4">
                                                             <p class="text-sm text-secondary mb-0">
                                                                 Chưa có dữ liệu bảng công ngày trong bộ lọc này. Hãy chạy xử lý log trước nếu đã có log chấm công.
                                                             </p>

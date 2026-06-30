@@ -10,9 +10,11 @@
                         </div>
                         <div class="mt-3 mt-lg-0">
                             <a href="{{ route('attendance-daily-timesheet') }}" class="btn btn-outline-secondary mb-0">Bảng công ngày</a>
-                            <button type="button" class="btn bg-gradient-dark mb-0 ms-2" wire:click="generateMonthlyTimesheet">
-                                Tổng hợp tháng
-                            </button>
+                            @can('attendance.timesheet.generate')
+                                <button type="button" class="btn bg-gradient-dark mb-0 ms-2" wire:click="generateMonthlyTimesheet">
+                                    Tổng hợp tháng
+                                </button>
+                            @endcan
                         </div>
                     </div>
 
@@ -82,25 +84,27 @@
                                             <input type="month" class="form-control" wire:model.live="periodMonth">
                                             @error('periodMonth') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
                                         </div>
-                                        <div class="col-md-3 mt-3">
-                                            <label class="form-label">Phòng ban</label>
-                                            <select class="form-control" wire:model.live="departmentId">
-                                                <option value="">Tất cả phòng ban</option>
-                                                @foreach ($departments as $department)
-                                                    <option value="{{ $department->id }}">{{ $department->name }}</option>
-                                                @endforeach
-                                            </select>
-                                            @error('departmentId') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
-                                        </div>
-                                        <div class="col-md-4 mt-3">
-                                            <label class="form-label">Nhân viên</label>
-                                            <select class="form-control" wire:model.live="employeeId">
-                                                <option value="">Tất cả nhân viên</option>
-                                                @foreach ($employees as $employee)
-                                                    <option value="{{ $employee->id }}">{{ $employee->employee_code }} - {{ $employee->full_name }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
+                                        @if ($canViewAllTimesheets)
+                                            <div class="col-md-3 mt-3">
+                                                <label class="form-label">Phòng ban</label>
+                                                <select class="form-control" wire:model.live="departmentId">
+                                                    <option value="">Tất cả phòng ban</option>
+                                                    @foreach ($departments as $department)
+                                                        <option value="{{ $department->id }}">{{ $department->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                                @error('departmentId') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
+                                            </div>
+                                            <div class="col-md-4 mt-3">
+                                                <label class="form-label">Nhân viên</label>
+                                                <select class="form-control" wire:model.live="employeeId">
+                                                    <option value="">Tất cả nhân viên</option>
+                                                    @foreach ($employees as $employee)
+                                                        <option value="{{ $employee->id }}">{{ $employee->employee_code }} - {{ $employee->full_name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        @endif
                                         <div class="col-md-2 mt-3">
                                             <label class="form-label">Trạng thái</label>
                                             <select class="form-control" wire:model.live="statusFilter">

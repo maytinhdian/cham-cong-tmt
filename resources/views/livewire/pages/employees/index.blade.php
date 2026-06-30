@@ -31,6 +31,7 @@
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Chức vụ</th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Ngày vào làm</th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Trạng thái</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Tài khoản</th>
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Thao tác</th>
                                 </tr>
                             </thead>
@@ -67,6 +68,15 @@
                                                 <span class="badge badge-sm bg-gradient-secondary">Tạm ngưng</span>
                                             @endif
                                         </td>
+                                        <td>
+                                            @if ($employee->account)
+                                                <span class="badge badge-sm bg-gradient-success">Đã cấp</span>
+                                                <p class="text-xs text-secondary mb-0">{{ $employee->account->username ?? $employee->account->email }}</p>
+                                                <p class="text-xs text-secondary mb-0">{{ $employee->account->role?->name ?? 'N/A' }}</p>
+                                            @else
+                                                <span class="badge badge-sm bg-gradient-secondary">Chưa cấp</span>
+                                            @endif
+                                        </td>
                                         <td class="align-middle text-center">
                                             <a
                                                 href="{{ route('employee-detail', $employee) }}"
@@ -93,7 +103,7 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="6" class="text-center py-4">
+                                        <td colspan="7" class="text-center py-4">
                                             <p class="text-sm text-secondary mb-0">Chưa có nhân viên nào phù hợp.</p>
                                         </td>
                                     </tr>
@@ -238,6 +248,47 @@
                                 <textarea class="form-control" rows="3" wire:model="note"></textarea>
                                 @error('note') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
                             </div>
+                            @can('authorization.manage')
+                                <div class="border rounded-3 p-3 mt-4">
+                                    <div class="d-flex align-items-center justify-content-between mb-3">
+                                        <div>
+                                            <h6 class="mb-0">Tài khoản đăng nhập</h6>
+                                            <p class="text-sm text-secondary mb-0">Nhân viên đăng nhập bằng mã nhân viên và mật khẩu được cấp.</p>
+                                        </div>
+                                        @php
+                                            $selectedEmployee = $employees->firstWhere('id', $editingEmployeeId);
+                                        @endphp
+                                        @if ($selectedEmployee?->account)
+                                            <span class="badge badge-sm bg-gradient-success">Đã cấp</span>
+                                        @else
+                                            <span class="badge badge-sm bg-gradient-secondary">Chưa cấp</span>
+                                        @endif
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12 col-md-6">
+                                            <label class="form-label">Tên đăng nhập</label>
+                                            <input type="text" class="form-control" value="{{ $employeeCode }}" disabled>
+                                        </div>
+                                        <div class="col-12 col-md-6 mt-3 mt-md-0">
+                                            <label class="form-label">Vai trò</label>
+                                            <select class="form-control" wire:model="accountRoleId">
+                                                @foreach ($roles as $role)
+                                                    <option value="{{ $role->id }}">{{ $role->name }}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('accountRoleId') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
+                                        </div>
+                                    </div>
+                                    <div class="form-group mt-3">
+                                        <label class="form-label">Mật khẩu cấp mới</label>
+                                        <input type="password" class="form-control" wire:model="accountPassword" autocomplete="new-password">
+                                        @error('accountPassword') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
+                                    </div>
+                                    <button type="button" class="btn bg-gradient-primary btn-sm mb-0 mt-3" wire:click="provisionEmployeeAccount">
+                                        Cấp/cập nhật tài khoản
+                                    </button>
+                                </div>
+                            @endcan
                             <div class="d-flex justify-content-between mt-4">
                                 <button type="button" class="btn btn-outline-secondary mb-0" wire:click="cancelEdit">Hủy</button>
                                 <button type="submit" class="btn bg-gradient-dark mb-0">Cập nhật</button>

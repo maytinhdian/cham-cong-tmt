@@ -441,3 +441,59 @@ Role assignment is now clearer, but it still uses the existing template user-man
 Priority:
 
 None
+
+## 2026-06-30 Employee Login Account Provisioning
+
+Problem:
+
+No new unresolved implementation problem was found while adding employee-code login account provisioning.
+
+Impact:
+
+Employees can now be linked to login accounts from the employee screen, but password delivery is still an operational process handled by the higher-level user outside the system.
+
+Priority:
+
+None
+
+## 2026-06-30 Employee Self-Service Profile
+
+Problem:
+
+No new unresolved implementation problem was found while updating the self-service profile page.
+
+Impact:
+
+The page supports basic profile and password changes. More advanced self-service fields such as emergency contacts, bank data, documents, or approval workflows remain outside the current scope.
+
+Priority:
+
+None
+
+## 2026-06-30 Permission-Aware Sidebar
+
+Problem:
+
+No new unresolved implementation problem was found while making the sidebar permission-aware.
+
+Impact:
+
+The sidebar is now much cleaner for normal employees. Future pages still need to follow the New Page Authorization Guide so their menu items are wrapped with the matching permission.
+
+Priority:
+
+None
+
+## 2026-06-30 Self-Scoped Timesheet Views
+
+Problem:
+
+No new unresolved implementation problem was found while scoping daily/monthly timesheet views by the logged-in employee.
+
+Impact:
+
+Employee accounts must be linked to an `employees` row through `employees.user_id`; otherwise they will see empty timesheet pages unless they have `attendance.timesheet.view_all`.
+
+Priority:
+
+None

@@ -2,16 +2,21 @@
 
 namespace App\Http\Livewire\Pages\Employees;
 
+use App\Models\Role;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Modules\Org\Models\Department;
 use Modules\Org\Models\Position;
 use Modules\User\DTOs\EmployeeData;
 use Modules\User\Models\Employee;
+use Modules\User\Services\EmployeeAccountService;
 use Modules\User\Services\EmployeeService;
 
 class Index extends Component
 {
+    use AuthorizesRequests;
+
     public string $search = '';
 
     public $departmentFilter = '';
@@ -42,9 +47,18 @@ class Index extends Component
 
     public ?string $note = null;
 
+    public ?string $accountPassword = null;
+
+    public $accountRoleId = null;
+
+    /**
+     * Load one employee profile into the quick edit form.
+     */
     public function editEmployee(int $employeeId): void
     {
-        $employee = Employee::query()->findOrFail($employeeId);
+        $this->authorize('employees.manage');
+
+        $employee = Employee::query()->with('account')->findOrFail($employeeId);
 
         $this->editingEmployeeId = $employee->id;
         $this->fullName = $employee->full_name;
@@ -58,10 +72,17 @@ class Index extends Component
         $this->hireDate = $employee->hire_date?->format('Y-m-d');
         $this->workStatus = $employee->work_status;
         $this->note = $employee->note;
+        $this->accountPassword = null;
+        $this->accountRoleId = $employee->account?->role_id ?: app(EmployeeAccountService::class)->memberRoleId();
     }
 
+    /**
+     * Update the selected employee's HR profile data.
+     */
     public function updateEmployee(): void
     {
+        $this->authorize('employees.manage');
+
         if (! $this->editingEmployeeId) {
             return;
         }
@@ -119,8 +140,13 @@ class Index extends Component
         $this->cancelEdit();
     }
 
+    /**
+     * Soft delete an employee from active HR management.
+     */
     public function deleteEmployee(int $employeeId): void
     {
+        $this->authorize('employees.manage');
+
         Employee::query()->findOrFail($employeeId)->delete();
 
         if ((int) $this->editingEmployeeId === $employeeId) {
@@ -130,6 +156,42 @@ class Index extends Component
         session()->flash('success', 'Đã xóa nhân viên khỏi danh sách.');
     }
 
+    /**
+     * Create or update the login account linked to the selected employee.
+     */
+    public function provisionEmployeeAccount(EmployeeAccountService $employeeAccountService): void
+    {
+        $this->authorize('authorization.manage');
+
+        if (! $this->editingEmployeeId) {
+            return;
+        }
+
+        $validated = $this->validate([
+            'accountPassword' => ['required', 'string', 'min:7'],
+            'accountRoleId' => ['required', 'exists:roles,id'],
+        ], [
+            'accountPassword.required' => 'Vui lòng nhập mật khẩu cấp cho nhân viên.',
+            'accountPassword.min' => 'Mật khẩu cần ít nhất 7 ký tự.',
+            'accountRoleId.required' => 'Vui lòng chọn vai trò đăng nhập.',
+        ]);
+
+        $employee = Employee::query()->with('account')->findOrFail($this->editingEmployeeId);
+
+        $employeeAccountService->provision(
+            $employee,
+            $validated['accountPassword'],
+            $this->nullableInt($validated['accountRoleId'])
+        );
+
+        $this->accountPassword = null;
+
+        session()->flash('success', 'Đã cấp/cập nhật tài khoản đăng nhập cho nhân viên.');
+    }
+
+    /**
+     * Clear the employee edit form and account provisioning fields.
+     */
     public function cancelEdit(): void
     {
         $this->reset([
@@ -144,16 +206,21 @@ class Index extends Component
             'positionId',
             'hireDate',
             'note',
+            'accountPassword',
+            'accountRoleId',
         ]);
 
         $this->workStatus = 'active';
         $this->resetValidation();
     }
 
+    /**
+     * Render the employee list, filters, edit form, and account role options.
+     */
     public function render()
     {
         $employees = Employee::query()
-            ->with(['department', 'position'])
+            ->with(['account.role', 'department', 'position'])
             ->when($this->search, function ($query) {
                 $query->where(function ($subQuery) {
                     $subQuery
@@ -178,9 +245,13 @@ class Index extends Component
                 ->orderBy('sort_order')
                 ->orderBy('name')
                 ->get(),
+            'roles' => Role::query()->orderBy('name')->get(),
         ]);
     }
 
+    /**
+     * Convert blank Livewire select values into nullable integer foreign keys.
+     */
     private function nullableInt(mixed $value): ?int
     {
         return $value === null || $value === '' ? null : (int) $value;

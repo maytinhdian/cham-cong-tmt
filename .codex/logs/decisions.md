@@ -632,3 +632,59 @@ Admins need to understand role scope quickly before Reports and timesheet lockin
 Result:
 
 The role create/edit screens now show grouped permission checkboxes, module-level select/clear actions, and selected-permission counts. The role list now shows permission and user counts for faster review.
+
+## 2026-06-30
+
+Decision:
+
+Employee login accounts should be provisioned from the employee management screen and should use the employee code as the login username.
+
+Reason:
+
+HR already manages the official employee code in `employees`. Using that code as `users.username` lets employees log in with their familiar personnel code while preserving existing email login for template/admin accounts. Keeping account provisioning inside employee management also keeps `employees.user_id` as the single link between HR profile and login account.
+
+Result:
+
+Added a `username` column to `users`, updated login to accept email or employee code, added `EmployeeAccountService`, and added a restricted account provisioning panel on the employee list quick-edit form. The default minimum role is `Member`.
+
+## 2026-06-30
+
+Decision:
+
+Employee-linked users should be able to access `/laravel-examples/user-profile` as a self-service page without requiring HR or authorization-management permissions.
+
+Reason:
+
+After a higher-level user provisions an account from employee management, the employee needs a safe place to update basic contact information and change their own password. This keeps normal profile maintenance out of the admin-only user management screens.
+
+Result:
+
+The profile page now allows authenticated users to update their own basic account fields and password. It also displays linked employee context and mirrors simple contact fields to the linked employee record.
+
+## 2026-06-30
+
+Decision:
+
+Sidebar navigation should be permission-aware and should not expose pages the current user cannot use.
+
+Reason:
+
+Route middleware already protects access, but showing unavailable menu items creates confusion for employee and department-manager users. Keeping the menu aligned with permissions makes the app feel intentionally scoped after account provisioning.
+
+Result:
+
+The sidebar now always shows the user's profile/logout controls, shows business groups only when the related permission is granted, and limits template/admin navigation to Admin/Super Admin users.
+
+## 2026-06-30
+
+Decision:
+
+Timesheet page access should distinguish between opening a timesheet page and viewing every employee's timesheet.
+
+Reason:
+
+Employees need access to their own daily/monthly timesheet, but the same page must not expose other employees' attendance data. A separate `attendance.timesheet.view_all` permission keeps self-service access simple while preserving HR-wide review capability.
+
+Result:
+
+Users with only `attendance.timesheet.view` are scoped to the employee profile linked to their login account. Users with `attendance.timesheet.view_all` can use department/employee filters and review all rows.
