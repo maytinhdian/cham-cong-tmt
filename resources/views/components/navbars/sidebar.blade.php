@@ -10,9 +10,85 @@
         $showReportMenus = $currentUser?->can('reports.view');
         $showEmployeeMenus = $currentUser?->can('employees.view') || $currentUser?->can('employees.manage');
         $attendanceSettingRoutes = ['attendance-settings', 'attendance-schedules', 'attendance-shift-definition', 'attendance-weekend-definition', 'attendance-symbol-statistics'];
-        $deviceRoutes = ['attendance-devices', 'attendance-device-user-mappings', 'attendance-raw-logs', 'attendance-process-logs', 'attendance-tabulator-demo'];
+        $deviceRoutes = ['attendance-devices', 'attendance-device-user-mappings', 'attendance-raw-logs', 'attendance-process-logs'];
         $timesheetRoutes = ['attendance-daily-timesheet', 'attendance-monthly-timesheet'];
         $employeeRoutes = ['employee-list', 'new-user', 'employee-dashboard', 'employee-bulk-create', 'employee-department', 'employee-company-chart', 'employee-position'];
+        $demoGroups = [
+            'Chấm công' => [
+                ['route' => 'attendance-tabulator-demo', 'label' => 'Demo Tabulator', 'icon' => 'TB'],
+            ],
+            'Laravel examples' => [
+                ['route' => 'item-management', 'label' => 'Items', 'icon' => 'IT'],
+                ['route' => 'tag-management', 'label' => 'Tags', 'icon' => 'TG'],
+                ['route' => 'category-management', 'label' => 'Categories', 'icon' => 'CT'],
+            ],
+            'Template pages' => [
+                ['route' => 'charts', 'label' => 'Charts', 'icon' => 'CH'],
+                ['route' => 'notifications', 'label' => 'Notifications', 'icon' => 'NT'],
+                ['route' => 'pricing-page', 'label' => 'Pricing', 'icon' => 'PR'],
+                ['route' => 'rtl', 'label' => 'RTL', 'icon' => 'RT'],
+                ['route' => 'sweet-alerts', 'label' => 'Sweet Alerts', 'icon' => 'SA'],
+                ['route' => 'widgets', 'label' => 'Widgets', 'icon' => 'WG'],
+                ['route' => 'vr-default', 'label' => 'VR Default', 'icon' => 'VR'],
+                ['route' => 'vr-info', 'label' => 'VR Info', 'icon' => 'VI'],
+            ],
+            'Projects & profile' => [
+                ['route' => 'general', 'label' => 'Project General', 'icon' => 'PJ'],
+                ['route' => 'new-project', 'label' => 'New Project', 'icon' => 'NP'],
+                ['route' => 'timeline', 'label' => 'Timeline', 'icon' => 'TL'],
+                ['route' => 'overview', 'label' => 'Profile Overview', 'icon' => 'OV'],
+                ['route' => 'projects', 'label' => 'Profile Projects', 'icon' => 'PP'],
+            ],
+            'Account' => [
+                ['route' => 'billing', 'label' => 'Billing', 'icon' => 'BL'],
+                ['route' => 'invoice', 'label' => 'Invoice', 'icon' => 'IV'],
+                ['route' => 'security', 'label' => 'Security', 'icon' => 'SC'],
+                ['route' => 'settings', 'label' => 'Settings', 'icon' => 'ST'],
+            ],
+            'Ecommerce' => [
+                ['route' => 'referral', 'label' => 'Referral', 'icon' => 'RF'],
+                ['route' => 'order-details', 'label' => 'Order Details', 'icon' => 'OD'],
+                ['route' => 'order-list', 'label' => 'Order List', 'icon' => 'OL'],
+                ['route' => 'edit-product', 'label' => 'Edit Product', 'icon' => 'EP'],
+                ['route' => 'new-product', 'label' => 'New Product', 'icon' => 'NP'],
+                ['route' => 'product-page', 'label' => 'Product Page', 'icon' => 'PD'],
+                ['route' => 'products-list', 'label' => 'Products List', 'icon' => 'PL'],
+            ],
+            'Dashboards' => [
+                ['route' => 'automotive', 'label' => 'Automotive', 'icon' => 'AU'],
+                ['route' => 'discover', 'label' => 'Discover', 'icon' => 'DC'],
+                ['route' => 'sales', 'label' => 'Sales', 'icon' => 'SL'],
+                ['route' => 'smart-home', 'label' => 'Smart Home', 'icon' => 'SH'],
+            ],
+            'Applications' => [
+                ['route' => 'calendar', 'label' => 'Calendar', 'icon' => 'CL'],
+                ['route' => 'crm', 'label' => 'CRM', 'icon' => 'CR'],
+                ['route' => 'datatables', 'label' => 'Datatables', 'icon' => 'DT'],
+                ['route' => 'kanban', 'label' => 'Kanban', 'icon' => 'KB'],
+                ['route' => 'stats', 'label' => 'Stats', 'icon' => 'ST'],
+                ['route' => 'wizard', 'label' => 'Wizard', 'icon' => 'WZ'],
+            ],
+            'Authentication mẫu' => [
+                ['route' => 'basic-lock', 'label' => 'Basic Lock', 'icon' => 'BL'],
+                ['route' => 'cover-lock', 'label' => 'Cover Lock', 'icon' => 'CL'],
+                ['route' => 'illustration-lock', 'label' => 'Illustration Lock', 'icon' => 'IL'],
+                ['route' => 'basic-reset', 'label' => 'Basic Reset', 'icon' => 'BR'],
+                ['route' => 'cover-reset', 'label' => 'Cover Reset', 'icon' => 'CR'],
+                ['route' => 'illustration-reset', 'label' => 'Illustration Reset', 'icon' => 'IR'],
+                ['route' => 'basic-sign-in', 'label' => 'Basic Sign In', 'icon' => 'BI'],
+                ['route' => 'cover-sign-in', 'label' => 'Cover Sign In', 'icon' => 'CI'],
+                ['route' => 'illustration-sign-in', 'label' => 'Illustration Sign In', 'icon' => 'II'],
+                ['route' => 'basic-sign-up', 'label' => 'Basic Sign Up', 'icon' => 'BU'],
+                ['route' => 'cover-sign-up', 'label' => 'Cover Sign Up', 'icon' => 'CU'],
+                ['route' => 'illustration-sign-up', 'label' => 'Illustration Sign Up', 'icon' => 'IU'],
+                ['route' => 'basic-verification', 'label' => 'Basic Verification', 'icon' => 'BV'],
+                ['route' => 'cover-verification', 'label' => 'Cover Verification', 'icon' => 'CV'],
+                ['route' => 'illustration-verification', 'label' => 'Illustration Verification', 'icon' => 'IV'],
+                ['route' => 'error404', 'label' => 'Error 404', 'icon' => '44'],
+                ['route' => 'error500', 'label' => 'Error 500', 'icon' => '50'],
+            ],
+        ];
+        $demoRoutes = collect($demoGroups)->flatten(1)->pluck('route')->all();
     @endphp
 
     <div class="sidenav-header">
@@ -61,6 +137,16 @@
             </li>
 
             <hr class="horizontal light mt-0">
+
+            @if ($showTemplateMenus)
+                <li class="nav-item">
+                    <a class="nav-link text-white"
+                        href="{{ route('analytics') }}">
+                        <i class="ni ni-shop opacity-10"></i>
+                        <span class="nav-link-text ms-2 ps-1">Dashboard</span>
+                    </a>
+                </li>
+            @endif
 
             @if ($showAttendanceSettings)
                 <li class="nav-item">
@@ -164,15 +250,6 @@
                                     </a>
                                 </li>
                             @endcan
-                            @if ($showTemplateMenus)
-                                <li class="nav-item {{ Route::currentRouteName() == 'attendance-tabulator-demo' ? 'active' : '' }}">
-                                    <a class="nav-link text-white {{ Route::currentRouteName() == 'attendance-tabulator-demo' ? 'active' : '' }}"
-                                        href="{{ route('attendance-tabulator-demo') }}">
-                                        <span class="sidenav-mini-icon"> TB </span>
-                                        <span class="sidenav-normal ms-2 ps-1"> Demo Tabulator </span>
-                                    </a>
-                                </li>
-                            @endif
                         </ul>
                     </div>
                 </li>
@@ -205,16 +282,6 @@
                             </li>
                         </ul>
                     </div>
-                </li>
-            @endif
-
-            @if ($showReportMenus)
-                <li class="nav-item">
-                    <a class="nav-link text-white {{ Route::currentRouteName() == 'attendance-reports' ? 'active' : '' }}"
-                        href="{{ route('attendance-reports') }}">
-                        <i class="ni ni-chart-bar-32 opacity-10"></i>
-                        <span class="nav-link-text ms-2 ps-1">Báo biểu</span>
-                    </a>
                 </li>
             @endif
 
@@ -287,16 +354,22 @@
                 </li>
             @endif
 
+            @if ($showReportMenus)
+                <li class="nav-item mt-3">
+                    <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder text-white">Báo Biểu</h6>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white {{ Route::currentRouteName() == 'attendance-reports' ? 'active' : '' }}"
+                        href="{{ route('attendance-reports') }}">
+                        <i class="ni ni-chart-bar-32 opacity-10"></i>
+                        <span class="nav-link-text ms-2 ps-1">Báo biểu</span>
+                    </a>
+                </li>
+            @endif
+
             @if ($showTemplateMenus)
                 <li class="nav-item mt-3">
                     <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder text-white">Quản trị hệ thống</h6>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white {{ Route::currentRouteName() == 'analytics' ? 'active' : '' }}"
-                        href="{{ route('analytics') }}">
-                        <i class="ni ni-shop opacity-10"></i>
-                        <span class="nav-link-text ms-2 ps-1">Dashboard</span>
-                    </a>
                 </li>
                 <li class="nav-item">
                     <a data-bs-toggle="collapse" href="#adminExamples"
@@ -324,6 +397,39 @@
                                     </a>
                                 </li>
                             @endcan
+                        </ul>
+                    </div>
+                </li>
+
+                <li class="nav-item mt-3">
+                    <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder text-white">Demo</h6>
+                </li>
+                <li class="nav-item">
+                    <a data-bs-toggle="collapse" href="#demoExamples"
+                        class="nav-link text-white {{ in_array(Route::currentRouteName(), $demoRoutes, true) ? 'active' : '' }}"
+                        aria-controls="demoExamples" role="button" aria-expanded="false">
+                        <i class="ni ni-app opacity-10"></i>
+                        <span class="nav-link-text ms-2 ps-1">Link demo mẫu</span>
+                    </a>
+                    <div class="collapse {{ in_array(Route::currentRouteName(), $demoRoutes, true) ? 'show' : '' }}"
+                        id="demoExamples">
+                        <ul class="nav">
+                            @foreach ($demoGroups as $groupLabel => $links)
+                                <li class="nav-item">
+                                    <span class="nav-link text-white-50 text-uppercase text-xxs font-weight-bolder ps-4 py-1">
+                                        {{ $groupLabel }}
+                                    </span>
+                                </li>
+                                @foreach ($links as $link)
+                                    <li class="nav-item {{ Route::currentRouteName() == $link['route'] ? 'active' : '' }}">
+                                        <a class="nav-link text-white {{ Route::currentRouteName() == $link['route'] ? 'active' : '' }}"
+                                            href="{{ route($link['route']) }}">
+                                            <span class="sidenav-mini-icon"> {{ $link['icon'] }} </span>
+                                            <span class="sidenav-normal ms-2 ps-1"> {{ $link['label'] }} </span>
+                                        </a>
+                                    </li>
+                                @endforeach
+                            @endforeach
                         </ul>
                     </div>
                 </li>

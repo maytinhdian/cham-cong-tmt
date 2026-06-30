@@ -688,3 +688,31 @@ Employees need access to their own daily/monthly timesheet, but the same page mu
 Result:
 
 Users with only `attendance.timesheet.view` are scoped to the employee profile linked to their login account. Users with `attendance.timesheet.view_all` can use department/employee filters and review all rows.
+
+## 2026-06-30
+
+Decision:
+
+Legacy template/demo links should be grouped under a dedicated `Demo` sidebar section below system administration.
+
+Reason:
+
+The links are still useful as UI references while building new screens, but they should not be mixed into real HR, device, or timesheet workflows. Keeping them at the bottom makes the production navigation clearer while preserving quick access for Admin/Super Admin review.
+
+Result:
+
+The sidebar now shows `Demo` after `Người dùng & quyền` for Admin/Super Admin users, with grouped sample links and the attendance Tabulator demo moved out of the device menu.
+
+## 2026-06-30
+
+Decision:
+
+Report navigation should have its own sidebar header instead of being a standalone item mixed into surrounding business menus.
+
+Reason:
+
+Reports are becoming their own Phase 7 module, so the sidebar should reserve a clear section for current and future report pages without mixing them into timesheet or employee management navigation.
+
+Result:
+
+Users with `reports.view` now see a `Báo Biểu` header with the existing attendance report link under it.

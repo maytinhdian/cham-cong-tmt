@@ -497,3 +497,31 @@ Employee accounts must be linked to an `employees` row through `employees.user_i
 Priority:
 
 None
+
+## 2026-06-30 Sidebar Demo Reference Section
+
+Problem:
+
+The demo links are now grouped in an Admin/Super Admin-only sidebar section, but many legacy template/demo routes still only require `auth` at the route level.
+
+Impact:
+
+Normal users should not see the demo menu, but a logged-in user who knows a direct legacy URL may still be able to open some demo/template pages until those routes receive explicit middleware or are removed.
+
+Priority:
+
+Medium
+
+## 2026-06-30 Sidebar Report Header
+
+Problem:
+
+No new unresolved implementation problem was found while adding the report sidebar header.
+
+Impact:
+
+The section currently contains only the existing attendance report link. More report links can be added under the same header during Phase 7.
+
+Priority:
+
+None

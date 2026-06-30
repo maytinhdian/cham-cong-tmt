@@ -403,3 +403,31 @@ Important UI constraints:
 - Employee/member users no longer see daily adjustment actions or monthly generation actions.
 - Reran `AuthorizationSeeder` so the new permission is available in the role matrix and default role assignments.
 - Verified edited PHP files with `php -l`, compiled Blade views, and reran `MonthlyTimesheetServiceTest`.
+
+## 2026-06-30 Sidebar Demo Reference Section
+
+- Added a dedicated `Demo` section at the bottom of the Admin/Super Admin sidebar, after `Người dùng & quyền`.
+- Moved `Demo Tabulator` out of the real attendance-device menu and into the new demo reference section.
+- Grouped legacy template links by purpose: attendance demo, Laravel examples, template pages, projects/profile, account, ecommerce, dashboards, applications, and sample authentication pages.
+- Kept normal employee-facing menus focused on real business workflows.
+- Verified Blade compilation with `php artisan view:cache` and checked the sidebar Blade file with `php -l`.
+
+## 2026-06-30 Sidebar Report Header
+
+- Added a dedicated `Báo Biểu` header in the sidebar when the current user has `reports.view`.
+- Kept the existing attendance report link under that header so Phase 7 report pages can be added in the same section later.
+- Positioned the report section below `Quản lý nhân viên` and above `Quản trị hệ thống`.
+- Verified Blade compilation with `php artisan view:cache` and checked the sidebar Blade file with `php -l`.
+
+## 2026-06-30 Sidebar Dashboard Position
+
+- Moved the system `Dashboard` link up below the horizontal divider after the logged-in user profile area for Admin/Super Admin users.
+- Removed the duplicate system dashboard link from the `Quản trị hệ thống` section.
+- Removed the active background styling from the top `Dashboard` link so it stays visually neutral in the compact header area.
+- Verified Blade compilation with `php artisan view:cache` and checked the sidebar Blade file with `php -l`.
+
+## 2026-06-30 Profile Header Simplification
+
+- Updated the self-service profile header to use a simple name plus secondary description line instead of dark/info role badges.
+- The secondary line now shows `position / department` for linked employees, or the user's role when no employee profile is linked.
+- Verified Blade compilation with `php artisan view:cache` and checked the profile Blade file with `php -l`.

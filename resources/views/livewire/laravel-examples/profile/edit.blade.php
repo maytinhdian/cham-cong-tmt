@@ -21,7 +21,14 @@
                         </form>
                         <div class="flex-grow-1">
                             <h5 class="mb-1">{{ $user->name }}</h5>
-                            <div class="d-flex flex-wrap gap-2">
+                            <p class="text-sm text-secondary mb-0">
+                                @if ($employee)
+                                    {{ $employee->position?->name ?? 'Nhân viên' }} / {{ $employee->department?->name ?? 'Chưa gán phòng ban' }}
+                                @else
+                                    {{ $user->role?->name ?? 'Chưa gán vai trò' }}
+                                @endif
+                            </p>
+                            <div class="d-none">
                                 <span class="badge bg-gradient-dark">{{ $user->username ?? $user->email }}</span>
                                 <span class="badge bg-gradient-info">{{ $user->role?->name ?? 'Chưa gán vai trò' }}</span>
                                 @if ($employee)
