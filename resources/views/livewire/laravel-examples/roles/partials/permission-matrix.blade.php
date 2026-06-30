@@ -31,18 +31,22 @@
             <div class="row">
                 @foreach ($group['permissions'] as $permission)
                     <div class="col-12 col-md-6 mb-2" wire:key="permission-{{ $permission->id }}">
-                        <div class="form-check mb-0">
-                            <input
-                                class="form-check-input"
-                                type="checkbox"
-                                id="permission-{{ $permission->id }}"
-                                value="{{ $permission->id }}"
-                                wire:model.live="selectedPermissions"
-                            >
-                            <label class="form-check-label text-sm" for="permission-{{ $permission->id }}">
+                        <div class="border rounded-3 px-3 py-2 h-100 d-flex align-items-center justify-content-between gap-3">
+                            <label class="form-check-label text-sm mb-0" for="permission-{{ $permission->id }}">
                                 {{ $permission->label ?: $permission->name }}
                                 <span class="d-block text-xs text-secondary">{{ $permission->name }}</span>
                             </label>
+                            <div class="form-check form-switch mb-0 ps-0">
+                                <input
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    role="switch"
+                                    id="permission-{{ $permission->id }}"
+                                    value="{{ $permission->id }}"
+                                    wire:model.live="selectedPermissions"
+                                    aria-label="{{ $permission->label ?: $permission->name }}"
+                                >
+                            </div>
                         </div>
                     </div>
                 @endforeach

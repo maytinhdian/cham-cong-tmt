@@ -1,5 +1,33 @@
 # Architecture Decisions
 
+## 2026-06-30
+
+Decision:
+
+Role permission selection should use the project's standard switch control for individual on/off permission choices.
+
+Reason:
+
+Permissions are binary assignments, and the existing global `form-switch` styling already defines the approved Material Dashboard on/off visual language.
+
+Result:
+
+The role create/edit permission matrix now renders each permission as a bordered row with a right-aligned switch while preserving the existing Livewire permission array.
+
+## 2026-07-01
+
+Decision:
+
+Role management tables should use a Livewire-compatible pagination view that mirrors the bundled DataTables visual classes.
+
+Reason:
+
+The DataTables demo UI is the desired visual reference, but role management already depends on Livewire server-side pagination, authorization, and sorting. Reusing the template classes avoids replacing the data flow with client-side JavaScript.
+
+Result:
+
+The role list now renders DataTables-style top controls and pagination while keeping the existing Livewire query and actions.
+
 ## 2026-06-19
 
 Decision:

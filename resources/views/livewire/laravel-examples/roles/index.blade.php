@@ -1,7 +1,7 @@
 <div class="container-fluid py-4">
     <div class="row mt-4">
         <div class="col-12">
-            <div class="card">
+            <div class="card dataTable-wrapper">
                 <!-- Card header -->
                 <div class="card-header">
                     <h5 class="mb-0">Vai trò & phân quyền</h5>
@@ -30,10 +30,10 @@
                             class="material-icons text-sm">add</i>&nbsp;&nbsp;Tạo vai trò</a>
                 </div>
                 @endcan
-                <div class="d-flex flex-row justify-content-between mx-4">
-                    <div class="d-flex mt-3 align-items-center justify-content-center">
+                <div class="dataTable-top">
+                    <div class="dataTable-dropdown">
                         <p class="text-secondary pt-2">Hiển thị&nbsp;&nbsp;</p>
-                        <select wire:model.live="perPage" class="form-control mb-2" id="entries">
+                        <select wire:model.live="perPage" class="dataTable-selector" id="entries">
                             <option value="5">5</option>
                             <option selected value="10">10</option>
                             <option value="15">15</option>
@@ -41,8 +41,8 @@
                         </select>
                         <p class="text-secondary pt-2">&nbsp;&nbsp;dòng</p>
                     </div>
-                    <div class="mt-3 ">
-                        <input wire:model.live="search" type="text" class="form-control" placeholder="Tìm vai trò...">
+                    <div class="dataTable-search">
+                        <input wire:model.live="search" type="text" class="dataTable-input" placeholder="Tìm vai trò...">
                     </div>
                 </div>
                 <x-table>
@@ -110,9 +110,7 @@
                         @endforeach
                     </x-slot>
                 </x-table>
-                <div id="datatable-bottom">
-                    {{ $roles->links() }}
-                </div>
+                {{ $roles->links('components.datatable-pagination') }}
             </div>
         </div>
     </div>

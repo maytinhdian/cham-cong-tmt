@@ -1,4 +1,4 @@
-
+<div>
     <div class="page-header bg-gradient-dark position-relative m-3 border-radius-xl"
         style="background-image: url('{{ asset('assets') }}/img/bg-pricing.jpg');">
         <span class="mask bg-gradient-dark opacity-2"></span>
@@ -352,8 +352,8 @@
                                         class="collapse-open material-icons text-sm font-weight-bold pt-1 position-absolute end-0 me-3">remove</i>
                                 </button>
                             </h5>
-                            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
-                                data-bs-parent="#accordionRental">
+                            <div id="collapseOne" class="accordion-collapse collapse show"
+                                aria-labelledby="headingOne" data-bs-parent="#accordionRental">
                                 <div class="accordion-body text-sm opacity-8">
                                     We’re not always in the position that we want to be at. We’re constantly growing.
                                     We’re constantly making mistakes. We’re constantly trying to express ourselves and
@@ -403,8 +403,8 @@
                                         class="collapse-open material-icons text-sm font-weight-bold pt-1 position-absolute end-0 me-3">remove</i>
                                 </button>
                             </h5>
-                            <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree"
-                                data-bs-parent="#accordionRental">
+                            <div id="collapseThree" class="accordion-collapse collapse"
+                                aria-labelledby="headingThree" data-bs-parent="#accordionRental">
                                 <div class="accordion-body text-sm opacity-8">
                                     The time is now for it to be okay to be great. People in this world shun people for
                                     being great. For being a bright color. For standing out. But the time is now to be
@@ -458,8 +458,8 @@
                                         class="collapse-open material-icons text-sm font-weight-bold pt-1 position-absolute end-0 me-3">remove</i>
                                 </button>
                             </h5>
-                            <div id="collapseFifth" class="accordion-collapse collapse" aria-labelledby="headingFifth"
-                                data-bs-parent="#accordionRental">
+                            <div id="collapseFifth" class="accordion-collapse collapse"
+                                aria-labelledby="headingFifth" data-bs-parent="#accordionRental">
                                 <div class="accordion-body text-sm opacity-8">
                                     There’s nothing I really wanted to do in life that I wasn’t able to get good at.
                                     That’s my skill. I’m not really specifically talented at anything except for the
@@ -477,11 +477,12 @@
             </div>
         </div>
     </div>
-    @push('js')
+</div>
+@push('js')
     <script src="{{ asset('assets') }}/js/plugins/parallax.min.js"></script>
     <script>
         if (document.getElementsByClassName('page-header')) {
-            window.addEventListener('scroll', function () {
+            window.addEventListener('scroll', function() {
                 var scrollPosition = window.pageYOffset;
                 var bgParallax = document.querySelector('.page-header');
                 var limit = bgParallax.offsetTop + bgParallax.offsetHeight;
@@ -492,6 +493,5 @@
                 }
             });
         }
-
     </script>
-    @endpush
+@endpush

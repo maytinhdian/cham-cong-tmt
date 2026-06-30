@@ -24,6 +24,24 @@
     box-shadow: 0 0 0 0.2rem rgba(233, 30, 99, 0.15);
 }
 
+.dataTable-wrapper .dataTable-dropdown {
+    align-items: center;
+    display: flex;
+    gap: 0.5rem;
+}
+
+.dataTable-wrapper .dataTable-dropdown p {
+    color: #7b809a;
+    font-weight: 400;
+    margin-bottom: 0;
+    padding-top: 0 !important;
+}
+
+.dataTable-wrapper .dataTable-search .form-control,
+.dataTable-wrapper .dataTable-search .dataTable-input {
+    font-size: 0.875rem;
+}
+
 .attendance-settings-tabs .nav.nav-pills {
     overflow: visible;
 }

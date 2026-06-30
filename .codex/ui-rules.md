@@ -148,6 +148,17 @@ Use these values as the default UI contract unless an existing template componen
 * Status values should use badges, not raw colored text.
 * Last column is usually actions; keep actions centered when there are multiple buttons.
 
+### Pagination
+
+* Table pagination should follow the bundled `/applications/datatables` visual style.
+* Prefer the Material Dashboard DataTables classes for table controls and pagination:
+  * Wrapper: `dataTable-wrapper`
+  * Top controls: `dataTable-top`, `dataTable-dropdown`, `dataTable-selector`, `dataTable-search`, `dataTable-input`
+  * Bottom controls: `dataTable-bottom`, `dataTable-info`, `dataTable-pagination`, `dataTable-pagination-list`
+* Livewire/server-side tables may keep Livewire pagination logic, but should render pagination using the same DataTables class structure for visual consistency.
+* Keep the active page as the template primary gradient state inherited from DataTables styling.
+* Show a compact row count summary like `Showing 1 to 10 of 42 entries` on paginated tables where the paginator provides total counts.
+
 ### Icons
 
 Use the Material Dashboard icon guidance from:

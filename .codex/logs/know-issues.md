@@ -1,5 +1,33 @@
 # Known Issues
 
+## 2026-06-30 Role Permission Switch Controls
+
+Problem:
+
+No new unresolved implementation problem was found while changing individual role permissions to switch controls.
+
+Impact:
+
+The browser verification plugin could not be used in this environment, but Blade compilation passed and the change is limited to the shared permission matrix markup.
+
+Priority:
+
+None
+
+## 2026-07-01 Role List DataTable Pagination Style
+
+Problem:
+
+No new unresolved implementation problem was found while adapting the role list pagination to the DataTables visual style.
+
+Impact:
+
+The change is currently scoped to role management. Other Livewire lists still use their existing Bootstrap pagination until they are explicitly migrated.
+
+Priority:
+
+None
+
 ## Shift Matching
 
 Problem:

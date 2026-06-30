@@ -2,6 +2,20 @@
 
 This file is the working memory for the HR and time attendance build. Read it before changing HR, attendance, schedule, device, payroll, or report features.
 
+## 2026-06-30 Role Permission Switch Controls
+
+- Updated the shared role permission matrix partial so each permission is selected with a Material Dashboard `form-switch` on/off control.
+- Kept the existing Livewire `selectedPermissions` binding and module-level select/clear actions unchanged.
+- Verified Blade compilation with `php artisan view:cache`.
+
+## 2026-07-01 Role List DataTable Pagination Style
+
+- Read the `/applications/datatables` demo implementation and reused its `dataTable-wrapper`, `dataTable-top`, `dataTable-selector`, `dataTable-input`, `dataTable-bottom`, and `dataTable-pagination` class structure.
+- Added a reusable Livewire pagination view at `resources/views/components/datatable-pagination.blade.php`.
+- Updated the role list page to keep server-side Livewire search/sort/pagination while matching the Material Dashboard DataTables pagination UI.
+- Documented the DataTables-style pagination standard in `.codex/ui-rules.md` for future table screens.
+- Verified Blade compilation with `php artisan view:cache`.
+
 ## Correct Business Flow
 
 The agreed flow should stay in this order unless the user explicitly changes it:
