@@ -67,11 +67,25 @@
 - [x] Monthly timesheet aggregation
 - [ ] Timesheet closing and locking
 
+## Phase 6.5 - Authorization & Roles
+
+- [ ] Define role list and permission matrix
+- [ ] Add module/action permission naming convention
+- [ ] Add role and permission seed data
+- [ ] Protect Livewire pages by permission
+- [ ] Protect sensitive Livewire actions by permission
+- [ ] Add user-role assignment UI
+- [ ] Add audit log for sensitive permission-protected actions
+
 ## Phase 7 - Reports
 
-- [ ] Late/early reports
-- [ ] Missing log reports
-- [ ] OT reports
-- [ ] Monthly attendance summaries
+- [ ] Create Report module structure under `Modules/Report`
+- [ ] Shared attendance report filter DTO
+- [ ] Missing log report
+- [ ] Late/early report
+- [ ] Overtime report
+- [ ] Monthly attendance summary
+- [ ] Adjustment audit report
+- [ ] Device sync/log health report
 - [ ] Excel export
 - [ ] PDF export

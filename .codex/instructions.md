@@ -44,3 +44,37 @@ Run this after changing Composer autoload:
 ```bash
 composer dump-autoload
 ```
+
+## Module Creation Guide
+
+When adding a new business module, create it under `Modules/<ModuleName>` and keep the module focused on one business area.
+
+Recommended folders:
+
+```text
+Modules/<ModuleName>/
+├── Actions/
+├── DTOs/
+├── Models/
+├── Services/
+└── Engines/
+```
+
+Use only the folders that are needed for the module. For example, report modules usually need `DTOs`, `Services`, `Actions`, and optional `Exports`, but do not need `Engines` unless they perform reusable calculations.
+
+Module responsibilities:
+
+- `Models`: Eloquent models for tables owned by the module.
+- `DTOs`: typed data passed between Livewire pages, actions, services, and engines.
+- `Services`: application/business operations and reusable query logic.
+- `Actions`: single user- or workflow-triggered operations.
+- `Engines`: calculation or rule-processing logic that should stay independent from UI and persistence.
+- `Exports`: spreadsheet/PDF export classes when the module produces downloadable files.
+
+Keep UI classes in `app/Http/Livewire/Pages/...` and Blade files in `resources/views/livewire/pages/...`. The module should provide the business logic, while Livewire pages should stay thin.
+
+Before creating a module, update `.codex/architecture.md` if the module introduces a new business responsibility. After creating or moving many module classes, run:
+
+```bash
+composer dump-autoload
+```
