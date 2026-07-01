@@ -66,15 +66,16 @@
                                         <div class="row">
                                             @foreach ([1 => 'Thứ 2', 2 => 'Thứ 3', 3 => 'Thứ 4', 4 => 'Thứ 5', 5 => 'Thứ 6', 6 => 'Thứ 7', 7 => 'Chủ nhật'] as $weekday => $label)
                                                 <div class="col-md-6 mb-3">
-                                                    <div class="form-check">
+                                                    <div class="form-check form-switch">
                                                         <input
                                                             id="weekday-{{ $weekday }}"
                                                             class="form-check-input"
                                                             type="checkbox"
+                                                            role="switch"
                                                             value="{{ $weekday }}"
                                                             wire:model="weekendDays"
                                                         >
-                                                        <label class="custom-control-label" for="weekday-{{ $weekday }}">{{ $label }}</label>
+                                                        <label class="form-check-label" for="weekday-{{ $weekday }}">{{ $label }}</label>
                                                     </div>
                                                 </div>
                                             @endforeach
@@ -140,9 +141,9 @@
                                             </div>
                                             <div class="col-md-4 mt-3 mt-md-0">
                                                 <label class="form-label d-block">Hưởng công</label>
-                                                <div class="form-check mt-2">
-                                                    <input id="holiday-paid" class="form-check-input" type="checkbox" wire:model="isPaid">
-                                                    <label class="custom-control-label" for="holiday-paid">Có tính công</label>
+                                                <div class="form-check form-switch weekend-paid-switch">
+                                                    <input id="holiday-paid" class="form-check-input" type="checkbox" role="switch" wire:model="isPaid">
+                                                    <label class="form-check-label" for="holiday-paid">Có tính công</label>
                                                 </div>
                                                 @error('isPaid') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
                                             </div>

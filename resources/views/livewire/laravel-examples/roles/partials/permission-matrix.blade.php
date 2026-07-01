@@ -19,11 +19,23 @@
                     <p class="text-xs text-secondary mb-0">{{ $group['permissions']->count() }} quyền</p>
                 </div>
                 <div class="d-flex gap-2">
-                    <button type="button" class="btn btn-outline-secondary btn-sm mb-0" wire:click="clearModule('{{ $group['module'] }}')">
-                        Bỏ chọn
+                    <button
+                        type="button"
+                        class="btn bg-gradient-secondary btn-sm mb-0"
+                        wire:click="clearModule('{{ $group['module'] }}')"
+                        title="Bỏ chọn tất cả"
+                        aria-label="Bỏ chọn tất cả {{ $group['label'] }}"
+                    >
+                        <i class="material-icons text-sm">check_box_outline_blank</i>
                     </button>
-                    <button type="button" class="btn bg-gradient-dark btn-sm mb-0" wire:click="selectModule('{{ $group['module'] }}')">
-                        Chọn nhóm
+                    <button
+                        type="button"
+                        class="btn bg-gradient-primary btn-sm mb-0"
+                        wire:click="selectModule('{{ $group['module'] }}')"
+                        title="Chọn tất cả"
+                        aria-label="Chọn tất cả {{ $group['label'] }}"
+                    >
+                        <i class="material-icons text-sm">library_add_check</i>
                     </button>
                 </div>
             </div>

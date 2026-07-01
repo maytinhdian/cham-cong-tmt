@@ -80,24 +80,30 @@
                                         <td class="align-middle text-center">
                                             <a
                                                 href="{{ route('employee-detail', $employee) }}"
-                                                class="text-dark font-weight-bold text-xs me-3"
+                                                class="btn btn-link text-info mb-0 p-0 me-3"
+                                                title="Chi tiết nhân viên"
+                                                aria-label="Chi tiết nhân viên {{ $employee->full_name }}"
                                             >
-                                                Chi tiết
+                                                <i class="material-icons">visibility</i>
                                             </a>
                                             <button
                                                 type="button"
-                                                class="btn btn-link text-secondary font-weight-bold text-xs me-3 mb-0 p-0"
+                                                class="btn btn-link text-secondary mb-0 p-0 me-3"
                                                 wire:click="editEmployee({{ $employee->id }})"
+                                                title="Sửa nhân viên"
+                                                aria-label="Sửa nhân viên {{ $employee->full_name }}"
                                             >
-                                                Sửa
+                                                <i class="material-icons">edit</i>
                                             </button>
                                             <button
                                                 type="button"
-                                                class="btn btn-link text-danger font-weight-bold text-xs mb-0 p-0"
+                                                class="btn btn-link text-danger mb-0 p-0"
                                                 wire:click="deleteEmployee({{ $employee->id }})"
                                                 wire:confirm="Xóa mềm nhân viên này khỏi danh sách?"
+                                                title="Xóa nhân viên"
+                                                aria-label="Xóa nhân viên {{ $employee->full_name }}"
                                             >
-                                                Xóa
+                                                <i class="material-icons">close</i>
                                             </button>
                                         </td>
                                     </tr>

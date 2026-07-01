@@ -90,19 +90,38 @@
                             <x-table.cell>
                                 @can('manage-users', auth()->user())
                                 @can('update', $user)
-                                <a rel="tooltip" class="btn btn-success btn-link" href="{{ route('edit-user', $user) }}"
-                                    data-original-title="" title="">
+                                <a
+                                    rel="tooltip"
+                                    class="btn btn-link text-info mb-0 p-0 me-3"
+                                    href="{{ route('edit-user', $user) }}"
+                                    title="Chi tiết người dùng"
+                                    aria-label="Chi tiết người dùng {{ $user->name }}"
+                                >
+                                    <i class="material-icons">visibility</i>
+                                </a>
+                                @endcan
+                                @can('update', $user)
+                                <a
+                                    rel="tooltip"
+                                    class="btn btn-link text-secondary mb-0 p-0 me-3"
+                                    href="{{ route('edit-user', $user) }}"
+                                    title="Sửa người dùng"
+                                    aria-label="Sửa người dùng {{ $user->name }}"
+                                >
                                     <i class="material-icons">edit</i>
-                                    <div class="ripple-container"></div>
                                 </a>
                                 @if ($user->id != auth()->id())
                                 @endcan
                                 @can('delete', $user)
-                                <button type="button" class="btn btn-danger btn-link" data-original-title="" title=""
+                                <button
+                                    type="button"
+                                    class="btn btn-link text-danger mb-0 p-0"
+                                    title="Xóa người dùng"
+                                    aria-label="Xóa người dùng {{ $user->name }}"
                                     onclick="confirm('Are you sure you want to delete this user?') || event.stopImmediatePropagation()"
-                                    wire:click="destroy({{ $user->id }})">
+                                    wire:click="destroy({{ $user->id }})"
+                                >
                                     <i class="material-icons">close</i>
-                                    <div class="ripple-container"></div>
                                 </button>
                                 @endif
                                 @endcan

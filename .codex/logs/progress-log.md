@@ -16,6 +16,37 @@ This file is the working memory for the HR and time attendance build. Read it be
 - Documented the DataTables-style pagination standard in `.codex/ui-rules.md` for future table screens.
 - Verified Blade compilation with `php artisan view:cache`.
 
+## 2026-07-01 Shift Definition Action Icons
+
+- Updated the shift definition table action column to use icon-only Material Icons controls.
+- Added a `visibility` detail action before the edit and delete actions.
+- Kept the existing shift selection/edit Livewire flow and added hover/accessibility labels for the action buttons.
+- Documented the standard view/edit/delete icon-only action cluster in `.codex/ui-rules.md`.
+- Matched the footer `Hủy` and save/update buttons to the same minimum width for a steadier form layout.
+- Verified Blade compilation with `php artisan view:cache`.
+
+## 2026-07-01 Weekend Definition Switch Controls
+
+- Replaced the weekend weekday checkbox controls with Material Dashboard `form-check form-switch` controls.
+- Replaced the holiday paid checkbox with a `form-switch` control.
+- Kept the existing Livewire models for `weekendDays` and `isPaid`.
+- Verified Blade compilation with `php artisan view:cache`.
+
+## 2026-07-01 User Management Action Icons
+
+- Updated the user management table action column to follow the standard detail/edit/delete icon-only cluster.
+- Added a temporary detail action using `visibility` that links to the existing edit user route until a dedicated detail route exists.
+- Added hover and accessibility labels for the action buttons.
+- Updated `.codex/ui-rules.md` so standard detail/edit/delete action icons use the default Material Icons size instead of `text-sm`.
+- Verified Blade compilation with `php artisan view:cache`.
+
+## 2026-07-01 Employee List Action Icons
+
+- Updated the employee list action column to follow the standard detail/edit/delete icon-only cluster.
+- Kept the real employee detail route for the `visibility` action and existing Livewire edit/delete actions.
+- Added hover and accessibility labels for the employee action buttons.
+- Verified Blade compilation with `php artisan view:cache`.
+
 ## Correct Business Flow
 
 The agreed flow should stay in this order unless the user explicitly changes it:

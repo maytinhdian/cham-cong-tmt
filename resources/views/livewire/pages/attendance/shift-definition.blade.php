@@ -135,14 +135,25 @@
                                                 <td class="align-middle text-center">
                                                     <button type="button"
                                                         wire:click="editShift({{ $shift->id }})"
-                                                        class="btn btn-link text-secondary font-weight-bold text-xs mb-0 p-0 me-3">
-                                                        Sửa
+                                                        class="btn btn-link text-info mb-0 p-0 me-3"
+                                                        title="Chi tiết ca"
+                                                        aria-label="Chi tiết ca {{ $shift->name }}">
+                                                        <i class="material-icons text-sm">visibility</i>
+                                                    </button>
+                                                    <button type="button"
+                                                        wire:click="editShift({{ $shift->id }})"
+                                                        class="btn btn-link text-secondary mb-0 p-0 me-3"
+                                                        title="Sửa ca"
+                                                        aria-label="Sửa ca {{ $shift->name }}">
+                                                        <i class="material-icons text-sm">edit</i>
                                                     </button>
                                                     <button type="button"
                                                         wire:click="deleteShift({{ $shift->id }})"
                                                         wire:confirm="Xóa ca làm việc này?"
-                                                        class="btn btn-link text-danger font-weight-bold text-xs mb-0 p-0">
-                                                        Xóa
+                                                        class="btn btn-link text-danger mb-0 p-0"
+                                                        title="Xóa ca"
+                                                        aria-label="Xóa ca {{ $shift->name }}">
+                                                        <i class="material-icons text-sm">close</i>
                                                     </button>
                                                 </td>
                                             </tr>
@@ -424,8 +435,8 @@
                                         </div>
 
                                         <div class="d-flex justify-content-end gap-2 mt-4">
-                                            <button type="button" wire:click="resetForm" class="btn btn-outline-secondary mb-0">Hủy</button>
-                                            <button type="submit" class="btn bg-gradient-dark mb-0">
+                                            <button type="button" wire:click="resetForm" class="btn btn-outline-secondary shift-form-action-btn mb-0">Hủy</button>
+                                            <button type="submit" class="btn bg-gradient-dark shift-form-action-btn mb-0">
                                                 {{ $editingShiftId ? 'Cập nhật' : 'Lưu ca' }}
                                             </button>
                                         </div>

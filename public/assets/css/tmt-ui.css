@@ -42,6 +42,22 @@
     font-size: 0.875rem;
 }
 
+.shift-definition-page .shift-form-action-btn {
+    min-width: 112px;
+}
+
+.weekend-paid-switch {
+    align-items: center;
+    display: flex;
+    gap: 0.5rem;
+    min-height: 41px;
+}
+
+.weekend-paid-switch .form-check-input {
+    flex: 0 0 auto;
+    margin-top: 0;
+}
+
 .attendance-settings-tabs .nav.nav-pills {
     overflow: visible;
 }

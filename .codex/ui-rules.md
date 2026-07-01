@@ -118,6 +118,12 @@ Use these values as the default UI contract unless an existing template componen
 * Cancel/back: `btn btn-outline-secondary mb-0` or `btn bg-gradient-light mb-0`.
 * Destructive inline action: `btn btn-link text-danger font-weight-bold text-xs mb-0 p-0`.
 * Table inline actions: use text/link-style buttons to keep table compact.
+* Standard table action clusters for view/edit/delete must use icon-only link buttons:
+  * View/detail: `btn btn-link text-info mb-0 p-0 me-3` with `<i class="material-icons">visibility</i>`.
+  * Edit: `btn btn-link text-secondary mb-0 p-0 me-3` with `<i class="material-icons">edit</i>`.
+  * Delete: `btn btn-link text-danger mb-0 p-0` with `<i class="material-icons">close</i>`.
+* Do not shrink standard view/edit/delete table action icons with `text-sm`; use the default Material Icons size for readability.
+* Icon-only table action buttons must include `title` and `aria-label` that name the target action.
 * Icon-only add buttons should use Material icons, usually `add`, inside the existing button class.
 
 ### Forms
@@ -147,6 +153,7 @@ Use these values as the default UI contract unless an existing template componen
 * Row avatar initials should use `avatar avatar-sm bg-gradient-*`.
 * Status values should use badges, not raw colored text.
 * Last column is usually actions; keep actions centered when there are multiple buttons.
+* For common action clusters, order buttons as detail/view, edit, then delete.
 
 ### Pagination
 
