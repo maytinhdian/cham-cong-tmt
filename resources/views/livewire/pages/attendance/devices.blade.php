@@ -126,22 +126,24 @@
                                                             <p class="text-xs text-secondary mb-0">{{ $device->sync_status }}</p>
                                                         </td>
                                                         <td class="text-center">
-                                                            <button type="button" class="btn btn-link text-dark font-weight-bold text-xs me-2 mb-0 p-0" wire:click="checkConnection({{ $device->id }})">
-                                                                Kiểm tra
+                                                            <button type="button" class="btn btn-link text-info me-3 mb-0 p-0" wire:click="checkConnection({{ $device->id }})" title="Kiểm tra kết nối" aria-label="Kiểm tra kết nối {{ $device->name }}">
+                                                                <i class="material-icons">sensors</i>
                                                             </button>
-                                                            <button type="button" class="btn btn-link text-secondary font-weight-bold text-xs me-2 mb-0 p-0" wire:click="syncDevice({{ $device->id }})">
-                                                                Đồng bộ
+                                                            <button type="button" class="btn btn-link text-secondary me-3 mb-0 p-0" wire:click="syncDevice({{ $device->id }})" title="Đồng bộ thiết bị" aria-label="Đồng bộ thiết bị {{ $device->name }}">
+                                                                <i class="material-icons">sync</i>
                                                             </button>
-                                                            <button type="button" class="btn btn-link text-secondary font-weight-bold text-xs me-2 mb-0 p-0" wire:click="editDevice({{ $device->id }})">
-                                                                Sửa
+                                                            <button type="button" class="btn btn-link text-secondary me-3 mb-0 p-0" wire:click="editDevice({{ $device->id }})" title="Sửa thiết bị" aria-label="Sửa thiết bị {{ $device->name }}">
+                                                                <i class="material-icons">edit</i>
                                                             </button>
                                                             <button
                                                                 type="button"
-                                                                class="btn btn-link text-danger font-weight-bold text-xs mb-0 p-0"
+                                                                class="btn btn-link text-danger mb-0 p-0"
                                                                 wire:click="deleteDevice({{ $device->id }})"
                                                                 wire:confirm="Xóa thiết bị này khỏi danh sách?"
+                                                                title="Xóa thiết bị"
+                                                                aria-label="Xóa thiết bị {{ $device->name }}"
                                                             >
-                                                                Xóa
+                                                                <i class="material-icons">close</i>
                                                             </button>
                                                         </td>
                                                     </tr>

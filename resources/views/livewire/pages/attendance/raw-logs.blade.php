@@ -239,16 +239,18 @@
                                                             @endif
                                                         </td>
                                                         <td class="text-center">
-                                                            <button type="button" class="btn btn-link text-secondary font-weight-bold text-xs me-2 mb-0 p-0" wire:click="ignoreRawLog({{ $rawLog->id }})">
-                                                                Bỏ qua
+                                                            <button type="button" class="btn btn-link text-secondary me-3 mb-0 p-0" wire:click="ignoreRawLog({{ $rawLog->id }})" title="Bỏ qua log" aria-label="Bỏ qua log {{ $rawLog->id }}">
+                                                                <i class="material-icons">block</i>
                                                             </button>
                                                             <button
                                                                 type="button"
-                                                                class="btn btn-link text-danger font-weight-bold text-xs mb-0 p-0"
+                                                                class="btn btn-link text-danger mb-0 p-0"
                                                                 wire:click="deleteRawLog({{ $rawLog->id }})"
                                                                 wire:confirm="Xóa log thô này?"
+                                                                title="Xóa log"
+                                                                aria-label="Xóa log {{ $rawLog->id }}"
                                                             >
-                                                                Xóa
+                                                                <i class="material-icons">close</i>
                                                             </button>
                                                         </td>
                                                     </tr>

@@ -311,10 +311,12 @@
                                                             <td class="text-center">
                                                                 <button
                                                                     type="button"
-                                                                    class="btn btn-link text-dark font-weight-bold text-xs mb-0 p-0"
+                                                                    class="btn btn-link text-secondary mb-0 p-0"
                                                                     wire:click="openAdjustment({{ $result->id }})"
+                                                                    title="Điều chỉnh"
+                                                                    aria-label="Điều chỉnh công {{ $result->employee->full_name }} ngày {{ $result->work_date->format('d/m/Y') }}"
                                                                 >
-                                                                    Điều chỉnh
+                                                                    <i class="material-icons">edit_note</i>
                                                                 </button>
                                                             </td>
                                                         @endcan

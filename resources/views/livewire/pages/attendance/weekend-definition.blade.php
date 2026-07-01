@@ -199,11 +199,13 @@
                                                         <td class="text-center">
                                                             <button
                                                                 type="button"
-                                                                class="btn btn-link text-danger text-xs font-weight-bold mb-0 p-0"
+                                                                class="btn btn-link text-danger mb-0 p-0"
                                                                 wire:click="deleteHoliday({{ $holiday->id }})"
                                                                 wire:confirm="Xóa ngày nghỉ/lễ này?"
+                                                                title="Xóa ngày nghỉ/lễ"
+                                                                aria-label="Xóa ngày nghỉ/lễ {{ $holiday->name }}"
                                                             >
-                                                                Xóa
+                                                                <i class="material-icons">close</i>
                                                             </button>
                                                         </td>
                                                     </tr>

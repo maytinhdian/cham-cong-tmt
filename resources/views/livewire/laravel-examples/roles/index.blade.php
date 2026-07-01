@@ -90,18 +90,20 @@
                             <x-table.cell>
                                 @can('manage-users', App\Models\User::class)
                                 @can('update', $role)
-                                <a rel="tooltip" class="btn btn-link text-dark mb-0 p-0 me-3" href="{{ route('edit-role', $role)}}"
-                                    data-original-title="" title="Sửa vai trò">
+                                <a rel="tooltip" class="btn btn-link text-info mb-0 p-0 me-3" href="{{ route('edit-role', $role)}}"
+                                    title="Chi tiết vai trò" aria-label="Chi tiết vai trò {{ $role->name }}">
+                                    <i class="material-icons">visibility</i>
+                                </a>
+                                <a rel="tooltip" class="btn btn-link text-secondary mb-0 p-0 me-3" href="{{ route('edit-role', $role)}}"
+                                    title="Sửa vai trò" aria-label="Sửa vai trò {{ $role->name }}">
                                     <i class="material-icons">edit</i>
-                                    <div class="ripple-container"></div>
                                 </a>
                                 @endcan
                                 @can('delete', $role)
-                                <button type="button" class="btn btn-link text-danger mb-0 p-0" data-original-title="" title="Xóa vai trò"
+                                <button type="button" class="btn btn-link text-danger mb-0 p-0" title="Xóa vai trò" aria-label="Xóa vai trò {{ $role->name }}"
                                     onclick="confirm('Bạn chắc chắn muốn xóa vai trò này?') || event.stopImmediatePropagation()"
                                     wire:click="destroy({{ $role->id }})">
                                     <i class="material-icons">close</i>
-                                    <div class="ripple-container"></div>
                                 </button>
                                 @endcan
                                 @endcan

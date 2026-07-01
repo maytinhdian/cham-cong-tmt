@@ -186,19 +186,21 @@
                                                             @endif
                                                         </td>
                                                         <td class="text-center">
-                                                            <button type="button" class="btn btn-link text-dark font-weight-bold text-xs me-2 mb-0 p-0" wire:click="applyMapping({{ $mapping->id }})">
-                                                                Áp dụng
+                                                            <button type="button" class="btn btn-link text-info me-3 mb-0 p-0" wire:click="applyMapping({{ $mapping->id }})" title="Áp dụng mapping" aria-label="Áp dụng mapping {{ $mapping->device_user_code }}">
+                                                                <i class="material-icons">done_all</i>
                                                             </button>
-                                                            <button type="button" class="btn btn-link text-secondary font-weight-bold text-xs me-2 mb-0 p-0" wire:click="editMapping({{ $mapping->id }})">
-                                                                Sửa
+                                                            <button type="button" class="btn btn-link text-secondary me-3 mb-0 p-0" wire:click="editMapping({{ $mapping->id }})" title="Sửa mapping" aria-label="Sửa mapping {{ $mapping->device_user_code }}">
+                                                                <i class="material-icons">edit</i>
                                                             </button>
                                                             <button
                                                                 type="button"
-                                                                class="btn btn-link text-danger font-weight-bold text-xs mb-0 p-0"
+                                                                class="btn btn-link text-danger mb-0 p-0"
                                                                 wire:click="deleteMapping({{ $mapping->id }})"
                                                                 wire:confirm="Xóa mapping này?"
+                                                                title="Xóa mapping"
+                                                                aria-label="Xóa mapping {{ $mapping->device_user_code }}"
                                                             >
-                                                                Xóa
+                                                                <i class="material-icons">close</i>
                                                             </button>
                                                         </td>
                                                     </tr>

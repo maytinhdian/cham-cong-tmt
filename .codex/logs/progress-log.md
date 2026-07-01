@@ -47,6 +47,20 @@ This file is the working memory for the HR and time attendance build. Read it be
 - Added hover and accessibility labels for the employee action buttons.
 - Verified Blade compilation with `php artisan view:cache`.
 
+## 2026-07-01 Business Table Action Icon Sweep
+
+- Applied icon-only action buttons across remaining business tables:
+  - Attendance devices: connection check, sync, edit, delete.
+  - Device user mappings: apply, edit, delete.
+  - Raw attendance logs: ignore and delete.
+  - Work schedules: delete.
+  - Daily timesheet: adjustment.
+  - Holiday calendar: delete.
+  - Department and position setup: select/detail and edit placeholder actions.
+  - Role list: detail/edit/delete.
+- Kept existing Livewire methods and routes unchanged; detail placeholders continue to point at existing edit/detail flows where no dedicated detail route exists.
+- Verified Blade compilation with `php artisan view:cache`.
+
 ## Correct Business Flow
 
 The agreed flow should stay in this order unless the user explicitly changes it:

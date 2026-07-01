@@ -108,13 +108,17 @@
                                                         </td>
                                                         <td>
                                                             <button
-                                                                class="btn btn-link text-dark font-weight-bold text-xs mb-0 p-0 me-3"
+                                                                class="btn btn-link text-info mb-0 p-0 me-3"
                                                                 type="button"
                                                                 wire:click="selectDepartment({{ $department->id }})"
+                                                                title="Chọn phòng ban"
+                                                                aria-label="Chọn phòng ban {{ $department->name }}"
                                                             >
-                                                                Chọn
+                                                                <i class="material-icons">visibility</i>
                                                             </button>
-                                                            <a href="javascript:;" class="text-dark font-weight-bold text-xs">Sửa</a>
+                                                            <a href="javascript:;" class="btn btn-link text-secondary mb-0 p-0" title="Sửa phòng ban" aria-label="Sửa phòng ban {{ $department->name }}">
+                                                                <i class="material-icons">edit</i>
+                                                            </a>
                                                         </td>
                                                     </tr>
                                                 @empty

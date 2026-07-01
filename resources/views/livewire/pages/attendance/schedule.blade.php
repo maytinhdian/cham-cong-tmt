@@ -381,12 +381,14 @@
                                                         <td><span class="badge bg-gradient-secondary">{{ $schedule->status }}</span></td>
                                                         <td class="text-center">
                                                             <button
-                                                                class="btn btn-link text-danger text-xs font-weight-bold mb-0 p-0"
+                                                                class="btn btn-link text-danger mb-0 p-0"
                                                                 type="button"
                                                                 wire:click="deleteSchedule({{ $schedule->id }})"
                                                                 wire:confirm="Xóa dòng lịch này?"
+                                                                title="Xóa lịch"
+                                                                aria-label="Xóa lịch {{ $schedule->employee->full_name }} ngày {{ $schedule->work_date->format('d/m/Y') }}"
                                                             >
-                                                                Xóa
+                                                                <i class="material-icons">close</i>
                                                             </button>
                                                         </td>
                                                     </tr>

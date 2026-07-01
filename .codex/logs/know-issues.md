@@ -28,6 +28,20 @@ Priority:
 
 None
 
+## 2026-07-01 Business Table Action Icon Sweep
+
+Problem:
+
+No new unresolved implementation problem was found while applying icon-only action buttons across the remaining business tables.
+
+Impact:
+
+Some detail/edit controls intentionally keep existing placeholder or edit-route behavior where the application does not yet have a dedicated detail route.
+
+Priority:
+
+None
+
 ## Shift Matching
 
 Problem:

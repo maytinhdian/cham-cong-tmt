@@ -28,6 +28,20 @@ Result:
 
 The role list now renders DataTables-style top controls and pagination while keeping the existing Livewire query and actions.
 
+## 2026-07-01
+
+Decision:
+
+Business table action columns should use icon-only controls for both standard actions and domain-specific actions.
+
+Reason:
+
+The UI now uses compact action clusters throughout HR and attendance screens. Domain actions such as sync, apply, ignore, check connection, and adjust should stay visually aligned with the view/edit/delete cluster while keeping their distinct meaning through icon, color, title, and aria-label.
+
+Result:
+
+Attendance and employee setup tables now use Material Icons for their row actions while preserving the existing Livewire methods and routes.
+
 ## 2026-06-19
 
 Decision:
