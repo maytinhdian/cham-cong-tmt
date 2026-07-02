@@ -9,20 +9,37 @@ use Modules\Device\Models\AttendanceDeviceCommand;
 class AttendanceDeviceCommandService
 {
     /**
-     * Queue a command that asks the device to check and upload new attendance logs.
+     * Queue any PUSH command so device operations stay inside the getrequest flow.
      */
-    public function queueLogSync(AttendanceDevice $device): AttendanceDeviceCommand
+    public function queuePushCommand(AttendanceDevice $device, string $command, ?string $payload = null): AttendanceDeviceCommand
     {
-        $command = AttendanceDeviceCommand::query()->create([
+        $queuedCommand = AttendanceDeviceCommand::query()->create([
             'attendance_device_id' => $device->id,
             'command_key' => $this->makeCommandKey(),
-            'command' => 'LOG',
+            'command' => $command,
+            'payload' => $payload,
             'status' => 'pending',
         ]);
 
         $device->update(['sync_status' => 'syncing']);
 
-        return $command;
+        return $queuedCommand;
+    }
+
+    /**
+     * Queue a command that asks the device to check and upload new attendance logs.
+     */
+    public function queueLogSync(AttendanceDevice $device): AttendanceDeviceCommand
+    {
+        return $this->queuePushCommand($device, 'LOG');
+    }
+
+    /**
+     * Queue a PUSH command that asks the device to delete all local user records.
+     */
+    public function queueDeleteAllUsers(AttendanceDevice $device): AttendanceDeviceCommand
+    {
+        return $this->queuePushCommand($device, 'DATA DELETE USERINFO');
     }
 
     /**
@@ -45,7 +62,10 @@ class AttendanceDeviceCommandService
             'sent_at' => now(),
         ]);
 
-        return 'C: ' . $command->command_key . ': ' . $command->command;
+        $payload = trim((string) $command->payload);
+        $commandText = trim($command->command . ($payload !== '' ? ' ' . $payload : ''));
+
+        return 'C: ' . $command->command_key . ': ' . $commandText;
     }
 
     /**

@@ -26,14 +26,19 @@ class AttendanceDeviceService
     }
 
     /**
-     * Store a simulated connection check result until real device integration exists.
+     * Store the operator's PUSH connection check based on the latest device poll.
      */
     public function markConnectionChecked(AttendanceDevice $device, bool $online): AttendanceDevice
     {
-        $device->update([
+        $updates = [
             'connection_status' => $online ? 'online' : 'offline',
-            'last_connected_at' => now(),
-        ]);
+        ];
+
+        if ($online) {
+            $updates['last_connected_at'] = now();
+        }
+
+        $device->update($updates);
 
         return $device->refresh();
     }

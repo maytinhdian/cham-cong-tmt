@@ -15,6 +15,19 @@ This file records the API subset most relevant to TMT Time Attendance.
 
 ## Initialize Options
 
+This is the first request a device sends after its ADMS/PUSH server IP and port are configured. The
+protocol family describes two initialization paths:
+
+- Registered device: server recognizes the serial number and returns the registration/configuration
+  information needed to complete the connection.
+- Unregistered device: some newer/security-oriented flows ask the device to register first, then
+  download configuration after registration succeeds.
+
+For the current TMT attendance-log scope, the app uses the simpler attendance PUSH behavior: it
+matches `SN` to `attendance_devices.code`, auto-creates an unknown device record, and immediately
+returns the option block below. Add a stricter registration handshake only if a real target device
+requires it.
+
 Device request:
 
 ```http
@@ -380,6 +393,14 @@ The Laravel app already follows this subset:
 - `GET|POST /iclock/getrequest` for command polling.
 - `GET|POST /iclock/ping` for heartbeat.
 - `POST /iclock/devicecmd` for command acknowledgements.
+
+Related operator page:
+
+- `GET /pages/attendance/push-receiver` shows the receiver monitor for authenticated users with
+  `attendance.raw_logs.view`.
+- The page does not receive device HTTP traffic itself. Physical machines still post to `/iclock/*`.
+- Operators with `attendance.devices.manage` can queue a `LOG` command from the page; the device
+  receives it on the next `/iclock/getrequest` poll.
 
 Implementation note:
 

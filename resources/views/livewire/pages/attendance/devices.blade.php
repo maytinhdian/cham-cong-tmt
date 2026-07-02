@@ -42,7 +42,7 @@
                                 <div class="card-body p-3">
                                     <p class="text-sm text-secondary mb-1">Đang online</p>
                                     <h6 class="mb-0">{{ $onlineCount }}</h6>
-                                    <p class="text-sm mb-0">Dựa trên lần kiểm tra kết nối</p>
+                                    <p class="text-sm mb-0">Dựa trên lần máy gọi server qua PUSH</p>
                                 </div>
                             </div>
                         </div>
@@ -70,7 +70,7 @@
                                     <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
                                         <div>
                                             <h6 class="mb-1">Danh sách thiết bị</h6>
-                                            <p class="text-sm mb-0">Kiểm tra kết nối và ghi nhận thời điểm đồng bộ trước khi lấy log thô.</p>
+                                            <p class="text-sm mb-0">Theo dõi lần máy gọi server, xếp lệnh PUSH và nhận log thô.</p>
                                         </div>
                                         <div>
                                             <select class="form-control" wire:model.live="statusFilter">
@@ -96,6 +96,9 @@
                                             </thead>
                                             <tbody>
                                                 @forelse ($devices as $device)
+                                                    @php
+                                                        $isRecentlyConnected = $device->last_connected_at?->greaterThanOrEqualTo($recentlyConnectedAfter) ?? false;
+                                                    @endphp
                                                     <tr @class(['bg-gray-100' => (int) $editingDeviceId === $device->id])>
                                                         <td>
                                                             <div class="d-flex px-2 py-1">
@@ -110,13 +113,16 @@
                                                         </td>
                                                         <td>
                                                             <p class="text-sm mb-0">{{ $device->ip_address ?: 'Chưa có IP' }}:{{ $device->port }}</p>
-                                                            @if ($device->connection_status === 'online')
+                                                            @if ($isRecentlyConnected)
                                                                 <span class="badge bg-gradient-success">Online</span>
-                                                            @elseif ($device->connection_status === 'offline')
-                                                                <span class="badge bg-gradient-warning">Offline</span>
-                                                            @else
+                                                            @elseif (! $device->last_connected_at)
                                                                 <span class="badge bg-gradient-secondary">Chưa kiểm tra</span>
+                                                            @else
+                                                                <span class="badge bg-gradient-warning">Offline</span>
                                                             @endif
+                                                            <p class="text-xs text-secondary mb-0 mt-1">
+                                                                {{ $device->last_connected_at ? 'Gọi server: ' . $device->last_connected_at->diffForHumans() : 'Chưa có heartbeat/PUSH' }}
+                                                            </p>
                                                         </td>
                                                         <td>
                                                             <p class="text-sm mb-0">{{ $device->location ?: 'Chưa khai báo' }}</p>
@@ -248,7 +254,7 @@
                                         </div>
 
                                         <div class="alert alert-info text-white mt-4" role="alert">
-                                            Đồng bộ hiện tại chỉ ghi nhận thời điểm. Bước tiếp theo sẽ tạo bảng log chấm công thô.
+                                            Với ZKTeco PUSH, mã thiết bị nên là serial SN. Máy cần cấu hình ADMS/PUSH trỏ về server để gọi /iclock/cdata và /iclock/getrequest.
                                         </div>
 
                                         <button type="submit" class="btn bg-gradient-dark w-100 mb-0">

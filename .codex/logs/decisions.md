@@ -1,5 +1,75 @@
 # Architecture Decisions
 
+## 2026-07-02
+
+Decision:
+
+Expose ZKTeco PUSH reception through a separate authenticated operator page, while keeping physical device traffic on the public `/iclock/*` endpoints.
+
+Reason:
+
+The device protocol requires plain text public endpoints that physical devices call directly. The HR operator workflow needs a readable monitor for endpoint configuration, heartbeat status, raw log arrival, and queued command status without changing the machine-facing protocol URLs.
+
+Result:
+
+`/pages/attendance/push-receiver` is protected by `attendance.raw_logs.view` and shows real receiver data. Device commands can be queued from this page only by users with `attendance.devices.manage`.
+
+## 2026-07-02
+
+Decision:
+
+Keep the current ZKTeco attendance initialization flow as `SN` lookup or auto-create plus immediate option response, instead of adding mandatory device registration now.
+
+Reason:
+
+The attached protocol note describes registered and unregistered initialization paths, but the current real-device attendance integration and existing tests use the simpler attendance PUSH subset. Adding a stricter registration handshake before a target device requires it could block older attendance devices from receiving `GET OPTION FROM`.
+
+Result:
+
+The API reference now documents the registration variant as a protocol possibility, while TMT continues to return options from `/iclock/cdata?SN=...&options=all` and stores the device serial number in `attendance_devices.code`.
+
+## 2026-07-02
+
+Decision:
+
+Attendance device online status should be based on recent ZKTeco PUSH/ADMS contact with the Laravel server, not on whether an IP address is present or whether the server can open a direct device socket.
+
+Reason:
+
+The supported production integration is device-initiated PUSH. A configured device proves connectivity by calling `/iclock/cdata`, `/iclock/getrequest`, `/iclock/ping`, or `/iclock/devicecmd`; direct `4370` access is useful for local hardware diagnostics but does not prove the ADMS/PUSH path is working.
+
+Result:
+
+The device page treats a machine as online only when `last_connected_at` is within the last 15 minutes. Stale or missing heartbeat/PUSH activity is shown as offline or not yet checked, and failed checks no longer refresh `last_connected_at`.
+
+## 2026-07-01
+
+Decision:
+
+Operational device management should use the ZKTeco PUSH command queue instead of direct `4370` socket calls.
+
+Reason:
+
+The physical device should be managed consistently through the documented ADMS/PUSH flow: the device polls `/iclock/getrequest`, receives server commands, and posts command results to `/iclock/devicecmd`. Direct `4370` access is useful for emergency testing, but it bypasses the production integration contract.
+
+Result:
+
+`AttendanceDeviceCommandService` now supports generic queued PUSH commands with payloads and includes a dedicated `queueDeleteAllUsers()` helper for `DATA DELETE USERINFO`. Destructive commands should not be left pending unless the device is configured to poll the Laravel server.
+
+## 2026-07-01
+
+Decision:
+
+Real ZKTeco device records should use the physical device serial number as `attendance_devices.code` when integrating with PUSH endpoints.
+
+Reason:
+
+The PUSH protocol identifies the device with the `SN` query parameter, and the existing import service matches that serial number to `attendance_devices.code`. Using the serial as the code prevents duplicate device records when the physical machine starts polling `/iclock/*`.
+
+Result:
+
+The real device at `192.168.1.92` is registered as serial `0068143300011` on port `4370`. Direct ZK protocol testing can read users/logs, while the production-facing import path remains the existing `/iclock/cdata` PUSH flow.
+
 ## 2026-06-30
 
 Decision:

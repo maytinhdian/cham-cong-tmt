@@ -2,6 +2,72 @@
 
 This file is the working memory for the HR and time attendance build. Read it before changing HR, attendance, schedule, device, payroll, or report features.
 
+## 2026-07-02 Raw Attendance Log Cleanup
+
+- Cleared all existing rows from `raw_attendance_logs` after the user requested deleting old logs.
+- Deleted 123 raw attendance log rows.
+- Kept attendance devices, device-user mappings, queued device commands, processed attendance data, and system activity logs unchanged.
+
+## 2026-07-02 Raw Log Auto Refresh
+
+- Added Livewire polling to the PUSH receiver page so new device logs appear without manually refreshing the browser.
+- Added the same polling behavior to the raw attendance log page.
+- Both pages now refresh their Livewire data every 5 seconds while open.
+- Verified Blade compilation and existing ZKTeco PUSH protocol tests.
+
+## 2026-07-02 PUSH Receiver Page
+
+- Added a separate Livewire page at `/pages/attendance/push-receiver` for monitoring ZKTeco PUSH data reception.
+- The page shows ADMS/PUSH endpoint URLs, online devices based on recent `/iclock/*` calls, today's received `zkteco_push` raw logs, pending commands, recent logs, and recent command statuses.
+- Added a device-level `LOG` queue action on the receiver page for users with `attendance.devices.manage`.
+- Protected the page with the existing `attendance.raw_logs.view` permission.
+- Added the page to the `Thiết bị chấm công` sidebar group as `Nhận dữ liệu PUSH`.
+- Documented the operator page in `.codex/docs/devices/zkteco-push-api-reference.md`.
+
+## 2026-07-02 PUSH Device Connection Check
+
+- Reviewed the attendance device connection flow after the real ZKTeco test.
+- Confirmed the physical device at `192.168.1.92` currently has TCP port `80` and ZK protocol port `4370` open, while port `8081` is closed.
+- Kept production device operations aligned with the existing ZKTeco PUSH/ADMS flow instead of direct socket checks.
+- Updated the device page connection check so a device is considered online only when it has called the Laravel server through `/iclock/*` in the last 15 minutes.
+- Updated online/offline counts, status filtering, and row badges to use recent `last_connected_at` heartbeat/PUSH activity.
+- Stopped failed connection checks from overwriting `last_connected_at` with the current time.
+- Updated device page guidance to explain that ZKTeco PUSH devices should use serial `SN` as the device code and must point ADMS/PUSH to the Laravel server.
+- Verified PHP syntax, Blade compilation, and the existing ZKTeco PUSH feature tests.
+
+## 2026-07-02 ZKTeco Initialization Documentation
+
+- Read the attached notes about `Initialize Information Interaction` for ZKTeco PUSH.
+- Confirmed the key point that the device initiates the first connection with `GET /iclock/cdata?SN=...&options=all&pushver=...`.
+- Added a registration-flow note to `.codex/docs/devices/zkteco-push-api-reference.md`.
+- Clarified in `.codex/docs/devices/zkteco-push-summary.md` that TMT currently follows the attendance PUSH subset by auto-creating unknown serial numbers and returning options immediately.
+
+## 2026-07-01 Real ZKTeco Device Test
+
+- Tested the real attendance device at `192.168.1.92`.
+- Confirmed network reachability and open ports:
+  - HTTP web UI on port `80`, redirecting to `/csl/login`.
+  - ZK device protocol on port `4370`.
+  - Previously saved port `8081` did not respond.
+- Connected through the ZK protocol and read device information:
+  - Serial: `0068143300011`.
+  - Device name/model: `210 PLUS`.
+  - Platform: `ZMM220_TFT`.
+  - Firmware: `Ver 6.60 May 14 2018`.
+  - Device clock reported `2024-05-03 13:18:21`.
+- Updated the existing `Bảo Vệ` attendance device record to use code/serial `0068143300011`, IP `192.168.1.92`, and port `4370`.
+- Read 280 device users and 110 attendance logs from the device.
+- Imported the 110 logs through the existing local PUSH endpoint `/iclock/cdata?SN=0068143300011&table=ATTLOG`, so the normal parser/import service handled persistence.
+- Verified the imported raw logs are stored as `zkteco_push`, pending processing, with timestamps from `2024-05-02 11:35:48` through `2024-05-03 08:04:30`.
+- Queued a `LOG` command for the device. It remains pending until the physical device polls `/iclock/getrequest` through PUSH/ADMS.
+- Reconnected to the same device and confirmed the device clock was corrected to `2026-07-01`.
+- Deleted all users from the physical device through the ZK protocol on port `4370` after the user explicitly requested deletion without backup.
+- Verified the device user count is now `0`.
+- Verified attendance logs were not cleared; the device still reports `111` attendance log rows after the user deletion.
+- Realigned the implementation direction back to PUSH-only device operations after user feedback.
+- Updated `AttendanceDeviceCommandService` so queued commands can include arbitrary PUSH command text and payload instead of only returning bare commands such as `LOG`.
+- Added a `queueDeleteAllUsers()` service method for the PUSH command `DATA DELETE USERINFO`, to be dispatched only through `/iclock/getrequest` when the device polls the Laravel server.
+
 ## 2026-06-30 Role Permission Switch Controls
 
 - Updated the shared role permission matrix partial so each permission is selected with a Material Dashboard `form-switch` on/off control.

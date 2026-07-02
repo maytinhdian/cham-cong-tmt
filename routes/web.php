@@ -45,6 +45,7 @@ use App\Http\Livewire\Pages\Attendance\DeviceUserMappings as AttendanceDeviceUse
 use App\Http\Livewire\Pages\Attendance\DailyTimesheet as AttendanceDailyTimesheet;
 use App\Http\Livewire\Pages\Attendance\MonthlyTimesheet as AttendanceMonthlyTimesheet;
 use App\Http\Livewire\Pages\Attendance\ProcessLogs as AttendanceProcessLogs;
+use App\Http\Livewire\Pages\Attendance\PushReceiver as AttendancePushReceiver;
 use App\Http\Livewire\Pages\Attendance\RawLogs as AttendanceRawLogs;
 use App\Http\Livewire\Pages\Attendance\Schedule as AttendanceSchedule;
 use App\Http\Livewire\Pages\Attendance\ShiftDefinition as AttendanceShiftDefinition;
@@ -175,6 +176,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('pages/attendance/symbol-statistics', AttendanceSymbolStatistics::class)->middleware('can:attendance.settings.manage')->name('attendance-symbol-statistics');
     Route::get('pages/attendance/devices', AttendanceDevices::class)->middleware('can:attendance.devices.manage')->name('attendance-devices');
     Route::get('pages/attendance/device-user-mappings', AttendanceDeviceUserMappings::class)->middleware('can:attendance.devices.manage')->name('attendance-device-user-mappings');
+    Route::get('pages/attendance/push-receiver', AttendancePushReceiver::class)->middleware('can:attendance.raw_logs.view')->name('attendance-push-receiver');
     Route::get('pages/attendance/raw-logs', AttendanceRawLogs::class)->middleware('can:attendance.raw_logs.view')->name('attendance-raw-logs');
     Route::get('pages/attendance/process-logs', AttendanceProcessLogs::class)->middleware('can:attendance.processing.run')->name('attendance-process-logs');
     Route::get('pages/attendance/tabulator-demo', AttendanceTabulatorDemo::class)->name('attendance-tabulator-demo');

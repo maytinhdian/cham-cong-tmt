@@ -105,14 +105,14 @@ class Devices extends Component
     }
 
     /**
-     * Record a simulated connection check until real device drivers are added.
+     * Check whether a PUSH device has contacted the server recently.
      */
     public function checkConnection(int $deviceId): void
     {
         $this->authorize('attendance.devices.manage');
 
         $device = AttendanceDevice::query()->findOrFail($deviceId);
-        $online = filled($device->ip_address);
+        $online = $device->last_connected_at?->greaterThanOrEqualTo(now()->subMinutes(15)) ?? false;
 
         app(AttendanceDeviceService::class)->markConnectionChecked($device, $online);
 
@@ -127,7 +127,9 @@ class Devices extends Component
 
         session()->flash(
             'success',
-            $online ? 'Đã kiểm tra kết nối: thiết bị online.' : 'Đã kiểm tra kết nối: thiếu IP nên thiết bị offline.'
+            $online
+                ? 'Đã kiểm tra kết nối: thiết bị vừa gọi server qua PUSH.'
+                : 'Chưa thấy thiết bị gọi server trong 15 phút gần đây. Vui lòng kiểm tra cấu hình ADMS/PUSH.'
         );
     }
 
@@ -173,16 +175,33 @@ class Devices extends Component
      */
     public function render()
     {
+        $recentlyConnectedAfter = now()->subMinutes(15);
+
         $devices = AttendanceDevice::query()
-            ->when($this->statusFilter, fn ($query) => $query->where('connection_status', $this->statusFilter))
+            ->when(
+                $this->statusFilter === 'online',
+                fn ($query) => $query->where('last_connected_at', '>=', $recentlyConnectedAfter)
+            )
+            ->when(
+                $this->statusFilter === 'offline',
+                fn ($query) => $query->where(function ($query) use ($recentlyConnectedAfter) {
+                    $query->whereNull('last_connected_at')
+                        ->orWhere('last_connected_at', '<', $recentlyConnectedAfter);
+                })
+            )
+            ->when(
+                $this->statusFilter === 'unknown',
+                fn ($query) => $query->where('connection_status', 'unknown')->whereNull('last_connected_at')
+            )
             ->orderBy('code')
             ->get();
 
         return view('livewire.pages.attendance.devices', [
             'devices' => $devices,
-            'onlineCount' => $devices->where('connection_status', 'online')->count(),
-            'offlineCount' => $devices->where('connection_status', 'offline')->count(),
+            'onlineCount' => $devices->filter(fn ($device) => $device->last_connected_at?->greaterThanOrEqualTo($recentlyConnectedAfter))->count(),
+            'offlineCount' => $devices->filter(fn ($device) => ! $device->last_connected_at || $device->last_connected_at->lessThan($recentlyConnectedAfter))->count(),
             'latestSyncedDevice' => $devices->whereNotNull('last_synced_at')->sortByDesc('last_synced_at')->first(),
+            'recentlyConnectedAfter' => $recentlyConnectedAfter,
         ]);
     }
 

@@ -1,5 +1,41 @@
 # Known Issues
 
+## 2026-07-02 PUSH Receiver Page
+
+Problem:
+
+No new unresolved implementation problem was found while adding the PUSH receiver monitor page.
+
+Impact:
+
+The page can display receiver status and recent raw logs, but it still depends on the existing operational requirement that physical devices must be configured to call the Laravel `/iclock/*` endpoints.
+
+Priority:
+
+None beyond the existing real-device ADMS/PUSH configuration issue
+
+## 2026-07-01 Real ZKTeco Device Test
+
+Problem:
+
+The real device at `192.168.1.92` is reachable and log import works, but no employee mappings exist yet for serial `0068143300011`. The physical device user list was cleared after explicit user request, leaving the machine with `0` users.
+
+Impact:
+
+Previously imported logs appear under May 2024 and all imported logs have `employee_id = null`. Attendance processing cannot attach them to internal employees until device users are recreated/synced and `attendance_device_user_maps` are created. A queued `LOG` command also remains pending until the physical device is configured to poll the Laravel server's PUSH endpoints.
+
+Pending Work:
+
+Configure PUSH/ADMS on the machine to call the Laravel host `192.168.1.26` and dev port `8000` or the deployed app URL, recreate/sync the intended device users, then create device-user mappings for the machine's user codes. After PUSH polling is confirmed, dispatch device-management commands only through `/iclock/getrequest` and track replies through `/iclock/devicecmd`.
+
+2026-07-02 Update:
+
+TCP checks from the development machine still show `192.168.1.92:80` and `192.168.1.92:4370` open, with `8081` closed. This confirms local network reachability, but the app's online status now depends on recent PUSH/ADMS calls into `/iclock/*`, so the device will remain offline in the UI until it polls the Laravel server.
+
+Priority:
+
+High before production attendance processing from this device
+
 ## 2026-06-30 Role Permission Switch Controls
 
 Problem:

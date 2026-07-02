@@ -10,7 +10,7 @@
         $showReportMenus = $currentUser?->can('reports.view');
         $showEmployeeMenus = $currentUser?->can('employees.view') || $currentUser?->can('employees.manage');
         $attendanceSettingRoutes = ['attendance-settings', 'attendance-schedules', 'attendance-shift-definition', 'attendance-weekend-definition', 'attendance-symbol-statistics'];
-        $deviceRoutes = ['attendance-devices', 'attendance-device-user-mappings', 'attendance-raw-logs', 'attendance-process-logs'];
+        $deviceRoutes = ['attendance-devices', 'attendance-device-user-mappings', 'attendance-push-receiver', 'attendance-raw-logs', 'attendance-process-logs'];
         $timesheetRoutes = ['attendance-daily-timesheet', 'attendance-monthly-timesheet'];
         $employeeRoutes = ['employee-list', 'new-user', 'employee-dashboard', 'employee-bulk-create', 'employee-department', 'employee-company-chart', 'employee-position'];
         $demoGroups = [
@@ -233,6 +233,13 @@
                                 </li>
                             @endcan
                             @can('attendance.raw_logs.view')
+                                <li class="nav-item {{ Route::currentRouteName() == 'attendance-push-receiver' ? 'active' : '' }}">
+                                    <a class="nav-link text-white {{ Route::currentRouteName() == 'attendance-push-receiver' ? 'active' : '' }}"
+                                        href="{{ route('attendance-push-receiver') }}">
+                                        <span class="sidenav-mini-icon"> PS </span>
+                                        <span class="sidenav-normal ms-2 ps-1"> Nhận dữ liệu PUSH </span>
+                                    </a>
+                                </li>
                                 <li class="nav-item {{ Route::currentRouteName() == 'attendance-raw-logs' ? 'active' : '' }}">
                                     <a class="nav-link text-white {{ Route::currentRouteName() == 'attendance-raw-logs' ? 'active' : '' }}"
                                         href="{{ route('attendance-raw-logs') }}">

@@ -16,6 +16,7 @@ This project should treat the ZKTeco device serial number (`SN`) as the stable p
    - Device calls `GET /iclock/cdata?SN=...&options=all`.
    - Server returns plain-text options beginning with `GET OPTION FROM: <SN>`.
    - Important options include `ATTLOGStamp`, `ErrorDelay`, `Delay`, `TransTimes`, `TransInterval`, `TransFlag`, `TimeZone`, `Realtime`, `Encrypt`, and `PushProtVer`.
+   - Some protocol versions describe a stricter registered/unregistered device handshake before options are returned. TMT currently follows the attendance PUSH subset by auto-creating unknown serial numbers and returning options immediately.
 
 2. Device uploads attendance logs.
    - Device sends `POST /iclock/cdata?SN=...&table=ATTLOG&Stamp=...`.
