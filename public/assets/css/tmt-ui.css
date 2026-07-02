@@ -24,6 +24,55 @@
     box-shadow: 0 0 0 0.2rem rgba(233, 30, 99, 0.15);
 }
 
+.tmt-command-checkbox .form-check-input[type="checkbox"] {
+    background-color: #ffffff;
+    background-image: none;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    cursor: pointer;
+    flex: 0 0 1.1rem;
+    height: 1.1rem !important;
+    margin-top: 0;
+    max-height: 1.1rem;
+    max-width: 1.1rem;
+    min-height: 1.1rem;
+    min-width: 1.1rem;
+    position: relative;
+    width: 1.1rem !important;
+}
+
+.tmt-command-checkbox.form-check {
+    align-items: center;
+    display: inline-flex;
+    justify-content: center;
+    min-height: 1.1rem;
+    padding-left: 0;
+}
+
+.tmt-command-checkbox .form-check-input {
+    float: none;
+    margin-left: 0;
+}
+
+.form-check.tmt-command-checkbox:not(.form-switch) .form-check-input[type="checkbox"]:after {
+    border: 0;
+    content: none !important;
+    display: none !important;
+    font-family: inherit !important;
+    height: 0;
+    width: 0;
+}
+
+.tmt-command-checkbox .form-check-input[type="checkbox"]:checked {
+    background-color: #e91e63;
+    border-color: #e91e63;
+}
+
+.tmt-command-checkbox .form-check-input[type="checkbox"]:focus {
+    border-color: #e91e63;
+    box-shadow: 0 0 0 0.2rem rgba(233, 30, 99, 0.12);
+}
+
 .navbar-main .navbar-search {
     flex: 0 1 360px;
     max-width: 360px;
@@ -93,7 +142,8 @@
 }
 
 .employee-create-page .js-btn-prev .material-icons-round,
-.employee-create-page .js-btn-next .material-icons-round {
+.employee-create-page .js-btn-next .material-icons-round,
+.employee-create-page button[type="submit"] .material-icons-round {
     pointer-events: none;
 }
 

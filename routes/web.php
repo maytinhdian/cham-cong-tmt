@@ -41,6 +41,7 @@ use App\Http\Livewire\Pages\Employees\CompanyChart as EmployeeCompanyChart;
 use App\Http\Livewire\Pages\Employees\Position as EmployeePosition;
 use App\Http\Livewire\Pages\Attendance\Settings as AttendanceSettings;
 use App\Http\Livewire\Pages\Attendance\Devices as AttendanceDevices;
+use App\Http\Livewire\Pages\Attendance\DeviceCommandTester as AttendanceDeviceCommandTester;
 use App\Http\Livewire\Pages\Attendance\DeviceUserMappings as AttendanceDeviceUserMappings;
 use App\Http\Livewire\Pages\Attendance\DailyTimesheet as AttendanceDailyTimesheet;
 use App\Http\Livewire\Pages\Attendance\MonthlyTimesheet as AttendanceMonthlyTimesheet;
@@ -175,6 +176,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('pages/attendance/weekend-definition', AttendanceWeekendDefinition::class)->middleware('can:attendance.settings.manage')->name('attendance-weekend-definition');
     Route::get('pages/attendance/symbol-statistics', AttendanceSymbolStatistics::class)->middleware('can:attendance.settings.manage')->name('attendance-symbol-statistics');
     Route::get('pages/attendance/devices', AttendanceDevices::class)->middleware('can:attendance.devices.manage')->name('attendance-devices');
+    Route::get('pages/attendance/device-command-tester', AttendanceDeviceCommandTester::class)->middleware('can:attendance.devices.manage')->name('attendance-device-command-tester');
     Route::get('pages/attendance/device-user-mappings', AttendanceDeviceUserMappings::class)->middleware('can:attendance.devices.manage')->name('attendance-device-user-mappings');
     Route::get('pages/attendance/push-receiver', AttendancePushReceiver::class)->middleware('can:attendance.raw_logs.view')->name('attendance-push-receiver');
     Route::get('pages/attendance/raw-logs', AttendanceRawLogs::class)->middleware('can:attendance.raw_logs.view')->name('attendance-raw-logs');

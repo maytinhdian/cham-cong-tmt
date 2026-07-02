@@ -401,6 +401,13 @@ Related operator page:
 - The page does not receive device HTTP traffic itself. Physical machines still post to `/iclock/*`.
 - Operators with `attendance.devices.manage` can queue a `LOG` command from the page; the device
   receives it on the next `/iclock/getrequest` poll.
+- `GET /pages/attendance/device-command-tester` lets operators with `attendance.devices.manage`
+  queue test commands through the same PUSH command queue, including `LOG`, `CHECK`,
+  `RELOAD OPTIONS`, `SET OPTION`, `DATA QUERY ATTLOG StartTime=...\tEndTime=...`,
+  `DATA QUERY BIODATA`, and controlled custom command payloads.
+- The tester also exposes destructive presets for hardware validation: `DATA DELETE USERINFO`,
+  `DATA DELETE BIODATA`, and `CLEAR BIODATA`. These require an explicit `XOA` confirmation
+  in the UI before the command is queued.
 
 Implementation note:
 

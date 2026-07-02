@@ -2,12 +2,30 @@
 
 This file is the working memory for the HR and time attendance build. Read it before changing HR, attendance, schedule, device, payroll, or report features.
 
+## 2026-07-03 Device Command Tester
+
+- Added `/pages/attendance/device-command-tester` as an authenticated operator page for testing ZKTeco PUSH commands against configured attendance devices.
+- The page lets authorized users queue `DATA QUERY ATTLOG` by start/end time, queue `LOG`, queue `CHECK`, or send a controlled custom PUSH command/payload.
+- Expanded the tester with documented presets for `RELOAD OPTIONS`, `SET OPTION`, `DATA QUERY BIODATA`, `DATA DELETE USERINFO`, `DATA DELETE BIODATA`, and `CLEAR BIODATA`.
+- Added a visible list of destructive/delete-capable commands on the tester page and require the operator to type `XOA` before queueing those commands.
+- Added multi-select cleanup for recent test commands so operators can delete selected pending commands or old command-history rows from the tester.
+- Scoped the recent-command row checkboxes to a native CSS checkmark so they no longer depend on the remote Font Awesome font used by the Material Dashboard checkbox style.
+- Added live polling panels for selected-device pending commands, today's received PUSH logs, recent queued commands, and recent imported raw logs.
+- Added `AttendanceDeviceCommandService::queueAttendanceLogQuery()` and `queueCheckSync()` helpers so range sync and CHECK commands stay in the shared PUSH command queue.
+- Added command service helpers for reload options, set option, BIODATA query, user deletion, BIODATA deletion, and BIODATA clearing.
+- Added the page to the `Thiết bị chấm công` sidebar group as `Test liên kết`.
+- Added feature coverage for dispatching a queued `DATA QUERY ATTLOG StartTime=...\tEndTime=...` command and destructive delete commands through `/iclock/getrequest`.
+- Verified PHP syntax, Blade compilation, route registration, and the ZKTeco PUSH feature tests.
+
 ## 2026-07-02 Employee Create Account Wizard
 
 - Wired the `/pages/users/new-user` wizard account step into the existing `EmployeeAccountService`.
 - Added an authorization-aware option to create a login account while creating a new employee profile.
 - Users with `authorization.manage` can enable account creation, choose a role, and enter the initial password.
 - Account provisioning uses the employee code as username and links the created `users` row back to `employees.user_id`.
+- Added a numeric `Mã chấm công` field to the new employee wizard and quick form.
+- When a new employee has a `Mã chấm công`, the app creates `attendance_device_user_maps` rows for every attendance device and applies those mappings to existing unmapped raw logs.
+- Kept the login provisioning step focused on role and initial password only; the switch now reveals those fields client-side so the wizard stays on the account step instead of resetting to step one.
 - Kept users without `authorization.manage` able to create the employee profile without account provisioning.
 - Updated the new employee wizard layout, full-width forms, icon-only wizard navigation, and scoped CSS for wizard panel height.
 - Verified PHP syntax and Blade compilation.

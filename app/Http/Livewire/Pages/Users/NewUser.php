@@ -8,6 +8,10 @@ use Livewire\Component;
 use Modules\Org\Models\Department;
 use Modules\Org\Models\Position;
 use Modules\Shift\Models\Shift;
+use Modules\Device\DTOs\AttendanceDeviceUserMapData;
+use Modules\Device\Models\AttendanceDevice;
+use Modules\Device\Models\AttendanceDeviceUserMap;
+use Modules\Device\Services\AttendanceDeviceUserMapService;
 use Modules\User\Actions\CreateEmployeeAction;
 use Modules\User\DTOs\EmployeeData;
 use Modules\User\Models\Employee;
@@ -22,6 +26,8 @@ class NewUser extends Component
     public string $fullName = '';
 
     public string $employeeCode = '';
+
+    public ?string $attendanceCode = null;
 
     public ?string $email = null;
 
@@ -62,13 +68,31 @@ class NewUser extends Component
     }
 
     /**
+     * Refresh account fields immediately when HR toggles login provisioning.
+     */
+    public function updatedCreateLoginAccount(bool $enabled): void
+    {
+        if (! $enabled) {
+            $this->accountPassword = null;
+        }
+
+        $this->resetValidation([
+            'accountPassword',
+            'accountRoleId',
+        ]);
+    }
+
+    /**
      * Create a new employee profile and optionally provision its login account.
      */
-    public function saveEmployee(EmployeeAccountService $employeeAccountService): void
+    public function saveEmployee(): void
     {
+        $employeeAccountService = app(EmployeeAccountService::class);
+
         $rules = [
             'fullName' => ['required', 'string', 'max:255'],
             'employeeCode' => ['required', 'string', 'max:50', 'unique:employees,employee_code'],
+            'attendanceCode' => ['nullable', 'integer', 'min:1'],
             'email' => ['nullable', 'email', 'max:255', 'unique:employees,email'],
             'phone' => ['nullable', 'string', 'max:30'],
             'gender' => ['nullable', 'string', 'max:20'],
@@ -92,12 +116,22 @@ class NewUser extends Component
             'fullName.required' => 'Vui lòng nhập họ và tên nhân viên.',
             'employeeCode.required' => 'Vui lòng nhập mã nhân viên.',
             'employeeCode.unique' => 'Mã nhân viên này đã tồn tại.',
+            'attendanceCode.integer' => 'Mã chấm công chỉ được nhập số nguyên.',
+            'attendanceCode.min' => 'Mã chấm công phải lớn hơn 0.',
             'email.email' => 'Email chưa đúng định dạng.',
             'email.unique' => 'Email này đã được dùng cho nhân viên khác.',
             'accountPassword.required' => 'Vui lòng nhập mật khẩu cấp cho nhân viên.',
             'accountPassword.min' => 'Mật khẩu cần ít nhất 7 ký tự.',
             'accountRoleId.required' => 'Vui lòng chọn vai trò đăng nhập.',
         ]);
+
+        $attendanceCode = $this->normalizedAttendanceCode($validated['attendanceCode'] ?? null);
+
+        if ($attendanceCode && AttendanceDeviceUserMap::query()->where('device_user_code', $attendanceCode)->exists()) {
+            $this->addError('attendanceCode', 'Mã chấm công này đã được liên kết với nhân viên khác.');
+
+            return;
+        }
 
         $employee = app(CreateEmployeeAction::class)->execute(new EmployeeData(
             userId: null,
@@ -122,12 +156,23 @@ class NewUser extends Component
             );
         }
 
-        session()->flash(
-            'success',
-            $this->createLoginAccount
-                ? 'Đã tạo nhân viên mới và cấp tài khoản đăng nhập thành công.'
-                : 'Đã tạo nhân viên mới thành công.'
-        );
+        $mappingCount = $attendanceCode
+            ? $this->saveAttendanceCodeMappings($employee, $attendanceCode, app(AttendanceDeviceUserMapService::class))
+            : 0;
+
+        $successMessage = $this->createLoginAccount
+            ? 'Đã tạo nhân viên mới và cấp tài khoản đăng nhập'
+            : 'Đã tạo nhân viên mới';
+
+        $successMessage .= $mappingCount > 0
+            ? ' và liên kết mã chấm công trên ' . $mappingCount . ' thiết bị.'
+            : ' thành công.';
+
+        if ($attendanceCode && $mappingCount === 0) {
+            $successMessage .= ' Chưa có máy chấm công nên mã chấm công chưa được tạo mapping.';
+        }
+
+        session()->flash('success', $successMessage);
 
         $this->resetForm($employeeAccountService);
     }
@@ -140,6 +185,7 @@ class NewUser extends Component
         $this->reset([
             'fullName',
             'employeeCode',
+            'attendanceCode',
             'email',
             'phone',
             'gender',
@@ -169,6 +215,45 @@ class NewUser extends Component
         }
 
         return trim(($note ? $note . PHP_EOL : '') . 'Ca làm ban đầu: ' . $shift->name);
+    }
+
+    /**
+     * Save the same attendance code for every active device so PUSH logs can map automatically.
+     */
+    private function saveAttendanceCodeMappings(Employee $employee, string $attendanceCode, AttendanceDeviceUserMapService $mappingService): int
+    {
+        $count = 0;
+
+        AttendanceDevice::query()
+            ->orderBy('name')
+            ->get()
+            ->each(function (AttendanceDevice $device) use ($employee, $attendanceCode, $mappingService, &$count): void {
+                $mapping = $mappingService->save(new AttendanceDeviceUserMapData(
+                    attendanceDeviceId: $device->id,
+                    employeeId: $employee->id,
+                    deviceUserCode: $attendanceCode,
+                    deviceUserName: $employee->full_name,
+                    status: 'active',
+                    note: 'Tạo tự động khi thêm nhân viên.',
+                ));
+
+                $mappingService->applyToRawLogs($mapping);
+                $count++;
+            });
+
+        return $count;
+    }
+
+    /**
+     * Normalize an optional attendance code into the integer string stored by devices.
+     */
+    private function normalizedAttendanceCode(mixed $value): ?string
+    {
+        if ($value === null || $value === '') {
+            return null;
+        }
+
+        return (string) ((int) $value);
     }
 
     /**

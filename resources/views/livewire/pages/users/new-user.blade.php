@@ -131,15 +131,20 @@
                                             <p class="mb-0 text-sm">Nhập thông tin cơ bản của nhân viên.</p>
                                             <div class="multisteps-form__content">
                                                 <div class="row mt-3">
-                                                    <div class="col-12 col-sm-6">
+                                                    <div class="col-12 col-lg-6">
                                                         <label class="form-label">Họ và tên <span class="text-danger">*</span></label>
                                                         <input class="form-control" type="text" wire:model="fullName" placeholder="Nguyễn Văn A">
                                                         @error('fullName') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
                                                     </div>
-                                                    <div class="col-12 col-sm-6 mt-3 mt-sm-0">
+                                                    <div class="col-12 col-sm-6 col-lg-3 mt-3 mt-lg-0">
                                                         <label class="form-label">Mã nhân viên <span class="text-danger">*</span></label>
                                                         <input class="form-control" type="text" wire:model="employeeCode" placeholder="EMP-005">
                                                         @error('employeeCode') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
+                                                    </div>
+                                                    <div class="col-12 col-sm-6 col-lg-3 mt-3 mt-lg-0">
+                                                        <label class="form-label">Mã chấm công</label>
+                                                        <input class="form-control" type="number" min="1" step="1" wire:model="attendanceCode" placeholder="1">
+                                                        @error('attendanceCode') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
                                                     </div>
                                                 </div>
                                                 <div class="row mt-3">
@@ -251,30 +256,28 @@
                                             <div class="multisteps-form__content">
                                                 @can('authorization.manage')
                                                     <div class="form-check form-switch mt-3">
-                                                        <input class="form-check-input" type="checkbox" id="createLoginAccount" wire:model="createLoginAccount">
+                                                        <input class="form-check-input" type="checkbox" id="createLoginAccount" wire:model="createLoginAccount" onchange="window.tmtToggleEmployeeAccountFields && window.tmtToggleEmployeeAccountFields(this)">
                                                         <label class="form-check-label" for="createLoginAccount">Tạo tài khoản đăng nhập</label>
                                                     </div>
 
-                                                    @if ($createLoginAccount)
-                                                        <div class="row mt-3">
-                                                            <div class="col-12 col-sm-6">
-                                                                <label class="form-label">Vai trò đăng nhập <span class="text-danger">*</span></label>
-                                                                <select class="form-control" wire:model="accountRoleId">
-                                                                    <option value="">Chọn vai trò</option>
-                                                                    @foreach ($roles as $role)
-                                                                        <option value="{{ $role->id }}">{{ $role->name }}</option>
-                                                                    @endforeach
-                                                                </select>
-                                                                @error('accountRoleId') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
-                                                            </div>
-                                                            <div class="col-12 col-sm-6 mt-3 mt-sm-0">
-                                                                <label class="form-label">Mật khẩu ban đầu <span class="text-danger">*</span></label>
-                                                                <input class="form-control" type="password" wire:model="accountPassword" autocomplete="new-password">
-                                                                @error('accountPassword') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
-                                                            </div>
+                                                    <div id="employeeAccountFields" class="row mt-3 {{ $createLoginAccount ? '' : 'd-none' }}">
+                                                        <div class="col-12 col-sm-6">
+                                                            <label class="form-label">Vai trò đăng nhập <span class="text-danger">*</span></label>
+                                                            <select class="form-control" wire:model="accountRoleId">
+                                                                <option value="">Chọn vai trò</option>
+                                                                @foreach ($roles as $role)
+                                                                    <option value="{{ $role->id }}">{{ $role->name }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                            @error('accountRoleId') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
                                                         </div>
-                                                        <p class="text-xs text-secondary mt-2 mb-0">Tên đăng nhập sẽ dùng mã nhân viên. Email tài khoản dùng email nhân viên hoặc email nội bộ tự sinh nếu cần.</p>
-                                                    @endif
+                                                        <div class="col-12 col-sm-6 mt-3 mt-sm-0">
+                                                            <label class="form-label">Mật khẩu ban đầu <span class="text-danger">*</span></label>
+                                                            <input id="employeeAccountPassword" class="form-control" type="password" wire:model="accountPassword" autocomplete="new-password">
+                                                            @error('accountPassword') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
+                                                        </div>
+                                                    </div>
+                                                    <p id="employeeAccountHelp" class="text-xs text-secondary mt-2 mb-0 {{ $createLoginAccount ? '' : 'd-none' }}">Tên đăng nhập sẽ dùng mã nhân viên. Email tài khoản dùng email nhân viên hoặc email nội bộ tự sinh nếu cần.</p>
                                                 @else
                                                     <div class="alert alert-info text-white mt-3 mb-0" role="alert">
                                                         Bạn chưa có quyền cấp tài khoản đăng nhập. Hồ sơ nhân viên vẫn có thể được tạo trước.
@@ -295,6 +298,17 @@
                                             <h5 class="font-weight-bolder mb-0">Ghi chú và xác nhận</h5>
                                             <p class="mb-0 text-sm">Kiểm tra thông tin cuối cùng trước khi lưu nhân viên.</p>
                                             <div class="multisteps-form__content mt-3">
+                                                @if ($errors->any())
+                                                    <div class="alert alert-danger text-white" role="alert">
+                                                        <p class="mb-1 font-weight-bold">Chưa thể lưu nhân viên</p>
+                                                        <ul class="mb-0 ps-3">
+                                                            @foreach ($errors->all() as $error)
+                                                                <li>{{ $error }}</li>
+                                                            @endforeach
+                                                        </ul>
+                                                    </div>
+                                                @endif
+
                                                 <div class="row">
                                                     <div class="col-12">
                                                         <label class="form-label">Ghi chú</label>
@@ -329,15 +343,20 @@
                             <div class="card-body">
                                 <form wire:submit.prevent="saveEmployee">
                                     <div class="row">
-                                        <div class="col-12 col-sm-6">
+                                        <div class="col-12 col-lg-6">
                                             <label class="form-label">Họ và tên <span class="text-danger">*</span></label>
                                             <input class="form-control" type="text" wire:model="fullName" placeholder="Nguyễn Văn A">
                                             @error('fullName') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
                                         </div>
-                                        <div class="col-12 col-sm-6 mt-3 mt-sm-0">
+                                        <div class="col-12 col-sm-6 col-lg-3 mt-3 mt-lg-0">
                                             <label class="form-label">Mã nhân viên <span class="text-danger">*</span></label>
                                             <input class="form-control" type="text" wire:model="employeeCode" placeholder="EMP-005">
                                             @error('employeeCode') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
+                                        </div>
+                                        <div class="col-12 col-sm-6 col-lg-3 mt-3 mt-lg-0">
+                                            <label class="form-label">Mã chấm công</label>
+                                            <input class="form-control" type="number" min="1" step="1" wire:model="attendanceCode" placeholder="1">
+                                            @error('attendanceCode') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
                                         </div>
                                     </div>
                                     <div class="row mt-3">
@@ -406,4 +425,39 @@
 
 @push('js')
 <script src="{{ asset('assets') }}/js/plugins/multistep-form.js"></script>
+<script>
+    window.tmtToggleEmployeeAccountFields = function (checkbox) {
+        var fields = document.getElementById('employeeAccountFields');
+        var help = document.getElementById('employeeAccountHelp');
+        var password = document.getElementById('employeeAccountPassword');
+
+        if (!fields || !help) {
+            return;
+        }
+
+        fields.classList.toggle('d-none', !checkbox.checked);
+        help.classList.toggle('d-none', !checkbox.checked);
+
+        if (!checkbox.checked && password) {
+            password.value = '';
+            password.dispatchEvent(new Event('input', { bubbles: true }));
+        }
+    };
+
+    document.addEventListener('DOMContentLoaded', function () {
+        var checkbox = document.getElementById('createLoginAccount');
+
+        if (checkbox) {
+            window.tmtToggleEmployeeAccountFields(checkbox);
+        }
+    });
+
+    document.addEventListener('livewire:navigated', function () {
+        var checkbox = document.getElementById('createLoginAccount');
+
+        if (checkbox) {
+            window.tmtToggleEmployeeAccountFields(checkbox);
+        }
+    });
+</script>
 @endpush

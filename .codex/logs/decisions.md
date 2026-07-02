@@ -1,5 +1,21 @@
 # Architecture Decisions
 
+## 2026-07-03
+
+Decision:
+
+Add a separate device command tester page that uses the existing ZKTeco PUSH command queue instead of making direct socket calls to attendance machines.
+
+Reason:
+
+The production integration is device-initiated: machines poll `/iclock/getrequest`, execute queued commands, upload ATTLOG data through `/iclock/cdata`, and acknowledge through `/iclock/devicecmd`. A test page should exercise that same path so operator testing matches real deployment behavior.
+
+Result:
+
+`/pages/attendance/device-command-tester` is protected by `attendance.devices.manage` and can queue `LOG`, `CHECK`, `DATA QUERY ATTLOG` with a time range, or a controlled custom command. The command queue service now exposes dedicated helpers for range ATTLOG queries and CHECK sync, while the existing `/iclock/*` endpoints remain the only machine-facing protocol surface.
+
+Destructive command presets such as `DATA DELETE USERINFO`, `DATA DELETE BIODATA`, and `CLEAR BIODATA` are kept on the same tester page but require an explicit `XOA` confirmation before queueing. This keeps protocol testing available while making accidental device data deletion less likely.
+
 ## 2026-07-02
 
 Decision:
@@ -13,6 +29,22 @@ The employee list page already centralizes username, role, password hashing, emp
 Result:
 
 The wizard account step only exposes provisioning controls to users with `authorization.manage`. Employee profile creation remains available without account provisioning, while enabled account creation uses the employee code as username and writes the linked `users` record through the shared service.
+
+The wizard UI intentionally asks only for login role and initial password. It does not expose a separate username input because employee-code login remains the current account convention.
+
+## 2026-07-02
+
+Decision:
+
+Store the new employee form's `Mã chấm công` in `attendance_device_user_maps` for each configured attendance device instead of adding a new employee-table column now.
+
+Reason:
+
+The current device-log import path resolves raw logs through `attendance_device_user_maps`, and the table is scoped by device. Since the available machines use the same integer attendance code convention, creating one mapping per device lets new PUSH logs resolve immediately without changing the existing raw-log import contract.
+
+Result:
+
+The new employee form accepts only positive integer attendance codes. If the code is already mapped, the form blocks creation to avoid reassigning logs to the wrong employee. If no attendance devices exist, the form asks the user to create a device first before saving that mapping.
 
 ## 2026-07-02
 

@@ -1,14 +1,34 @@
 # Known Issues
 
+## 2026-07-03 Device Command Tester
+
+Problem:
+
+No new unresolved implementation problem was found while adding the device command tester page.
+
+Impact:
+
+The tester queues commands only. A physical ZKTeco device must be configured to poll the Laravel `/iclock/getrequest` endpoint before it can receive `LOG`, `CHECK`, or `DATA QUERY ATTLOG` commands, and uploaded logs still arrive through `/iclock/cdata?table=ATTLOG`.
+
+The tester now exposes destructive protocol commands for controlled hardware testing. Those commands can remove users or biometric templates from the physical device after the device polls and executes them, so the page requires `XOA` confirmation before queueing them.
+
+Priority:
+
+None beyond the existing real-device ADMS/PUSH configuration requirement
+
 ## 2026-07-02 Employee Create Account Wizard
 
 Problem:
 
 No new unresolved implementation problem was found while wiring account provisioning into the new employee wizard.
 
+No new unresolved issue was found while making the account provisioning switch update immediately.
+
 Impact:
 
 Only users with `authorization.manage` can create a linked login account during employee creation. Other users can still create the employee profile and provision the account later from employee management.
+
+The `Mã chấm công` field currently creates mapping rows only when at least one attendance device exists, because `attendance_device_user_maps` requires an `attendance_device_id`. If no device exists yet, the employee profile still saves successfully and the mapping can be created later after a device is added.
 
 Priority:
 

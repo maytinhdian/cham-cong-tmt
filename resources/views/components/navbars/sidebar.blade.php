@@ -10,7 +10,7 @@
         $showReportMenus = $currentUser?->can('reports.view');
         $showEmployeeMenus = $currentUser?->can('employees.view') || $currentUser?->can('employees.manage');
         $attendanceSettingRoutes = ['attendance-settings', 'attendance-schedules', 'attendance-shift-definition', 'attendance-weekend-definition', 'attendance-symbol-statistics'];
-        $deviceRoutes = ['attendance-devices', 'attendance-device-user-mappings', 'attendance-push-receiver', 'attendance-raw-logs', 'attendance-process-logs'];
+        $deviceRoutes = ['attendance-devices', 'attendance-device-command-tester', 'attendance-device-user-mappings', 'attendance-push-receiver', 'attendance-raw-logs', 'attendance-process-logs'];
         $timesheetRoutes = ['attendance-daily-timesheet', 'attendance-monthly-timesheet'];
         $employeeRoutes = ['employee-list', 'new-user', 'employee-dashboard', 'employee-department', 'employee-company-chart', 'employee-position'];
         $demoGroups = [
@@ -229,6 +229,13 @@
                                         href="{{ route('attendance-device-user-mappings') }}">
                                         <span class="sidenav-mini-icon"> MP </span>
                                         <span class="sidenav-normal ms-2 ps-1"> Mapping nhân viên </span>
+                                    </a>
+                                </li>
+                                <li class="nav-item {{ Route::currentRouteName() == 'attendance-device-command-tester' ? 'active' : '' }}">
+                                    <a class="nav-link text-white {{ Route::currentRouteName() == 'attendance-device-command-tester' ? 'active' : '' }}"
+                                        href="{{ route('attendance-device-command-tester') }}">
+                                        <span class="sidenav-mini-icon"> TL </span>
+                                        <span class="sidenav-normal ms-2 ps-1"> Test liên kết </span>
                                     </a>
                                 </li>
                             @endcan

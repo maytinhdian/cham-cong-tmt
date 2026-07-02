@@ -114,4 +114,66 @@ class ZktecoPushProtocolTest extends TestCase
 
         $this->assertSame('acknowledged', AttendanceDeviceCommand::query()->find($command->id)->status);
     }
+
+    /**
+     * It dispatches a queued ATTLOG range query using the ZKTeco DATA command format.
+     */
+    public function test_it_dispatches_attlog_range_query_to_device(): void
+    {
+        $device = AttendanceDevice::query()->create([
+            'code' => 'DEV-PUSH-04',
+            'name' => 'Factory Gate',
+            'device_type' => 'zkteco',
+        ]);
+
+        $command = app(AttendanceDeviceCommandService::class)->queueAttendanceLogQuery(
+            $device,
+            '2026-07-01 00:00:00',
+            '2026-07-31 23:59:59'
+        );
+
+        $response = $this->get('/iclock/getrequest?SN=DEV-PUSH-04');
+
+        $response->assertOk();
+        $response->assertSeeText('C: ' . $command->command_key . ': DATA QUERY ATTLOG StartTime=2026-07-01 00:00:00');
+        $response->assertSeeText("EndTime=2026-07-31 23:59:59");
+
+        $this->assertDatabaseHas('attendance_device_commands', [
+            'id' => $command->id,
+            'command' => 'DATA QUERY ATTLOG',
+            'payload' => "StartTime=2026-07-01 00:00:00\tEndTime=2026-07-31 23:59:59",
+            'status' => 'sent',
+        ]);
+    }
+
+    /**
+     * It dispatches queued destructive device commands in documented PUSH format.
+     */
+    public function test_it_dispatches_destructive_device_commands(): void
+    {
+        $device = AttendanceDevice::query()->create([
+            'code' => 'DEV-PUSH-05',
+            'name' => 'Office Gate',
+            'device_type' => 'zkteco',
+        ]);
+
+        $commandService = app(AttendanceDeviceCommandService::class);
+        $deleteUser = $commandService->queueDeleteUserInfo($device, '1452');
+        $deleteBiodata = $commandService->queueDeleteBiodata($device, '1452', '1', '2');
+        $clearBiodata = $commandService->queueClearBiodata($device);
+
+        $firstResponse = $this->get('/iclock/getrequest?SN=DEV-PUSH-05');
+        $firstResponse->assertOk();
+        $firstResponse->assertSeeText('C: ' . $deleteUser->command_key . ': DATA DELETE USERINFO PIN=1452');
+
+        $secondResponse = $this->get('/iclock/getrequest?SN=DEV-PUSH-05');
+        $secondResponse->assertOk();
+        $secondResponse->assertSeeText('C: ' . $deleteBiodata->command_key . ': DATA DELETE BIODATA Pin=1452');
+        $secondResponse->assertSeeText('Type=1');
+        $secondResponse->assertSeeText('No=2');
+
+        $thirdResponse = $this->get('/iclock/getrequest?SN=DEV-PUSH-05');
+        $thirdResponse->assertOk();
+        $thirdResponse->assertSeeText('C: ' . $clearBiodata->command_key . ': CLEAR BIODATA');
+    }
 }

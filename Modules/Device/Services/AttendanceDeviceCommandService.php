@@ -35,11 +35,79 @@ class AttendanceDeviceCommandService
     }
 
     /**
+     * Queue a time-range ATTLOG query so the device uploads matching attendance records.
+     */
+    public function queueAttendanceLogQuery(AttendanceDevice $device, string $startTime, string $endTime): AttendanceDeviceCommand
+    {
+        return $this->queuePushCommand(
+            $device,
+            'DATA QUERY ATTLOG',
+            "StartTime={$startTime}\tEndTime={$endTime}"
+        );
+    }
+
+    /**
+     * Queue a command that asks the device to reload options and resend data by stamp rules.
+     */
+    public function queueCheckSync(AttendanceDevice $device): AttendanceDeviceCommand
+    {
+        return $this->queuePushCommand($device, 'CHECK');
+    }
+
+    /**
+     * Queue a command that asks the device to reload its PUSH option set.
+     */
+    public function queueReloadOptions(AttendanceDevice $device): AttendanceDeviceCommand
+    {
+        return $this->queuePushCommand($device, 'RELOAD OPTIONS');
+    }
+
+    /**
+     * Queue a single device option update through the PUSH protocol.
+     */
+    public function queueSetOption(AttendanceDevice $device, string $key, string $value): AttendanceDeviceCommand
+    {
+        return $this->queuePushCommand($device, 'SET OPTION', "{$key}={$value}");
+    }
+
+    /**
+     * Queue a BIODATA query for template testing by type and optional person fields.
+     */
+    public function queueBiodataQuery(AttendanceDevice $device, string $type, ?string $pin = null, ?string $number = null): AttendanceDeviceCommand
+    {
+        return $this->queuePushCommand($device, 'DATA QUERY BIODATA', $this->biodataPayload($type, $pin, $number));
+    }
+
+    /**
+     * Queue a command that deletes one user record from a PUSH attendance device.
+     */
+    public function queueDeleteUserInfo(AttendanceDevice $device, string $pin): AttendanceDeviceCommand
+    {
+        return $this->queuePushCommand($device, 'DATA DELETE USERINFO', 'PIN=' . $pin);
+    }
+
+    /**
      * Queue a PUSH command that asks the device to delete all local user records.
      */
     public function queueDeleteAllUsers(AttendanceDevice $device): AttendanceDeviceCommand
     {
         return $this->queuePushCommand($device, 'DATA DELETE USERINFO');
+    }
+
+    /**
+     * Queue a command that deletes BIODATA templates by PIN and optional biometric filters.
+     */
+    public function queueDeleteBiodata(AttendanceDevice $device, string $pin, ?string $type = null, ?string $number = null): AttendanceDeviceCommand
+    {
+        return $this->queuePushCommand($device, 'DATA DELETE BIODATA', $this->biodataDeletePayload($pin, $type, $number));
+    }
+
+    /**
+     * Queue a command that clears all unified biometric templates on the device.
+     */
+    public function queueClearBiodata(AttendanceDevice $device): AttendanceDeviceCommand
+    {
+        return $this->queuePushCommand($device, 'CLEAR BIODATA');
     }
 
     /**
@@ -111,5 +179,29 @@ class AttendanceDeviceCommandService
         } while (AttendanceDeviceCommand::query()->where('command_key', $key)->exists());
 
         return $key;
+    }
+
+    /**
+     * Build tab-separated BIODATA command conditions for query and delete operations.
+     */
+    private function biodataPayload(?string $type = null, ?string $pin = null, ?string $number = null): string
+    {
+        return collect([
+            $type ? 'Type=' . $type : null,
+            $pin ? 'PIN=' . $pin : null,
+            $number ? 'No=' . $number : null,
+        ])->filter()->implode("\t");
+    }
+
+    /**
+     * Build tab-separated BIODATA delete conditions in the documented PIN-first order.
+     */
+    private function biodataDeletePayload(string $pin, ?string $type = null, ?string $number = null): string
+    {
+        return collect([
+            'Pin=' . $pin,
+            $type ? 'Type=' . $type : null,
+            $number ? 'No=' . $number : null,
+        ])->filter()->implode("\t");
     }
 }
