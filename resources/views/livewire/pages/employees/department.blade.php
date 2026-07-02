@@ -9,11 +9,14 @@
                             <p class="text-sm mb-0">Tạo phòng ban, theo dõi cơ cấu và gán nhanh nhân viên vào phòng ban đang chọn.</p>
                         </div>
                         <div class="mt-3 mt-lg-0">
-                            <a href="{{ route('employee-list') }}" class="btn btn-outline-secondary mb-0">Danh sách nhân viên</a>
-                            <button type="button" class="btn bg-gradient-dark mb-0 ms-2" wire:click="resetDepartmentForm">
-                                <i class="material-icons-round text-sm me-1">add</i>
-                                Thêm phòng ban
-                            </button>
+                            <a href="{{ route('employee-list') }}" class="btn bg-gradient-primary d-inline-flex align-items-center mb-0">
+                                <i class="material-icons-round me-1">list</i>
+                                Danh sách nhân viên
+                            </a>
+                            <a href="{{ route('employee-position') }}" class="btn bg-gradient-primary d-inline-flex align-items-center mb-0 ms-2">
+                                <i class="material-icons-round me-1">list</i>
+                                Danh sách chức vụ
+                            </a>
                         </div>
                     </div>
 

@@ -2,6 +2,16 @@
 
 This file is the working memory for the HR and time attendance build. Read it before changing HR, attendance, schedule, device, payroll, or report features.
 
+## 2026-07-02 Employee Create Account Wizard
+
+- Wired the `/pages/users/new-user` wizard account step into the existing `EmployeeAccountService`.
+- Added an authorization-aware option to create a login account while creating a new employee profile.
+- Users with `authorization.manage` can enable account creation, choose a role, and enter the initial password.
+- Account provisioning uses the employee code as username and links the created `users` row back to `employees.user_id`.
+- Kept users without `authorization.manage` able to create the employee profile without account provisioning.
+- Updated the new employee wizard layout, full-width forms, icon-only wizard navigation, and scoped CSS for wizard panel height.
+- Verified PHP syntax and Blade compilation.
+
 ## 2026-07-02 Position Department Tag Filter
 
 - Restyled the `/pages/employees/positions` department filter as tag-like chips inspired by Creative Tim's tags plugin.

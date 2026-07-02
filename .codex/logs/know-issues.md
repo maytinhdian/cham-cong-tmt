@@ -1,5 +1,19 @@
 # Known Issues
 
+## 2026-07-02 Employee Create Account Wizard
+
+Problem:
+
+No new unresolved implementation problem was found while wiring account provisioning into the new employee wizard.
+
+Impact:
+
+Only users with `authorization.manage` can create a linked login account during employee creation. Other users can still create the employee profile and provision the account later from employee management.
+
+Priority:
+
+None
+
 ## 2026-07-02 Position Department Tag Filter
 
 Problem:

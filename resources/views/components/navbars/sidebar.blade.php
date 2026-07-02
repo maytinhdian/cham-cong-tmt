@@ -12,7 +12,7 @@
         $attendanceSettingRoutes = ['attendance-settings', 'attendance-schedules', 'attendance-shift-definition', 'attendance-weekend-definition', 'attendance-symbol-statistics'];
         $deviceRoutes = ['attendance-devices', 'attendance-device-user-mappings', 'attendance-push-receiver', 'attendance-raw-logs', 'attendance-process-logs'];
         $timesheetRoutes = ['attendance-daily-timesheet', 'attendance-monthly-timesheet'];
-        $employeeRoutes = ['employee-list', 'new-user', 'employee-dashboard', 'employee-bulk-create', 'employee-department', 'employee-company-chart', 'employee-position'];
+        $employeeRoutes = ['employee-list', 'new-user', 'employee-dashboard', 'employee-department', 'employee-company-chart', 'employee-position'];
         $demoGroups = [
             'Chấm công' => [
                 ['route' => 'attendance-tabulator-demo', 'label' => 'Demo Tabulator', 'icon' => 'TB'],
@@ -332,13 +332,6 @@
                                         href="{{ route('new-user') }}">
                                         <span class="sidenav-mini-icon"> + </span>
                                         <span class="sidenav-normal ms-2 ps-1"> Thêm nhân viên </span>
-                                    </a>
-                                </li>
-                                <li class="nav-item {{ Route::currentRouteName() == 'employee-bulk-create' ? 'active' : '' }}">
-                                    <a class="nav-link text-white {{ Route::currentRouteName() == 'employee-bulk-create' ? 'active' : '' }}"
-                                        href="{{ route('employee-bulk-create') }}">
-                                        <span class="sidenav-mini-icon"> XL </span>
-                                        <span class="sidenav-normal ms-2 ps-1"> Thêm nhân viên hàng loạt </span>
                                     </a>
                                 </li>
                                 <li class="nav-item {{ Route::currentRouteName() == 'employee-department' ? 'active' : '' }}">

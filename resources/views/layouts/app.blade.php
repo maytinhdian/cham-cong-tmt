@@ -73,9 +73,11 @@
         </div>
     @else
         <x-navbars.sidebar></x-navbars.sidebar>
-        <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
+        <main class="main-content position-relative min-vh-100 d-flex flex-column border-radius-lg ">
             <x-navbars.navs.auth></x-navbars.navs.auth>
-            {{ $slot }}
+            <div class="tmt-main-body flex-grow-1">
+                {{ $slot }}
+            </div>
             <x-footers.auth.footer></x-footers.auth.footer>
         </main>
         <x-plugins></x-plugins>

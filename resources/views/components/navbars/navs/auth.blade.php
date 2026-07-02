@@ -1,5 +1,5 @@
 
-<nav class="navbar navbar-main navbar-expand-lg position-sticky mt-4 top-1 px-0 mx-4 shadow-none border-radius-xl z-index-sticky"
+<nav class="navbar navbar-main navbar-expand-lg position-sticky mt-4 top-1 px-0 mx-4 bg-white blur shadow-blur border-radius-xl z-index-sticky"
     id="navbarBlur" data-scroll="true">
     <div class="container-fluid py-1 px-3">
         <nav aria-label="breadcrumb">
@@ -31,20 +31,12 @@
             </ol>
             <h6 class="font-weight-bolder mb-0 text-capitalize">{{ str_replace('-', ' ', Route::currentRouteName()) }}</h6>
         </nav>
-        <div class="sidenav-toggler sidenav-toggler-inner d-xl-block d-none ">
-            <a href="javascript:;" class="nav-link text-body p-0">
-                <div class="sidenav-toggler-inner">
-                    <i class="sidenav-toggler-line"></i>
-                    <i class="sidenav-toggler-line"></i>
-                    <i class="sidenav-toggler-line"></i>
-                </div>
-            </a>
-        </div>
         <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
-            <div class="ms-md-auto pe-md-3 d-flex align-items-center">
+            <div class="navbar-search ms-md-auto pe-md-3 d-flex align-items-center">
                 <div class="input-group input-group-outline">
+                    <span class="navbar-search-icon material-icons-round" aria-hidden="true">search</span>
                     <label class="form-label">Search here</label>
-                    <input type="text" class="form-control">
+                    <input type="text" class="form-control" placeholder=" ">
                 </div>
             </div>
             <ul class="navbar-nav justify-content-end align-items-center">
@@ -122,6 +114,15 @@
                             </a>
                         </li>
                     </ul>
+                </li>
+                <li class="nav-item d-xl-flex d-none align-items-center ps-3">
+                    <a href="javascript:;" class="nav-link text-body p-0 sidenav-toggler" title="Thu gọn menu" aria-label="Thu gọn menu">
+                        <div class="sidenav-toggler-inner">
+                            <i class="sidenav-toggler-line"></i>
+                            <i class="sidenav-toggler-line"></i>
+                            <i class="sidenav-toggler-line"></i>
+                        </div>
+                    </a>
                 </li>
             </ul>
         </div>

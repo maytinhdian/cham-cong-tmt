@@ -4,6 +4,20 @@
 
 Decision:
 
+Use the existing `EmployeeAccountService` for optional login account provisioning inside the new employee wizard.
+
+Reason:
+
+The employee list page already centralizes username, role, password hashing, employee-account linking, and activity logging in this service. Reusing it keeps account creation behavior consistent across quick edit and initial employee creation.
+
+Result:
+
+The wizard account step only exposes provisioning controls to users with `authorization.manage`. Employee profile creation remains available without account provisioning, while enabled account creation uses the employee code as username and writes the linked `users` record through the shared service.
+
+## 2026-07-02
+
+Decision:
+
 Expose ZKTeco PUSH reception through a separate authenticated operator page, while keeping physical device traffic on the public `/iclock/*` endpoints.
 
 Reason:

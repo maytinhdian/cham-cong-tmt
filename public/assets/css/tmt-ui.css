@@ -24,6 +24,79 @@
     box-shadow: 0 0 0 0.2rem rgba(233, 30, 99, 0.15);
 }
 
+.navbar-main .navbar-search {
+    flex: 0 1 360px;
+    max-width: 360px;
+    width: 360px;
+}
+
+.navbar-main .navbar-search .input-group,
+.navbar-main .navbar-search .form-control {
+    border-radius: 6px;
+    width: 100%;
+}
+
+.navbar-main .navbar-search .input-group {
+    position: relative;
+}
+
+.navbar-main .navbar-search-icon {
+    color: #7b809a;
+    font-size: 1.35rem;
+    left: 0.75rem;
+    line-height: 1;
+    pointer-events: none;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 3;
+}
+
+.navbar-main .navbar-search .form-label {
+    left: 2rem;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.navbar-main .navbar-search .form-control {
+    padding-left: 2rem;
+}
+
+.navbar-main .navbar-search .input-group:focus-within .navbar-search-icon,
+.navbar-main .navbar-search .input-group:focus-within .form-label,
+.navbar-main .navbar-search .input-group:has(.form-control:not(:placeholder-shown)) .navbar-search-icon,
+.navbar-main .navbar-search .input-group:has(.form-control:not(:placeholder-shown)) .form-label {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.navbar-main .navbar-search .input-group:focus-within .form-control,
+.navbar-main .navbar-search .input-group:has(.form-control:not(:placeholder-shown)) .form-control {
+    padding-left: 0.75rem;
+}
+
+@media (max-width: 1199.98px) {
+    .navbar-main .navbar-search {
+        flex-basis: 100%;
+        max-width: 100%;
+        width: 100%;
+    }
+}
+
+.employee-create-page .multisteps-form__panel.js-active {
+    height: auto;
+    position: relative;
+}
+
+.employee-create-page .multisteps-form__form {
+    height: auto !important;
+}
+
+.employee-create-page .js-btn-prev .material-icons-round,
+.employee-create-page .js-btn-next .material-icons-round {
+    pointer-events: none;
+}
+
 .dataTable-wrapper .dataTable-dropdown {
     align-items: center;
     display: flex;

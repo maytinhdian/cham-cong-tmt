@@ -1,8 +1,8 @@
-<div class="container-fluid py-4 bg-gray-200">
+<div class="container-fluid py-4 bg-gray-200 employee-create-page">
     <div class="row">
         <div class="col-12">
             <div class="card mb-4">
-                <div class="card-header pb-0">
+                <div class="card-header pb-3">
                     <div class="d-flex flex-column flex-lg-row align-items-lg-center justify-content-between">
                         <div>
                             <h5 class="mb-1">Thêm nhân viên</h5>
@@ -11,8 +11,14 @@
                             </p>
                         </div>
                         <div class="mt-3 mt-lg-0">
-                            <a href="{{ route('employee-list') }}" class="btn btn-outline-secondary mb-0">Danh sách nhân viên</a>
-                            <a href="{{ route('employee-bulk-create') }}" class="btn bg-gradient-dark mb-0 ms-2">Thêm hàng loạt</a>
+                            <a href="{{ route('employee-list') }}" class="btn btn-outline-secondary d-inline-flex align-items-center mb-0">
+                                <i class="material-icons-round me-1">list</i>
+                                Danh sách nhân viên
+                            </a>
+                            <a href="{{ route('employee-bulk-create') }}" class="btn bg-gradient-dark d-inline-flex align-items-center mb-0 ms-2">
+                                <i class="material-icons-round me-1">upload_file</i>
+                                Nhập từ Excel
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -28,11 +34,11 @@
                             <button
                                 type="button"
                                 wire:click="$set('formMode', 'wizard')"
-                                class="btn w-100 text-start border border-2 p-4 mb-0 option-card {{ $formMode === 'wizard' ? 'border-primary shadow-lg' : '' }}"
+                                class="btn w-100 text-start border border-2 p-4 mb-0 option-card {{ $formMode === 'wizard' ? 'is-active shadow' : '' }}"
                             >
                                 <div class="d-flex align-items-center justify-content-between">
                                     <div class="d-flex align-items-center">
-                                        <div class="avatar avatar-lg bg-gradient-primary me-3">
+                                        <div class="avatar avatar-lg bg-gradient-dark me-3">
                                             <i class="material-icons-round text-white opacity-10">dynamic_form</i>
                                         </div>
                                         <div>
@@ -40,7 +46,7 @@
                                             <p class="text-sm mb-0">Nhập chi tiết nhiều bước, phù hợp khi tạo hồ sơ nhân viên hoàn chỉnh.</p>
                                         </div>
                                     </div>
-                                    <span class="badge bg-gradient-primary">Khuyến nghị</span>
+                                    <span class="badge bg-gradient-secondary">Khuyến nghị</span>
                                 </div>
                             </button>
                         </div>
@@ -48,7 +54,7 @@
                             <button
                                 type="button"
                                 wire:click="$set('formMode', 'quick')"
-                                class="btn w-100 text-start border border-2 p-4 mb-0 option-card {{ $formMode === 'quick' ? 'border-primary shadow-lg' : '' }}"
+                                class="btn w-100 text-start border border-2 p-4 mb-0 option-card {{ $formMode === 'quick' ? 'is-active shadow' : '' }}"
                             >
                                 <div class="d-flex align-items-center justify-content-between">
                                     <div class="d-flex align-items-center">
@@ -96,11 +102,11 @@
             </div>
 
             @if ($formMode === 'wizard')
-                <div class="multisteps-form mb-9">
+                <div class="multisteps-form mt-5 mb-9">
                     <div class="row">
-                        <div class="col-12 col-lg-8 m-auto">
+                        <div class="col-12">
                             <div class="card">
-                                <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                                <div class="card-header p-0 position-relative mt-n3 mx-3 z-index-2">
                                     <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
                                         <div class="multisteps-form__progress">
                                             <button class="multisteps-form__progress-btn js-active" type="button" title="Basic Info">
@@ -166,7 +172,9 @@
                                                     </div>
                                                 </div>
                                                 <div class="button-row d-flex mt-4">
-                                                    <button class="btn bg-gradient-dark ms-auto mb-0 js-btn-next" type="button" title="Next">Tiếp theo</button>
+                                                    <button class="btn btn-sm bg-gradient-primary ms-auto mb-0 js-btn-next" type="button" title="Tiếp theo" aria-label="Tiếp theo">
+                                                        <i class="material-icons-round">arrow_forward</i>
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
@@ -227,27 +235,63 @@
                                                     </div>
                                                 </div>
                                                 <div class="button-row d-flex mt-4">
-                                                    <button class="btn bg-gradient-light mb-0 js-btn-prev" type="button" title="Prev">Quay lại</button>
-                                                    <button class="btn bg-gradient-dark ms-auto mb-0 js-btn-next" type="button" title="Next">Tiếp theo</button>
+                                                    <button class="btn btn-sm bg-gradient-primary mb-0 js-btn-prev" type="button" title="Quay lại" aria-label="Quay lại">
+                                                        <i class="material-icons-round">arrow_back</i>
+                                                    </button>
+                                                    <button class="btn btn-sm bg-gradient-primary ms-auto mb-0 js-btn-next" type="button" title="Tiếp theo" aria-label="Tiếp theo">
+                                                        <i class="material-icons-round">arrow_forward</i>
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
 
                                         <div class="multisteps-form__panel border-radius-xl bg-white" data-animation="FadeIn">
                                             <h5 class="font-weight-bolder mb-0">Tài khoản hệ thống</h5>
-                                            <p class="mb-0 text-sm">Giai đoạn này chỉ tạo hồ sơ nhân viên. Tài khoản đăng nhập sẽ nối sau ở module phân quyền.</p>
+                                            <p class="mb-0 text-sm">Tùy chọn cấp tài khoản đăng nhập ngay khi tạo hồ sơ nhân viên.</p>
                                             <div class="multisteps-form__content">
-                                                <div class="alert alert-info text-white mt-3 mb-0" role="alert">
-                                                    Sau khi có module phân quyền, nhân viên có thể được liên kết với tài khoản `users` và vai trò đăng nhập.
-                                                </div>
+                                                @can('authorization.manage')
+                                                    <div class="form-check form-switch mt-3">
+                                                        <input class="form-check-input" type="checkbox" id="createLoginAccount" wire:model="createLoginAccount">
+                                                        <label class="form-check-label" for="createLoginAccount">Tạo tài khoản đăng nhập</label>
+                                                    </div>
+
+                                                    @if ($createLoginAccount)
+                                                        <div class="row mt-3">
+                                                            <div class="col-12 col-sm-6">
+                                                                <label class="form-label">Vai trò đăng nhập <span class="text-danger">*</span></label>
+                                                                <select class="form-control" wire:model="accountRoleId">
+                                                                    <option value="">Chọn vai trò</option>
+                                                                    @foreach ($roles as $role)
+                                                                        <option value="{{ $role->id }}">{{ $role->name }}</option>
+                                                                    @endforeach
+                                                                </select>
+                                                                @error('accountRoleId') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
+                                                            </div>
+                                                            <div class="col-12 col-sm-6 mt-3 mt-sm-0">
+                                                                <label class="form-label">Mật khẩu ban đầu <span class="text-danger">*</span></label>
+                                                                <input class="form-control" type="password" wire:model="accountPassword" autocomplete="new-password">
+                                                                @error('accountPassword') <p class="text-danger text-xs mt-1 mb-0">{{ $message }}</p> @enderror
+                                                            </div>
+                                                        </div>
+                                                        <p class="text-xs text-secondary mt-2 mb-0">Tên đăng nhập sẽ dùng mã nhân viên. Email tài khoản dùng email nhân viên hoặc email nội bộ tự sinh nếu cần.</p>
+                                                    @endif
+                                                @else
+                                                    <div class="alert alert-info text-white mt-3 mb-0" role="alert">
+                                                        Bạn chưa có quyền cấp tài khoản đăng nhập. Hồ sơ nhân viên vẫn có thể được tạo trước.
+                                                    </div>
+                                                @endcan
                                                 <div class="button-row d-flex mt-4">
-                                                    <button class="btn bg-gradient-light mb-0 js-btn-prev" type="button" title="Prev">Quay lại</button>
-                                                    <button class="btn bg-gradient-dark ms-auto mb-0 js-btn-next" type="button" title="Next">Tiếp theo</button>
+                                                    <button class="btn btn-sm bg-gradient-primary mb-0 js-btn-prev" type="button" title="Quay lại" aria-label="Quay lại">
+                                                        <i class="material-icons-round">arrow_back</i>
+                                                    </button>
+                                                    <button class="btn btn-sm bg-gradient-primary ms-auto mb-0 js-btn-next" type="button" title="Tiếp theo" aria-label="Tiếp theo">
+                                                        <i class="material-icons-round">arrow_forward</i>
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
 
-                                        <div class="multisteps-form__panel border-radius-xl bg-white h-100" data-animation="FadeIn">
+                                        <div class="multisteps-form__panel border-radius-xl bg-white" data-animation="FadeIn">
                                             <h5 class="font-weight-bolder mb-0">Ghi chú và xác nhận</h5>
                                             <p class="mb-0 text-sm">Kiểm tra thông tin cuối cùng trước khi lưu nhân viên.</p>
                                             <div class="multisteps-form__content mt-3">
@@ -259,9 +303,11 @@
                                                     </div>
                                                 </div>
                                                 <div class="button-row d-flex mt-4">
-                                                    <button class="btn bg-gradient-light mb-0 js-btn-prev" type="button" title="Prev">Quay lại</button>
-                                                    <button class="btn bg-gradient-dark ms-auto mb-0" type="submit" title="Send">
-                                                        Lưu nhân viên
+                                                    <button class="btn btn-sm bg-gradient-primary mb-0 js-btn-prev" type="button" title="Quay lại" aria-label="Quay lại">
+                                                        <i class="material-icons-round">arrow_back</i>
+                                                    </button>
+                                                    <button class="btn btn-sm bg-gradient-primary ms-auto mb-0" type="submit" title="Lưu nhân viên" aria-label="Lưu nhân viên">
+                                                        <i class="material-icons-round">save</i>
                                                     </button>
                                                 </div>
                                             </div>
@@ -274,7 +320,7 @@
                 </div>
             @else
                 <div class="row">
-                    <div class="col-12 col-lg-8 m-auto">
+                    <div class="col-12">
                         <div class="card">
                             <div class="card-header pb-0">
                                 <h5 class="mb-1">Thêm thông tin bắt buộc</h5>
