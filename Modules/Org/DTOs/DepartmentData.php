@@ -17,6 +17,9 @@ class DepartmentData
     ) {
     }
 
+    /**
+     * Convert department form data into database columns.
+     */
     public function toArray(): array
     {
         return [

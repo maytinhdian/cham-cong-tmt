@@ -2,6 +2,46 @@
 
 This file is the working memory for the HR and time attendance build. Read it before changing HR, attendance, schedule, device, payroll, or report features.
 
+## 2026-07-02 Position Department Tag Filter
+
+- Restyled the `/pages/employees/positions` department filter as tag-like chips inspired by Creative Tim's tags plugin.
+- Kept the existing single-department Livewire filtering behavior unchanged.
+- Added employee counts to each department chip.
+- Added scoped CSS in `public/assets/css/tmt-ui.css` for the position department tag filter.
+- Verified PHP syntax, Blade compilation, route registration, and the existing ZKTeco PUSH feature test file.
+
+## 2026-07-02 Position Create/Edit/Delete Form
+
+- Added a real create/edit position form to `/pages/employees/positions`.
+- Wired the existing Org position DTO, action, and service into the Livewire position management page.
+- Added validation for position code, name, level, sort order, status, and description.
+- Added action-level `employees.manage` authorization for position save/edit/delete and employee assignment changes.
+- Added Core activity logging for position create, update, and delete actions.
+- Added a guarded delete action to the position table; positions with assigned employees cannot be deleted.
+- Updated the position table edit button to load records into the form.
+- Added required PHPDoc blocks to touched Org position DTO/action/service methods.
+- Verified PHP syntax, Blade compilation, route registration, and the existing ZKTeco PUSH feature test file.
+
+## 2026-07-02 Department Delete Guard
+
+- Added a delete action to the department management table.
+- Department deletion is allowed only when the department has no employees.
+- The delete action is also blocked when the department has child departments, preventing orphaned organization rows.
+- Added user-facing error messages when deletion is blocked.
+- Added Core activity logging for successful department deletion.
+- Verified PHP syntax, Blade compilation, and the existing ZKTeco PUSH feature test file.
+
+## 2026-07-02 Department Create/Edit Form
+
+- Added a real create/edit department form to `/pages/employees/departments`.
+- Wired the existing Org module DTO, action, and service into the Livewire department management page.
+- Added validation for department code, name, parent department, contact fields, sort order, status, and description.
+- Added action-level `employees.manage` authorization for department save/edit and employee assignment changes.
+- Added Core activity logging for department create and update actions.
+- Updated the department table edit button to load records into the form.
+- Added required PHPDoc blocks to touched Org department DTO/action/service methods.
+- Verified PHP syntax, Blade compilation, and the existing ZKTeco PUSH feature test file.
+
 ## 2026-07-02 Raw Attendance Log Cleanup
 
 - Cleared all existing rows from `raw_attendance_logs` after the user requested deleting old logs.

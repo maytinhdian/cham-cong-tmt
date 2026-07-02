@@ -58,6 +58,75 @@
     margin-top: 0;
 }
 
+.position-department-filter .tmt-tags-filter {
+    align-items: center;
+    background-color: #ffffff;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    display: flex;
+    flex: 1 1 auto;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    min-height: 42px;
+    padding: 0.45rem;
+}
+
+.position-department-filter .tmt-tag-filter {
+    align-items: center;
+    background-color: #e9ecef;
+    border: 0;
+    border-radius: 4px;
+    color: #344767;
+    display: inline-flex;
+    font-size: 0.75rem;
+    font-weight: 600;
+    gap: 0.35rem;
+    line-height: 1.2;
+    max-width: 100%;
+    min-height: 28px;
+    padding: 0.35rem 0.55rem;
+}
+
+.position-department-filter .tmt-tag-filter:hover,
+.position-department-filter .tmt-tag-filter:focus {
+    background-color: #dee2e6;
+    outline: none;
+}
+
+.position-department-filter .tmt-tag-filter.active {
+    background-color: #e91e63;
+    color: #ffffff;
+}
+
+.position-department-filter .tmt-tag-filter-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.position-department-filter .tmt-tag-filter-count {
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 4px;
+    color: #344767;
+    display: inline-flex;
+    font-size: 0.68rem;
+    justify-content: center;
+    line-height: 1;
+    min-width: 20px;
+    padding: 0.18rem 0.3rem;
+}
+
+.position-department-filter .tmt-tag-filter.active .tmt-tag-filter-count {
+    background-color: rgba(255, 255, 255, 0.22);
+    color: #ffffff;
+}
+
+.position-department-filter .tmt-tag-filter .material-icons-round {
+    font-size: 0.9rem;
+    line-height: 1;
+}
+
 .attendance-settings-tabs .nav.nav-pills {
     overflow: visible;
 }

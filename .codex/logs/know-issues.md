@@ -1,5 +1,61 @@
 # Known Issues
 
+## 2026-07-02 Position Department Tag Filter
+
+Problem:
+
+No new unresolved implementation problem was found while restyling the position department filter.
+
+Impact:
+
+The filter uses local CSS to mimic tag chips instead of loading the external Creative Tim tagsinput plugin, because the page needs single-select filtering rather than free-form tag entry.
+
+Priority:
+
+None
+
+## 2026-07-02 Position Create/Edit/Delete Form
+
+Problem:
+
+No new unresolved implementation problem was found while adding position create/edit/delete actions.
+
+Impact:
+
+Deletion is intentionally blocked for positions with assigned employees.
+
+Priority:
+
+None
+
+## 2026-07-02 Department Delete Guard
+
+Problem:
+
+No new unresolved implementation problem was found while adding guarded department deletion.
+
+Impact:
+
+Deletion is intentionally blocked for departments with employees or child departments.
+
+Priority:
+
+None
+
+## 2026-07-02 Department Create/Edit Form
+
+Problem:
+
+No new unresolved implementation problem was found while adding the department create/edit form.
+
+Impact:
+
+Browser-level interaction was not exercised here, but PHP syntax and Blade compilation passed. The change uses existing route authorization plus action-level `employees.manage` checks.
+
+Priority:
+
+None
+
 ## 2026-07-02 PUSH Receiver Page
 
 Problem:

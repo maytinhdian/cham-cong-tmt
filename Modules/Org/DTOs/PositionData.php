@@ -14,6 +14,9 @@ class PositionData
     ) {
     }
 
+    /**
+     * Convert position form data into database columns.
+     */
     public function toArray(): array
     {
         return [

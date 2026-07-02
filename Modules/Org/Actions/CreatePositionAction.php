@@ -12,6 +12,9 @@ class CreatePositionAction
     {
     }
 
+    /**
+     * Create a new job position from validated HR input.
+     */
     public function execute(PositionData $data): Position
     {
         return $this->positionService->create($data);

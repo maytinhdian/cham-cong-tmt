@@ -12,6 +12,9 @@ class CreateDepartmentAction
     {
     }
 
+    /**
+     * Create a new organization department from validated HR input.
+     */
     public function execute(DepartmentData $data): Department
     {
         return $this->departmentService->create($data);
